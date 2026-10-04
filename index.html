@@ -59,7 +59,7 @@ const DISCORD_URL='';
 const SUPABASE_URL='https://jcxvmumfnsgvwnogshnn.supabase.co';
 const SUPABASE_KEY='sb_publishable__5PwKKSpvB6wjEWrD2YpzQ_gvIaOeWb';
 // Cloudflare Turnstile site key (public). Leave empty to disable the captcha. Also enable it in Supabase > Authentication > Attack Protection.
-const TURNSTILE_SITEKEY='';
+const TURNSTILE_SITEKEY='0x4AAAAAAFNf5UyykmBpLdyi';
 const sb=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 // Debug logging: add ?debug to the URL (or run localStorage.setItem('sf_debug','1')).
 const DEBUG=(()=>{try{return /[?&]debug\b/.test(location.search)||localStorage.getItem('sf_debug')==='1'}catch(e){return false}})();
@@ -100,7 +100,7 @@ const abs=u=>!u?null:u.startsWith('/')?API+u:u;
 const ago=d=>{const s=(Date.now()-new Date(d))/1e3;for(const[n,l]of[[31536e3,'y'],[2592e3,'mo'],[86400,'d'],[3600,'h'],[60,'m']])if(s>=n)return Math.floor(s/n)+l+' ago';return 'just now'};
 const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':(n||0);
 
-const P={home:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',flame:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 2 4-5z',spark:'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1z',badge:'M5 12l5 5L20 7',unlock:'M7 11V7a5 5 0 0 1 9-3M5 11h14v10H5z',heart:'M12 21s-8-5-8-11a5 5 0 0 1 8-3 5 5 0 0 1 8 3c0 6-8 11-8 11z',info:'M12 8h.01M11 12h1v5h1M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0',coffee:'M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M7 2v3M11 2v3',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5',x:'M6 6l12 12M18 6L6 18',menu:'M3 6h18M3 12h18M3 18h18',copy:'M9 9h11v11H9zM5 15V5h10',back:'M15 6l-6 6 6 6',shield:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z'};
+const P={home:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',flame:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 2 4-5z',spark:'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1z',badge:'M5 12l5 5L20 7',unlock:'M7 11V7a5 5 0 0 1 9-3M5 11h14v10H5z',heart:'M12 21s-8-5-8-11a5 5 0 0 1 8-3 5 5 0 0 1 8 3c0 6-8 11-8 11z',info:'M12 8h.01M11 12h1v5h1M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0',coffee:'M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M7 2v3M11 2v3',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5',x:'M6 6l12 12M18 6L6 18',menu:'M3 6h18M3 12h18M3 18h18',copy:'M9 9h11v11H9zM5 15V5h10',back:'M15 6l-6 6 6 6',shield:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z',upload:'M12 16V4M7 9l5-5 5 5M4 20h16',users:'M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9'};
 const Ic=({n,s=18,fill,className=''})=><svg width={s} height={s} viewBox="0 0 24 24" fill={fill?'currentColor':'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true"><path d={P[n]}/></svg>;
 
 // Adsterra banner units (key per size). Rendered inside iframes (no sandbox, so the ad network can read the site origin).
@@ -129,7 +129,7 @@ function Thumb({s,className='',sm=false}){
       {s.verified&&<i className="w-2 h-2 rounded-full bg-blue-500"/>}{s.key&&<i className="w-2 h-2 rounded-full bg-amber-400"/>}{s.isPatched&&<i className="w-2 h-2 rounded-full bg-red-500"/>}{s.keyless&&<i className="w-2 h-2 rounded-full bg-cyan-400"/>}</span>
   </div>;
 }
-const Badges=({s})=><div className="flex flex-wrap gap-1.5">{[[s.key,'KEY','amber'],[s.keyless,'KEYLESS','cyan'],[s.isHub,'HUB','purple'],[s.isUniversal,'UNIVERSAL','blue'],[s.verified,'VERIFIED','green']].filter(b=>b[0]).map(b=>
+const Badges=({s})=><div className="flex flex-wrap gap-1.5">{[[s.key,'KEY','amber'],[s.keyless,'KEYLESS','cyan'],[s.isUser,'COMMUNITY','cyan'],[s.isHub,'HUB','purple'],[s.isUniversal,'UNIVERSAL','blue'],[s.verified,'VERIFIED','green']].filter(b=>b[0]).map(b=>
   <span key={b[1]} className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full border border-${b[2]}-400/40 text-${b[2]}-300 bg-${b[2]}-400/10`}>{b[1]}</span>)}</div>;
 
 function Card({s,fav,onFav,onOpen,i}){
@@ -199,7 +199,13 @@ const Empty=({t,d})=><div className="glass rounded-2xl p-12 text-center"><h3 cla
 
 function Detail({s,back,favs,onFav,toast,votes,onVote}){
   const [full,setFull]=useState(s);const [copied,setCopied]=useState(false);const [rel,setRel]=useState([]);
-  useEffect(()=>{const ac=new AbortController();
+  useEffect(()=>{
+    if(s.isUser){
+      if(!sb)return;
+      sb.from('user_scripts').select('script,description,author').eq('id',s.uid).maybeSingle().then(({data})=>{if(data)setFull(p=>({...p,script:data.script,description:data.description,author:data.author||'Anonymous'}))});
+      return;
+    }
+    const ac=new AbortController();
     api('/api/script?slug='+s.slug,ac.signal,{immediate:true}).then(d=>{const x=(d.result&&(d.result.script||d.result))||{};setFull(p=>({...p,...x}))}).catch(()=>{});
     api('/api/search?q='+encodeURIComponent((s.game&&s.game.name)||s.title)+'&page=1',ac.signal).then(d=>setRel(((d.result||{}).scripts||[]).filter(x=>x.slug!==s.slug).slice(0,4))).catch(()=>{});
     return()=>ac.abort()},[s.slug]);
@@ -212,8 +218,9 @@ function Detail({s,back,favs,onFav,toast,votes,onVote}){
     <div className="glass rounded-2xl overflow-hidden"><Thumb s={full}/>
       <div className="p-5 space-y-3"><div className="flex justify-between gap-3"><h1 className="hd text-2xl font-bold text-white">{full.title}</h1>
         <button aria-label="Bookmark" onClick={()=>onFav(full)} className={favs.some(f=>f.slug===full.slug)?'text-red-400':'text-slate-400'}><Ic n="heart" s={24} fill={favs.some(f=>f.slug===full.slug)}/></button></div>
-        <p className="text-slate-400 text-sm">{full.game&&full.game.name}{full.owner&&full.owner.username?' · by '+full.owner.username:''}</p>
+        <p className="text-slate-400 text-sm">{full.game&&full.game.name}{full.owner&&full.owner.username?' · by '+full.owner.username:''}{full.isUser&&full.author?' · by '+full.author:''}</p>
         <Badges s={full}/>
+        {full.isUser&&full.description&&<p className="text-sm text-slate-300 whitespace-pre-wrap break-words">{full.description}</p>}
         <div className="flex flex-wrap gap-5 text-sm text-slate-300"><span>👁 {fmt(full.views)}</span><span>▶ {fmt(full.executes)}</span><span>{ago(full.createdAt)}</span></div>
         <div className="flex gap-2"><button aria-label="Like" onClick={()=>v(1)} className={'px-4 py-2 rounded-lg border '+(vote===1?'bg-green-500/20 border-green-400':'border-white/10')}>👍 {fmt((full.likeCount||0)+(vote===1?1:0))}</button>
           <button aria-label="Dislike" onClick={()=>v(-1)} className={'px-4 py-2 rounded-lg border '+(vote===-1?'bg-red-500/20 border-red-400':'border-white/10')}>👎 {fmt((full.dislikeCount||0)+(vote===-1?1:0))}</button></div>
@@ -268,17 +275,28 @@ function Admin(){
     <div className="glass rounded-xl p-4"><p className="text-sm text-slate-400 mb-3">Daily revenue (last 7 days)</p><div className="flex items-end gap-2 h-40">{data.map((x,i)=><div key={i} className="flex-1 text-center text-[10px]"><div className="rounded-t bg-gradient-to-t from-blue-600 to-cyan-400" style={{height:Math.max(4,(+x.revenue||0)/max*130)}}/>{String(x.date||'').slice(5)}</div>)}</div></div><p className="text-xs text-slate-400">Last updated: {upd}</p></>}</div>;
 }
 
-const slim=s=>({_id:s._id,slug:s.slug,title:s.title,game:s.game?{name:s.game.name,imageUrl:s.game.imageUrl}:undefined,image:s.image,verified:s.verified,key:s.key,keyless:s.keyless,views:s.views,executes:s.executes,isUniversal:s.isUniversal,isHub:s.isHub,isPatched:s.isPatched,likeCount:s.likeCount,dislikeCount:s.dislikeCount,createdAt:s.createdAt});
+const slim=s=>({_id:s._id,slug:s.slug,title:s.title,game:s.game?{name:s.game.name,imageUrl:s.game.imageUrl}:undefined,image:s.image,verified:s.verified,key:s.key,keyless:s.keyless,views:s.views,executes:s.executes,isUniversal:s.isUniversal,isHub:s.isHub,isPatched:s.isPatched,likeCount:s.likeCount,dislikeCount:s.dislikeCount,createdAt:s.createdAt,isUser:s.isUser,uid:s.uid,description:s.description,author:s.author});
+
+// Cloudflare Turnstile widget (renders nothing when TURNSTILE_SITEKEY is empty). Bump `nonce` to reset it.
+function Captcha({onToken,nonce}){
+  const ref=useRef();const id=useRef();
+  useEffect(()=>{
+    if(!TURNSTILE_SITEKEY)return;
+    const draw=()=>{if(window.turnstile&&ref.current&&id.current===undefined)id.current=window.turnstile.render(ref.current,{sitekey:TURNSTILE_SITEKEY,theme:'dark',callback:onToken,'expired-callback':()=>onToken('')})};
+    if(window.turnstile)draw();else{
+      let sc=document.getElementById('turnstile-api');
+      if(!sc){sc=document.createElement('script');sc.id='turnstile-api';sc.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';sc.async=true;document.head.appendChild(sc)}
+      sc.addEventListener('load',draw);
+    }
+    return()=>{try{if(window.turnstile&&id.current!==undefined)window.turnstile.remove(id.current)}catch(e){}id.current=undefined};
+  },[]);
+  useEffect(()=>{if(nonce&&window.turnstile&&id.current!==undefined){try{window.turnstile.reset(id.current)}catch(e){}onToken('')}},[nonce]);
+  return TURNSTILE_SITEKEY?<div ref={ref}/>:null;
+}
 
 function AuthPage({user,go}){
   const [tab,setTab]=useState('login');const [email,setEmail]=useState('');const [pw,setPw]=useState('');const [pw2,setPw2]=useState('');
-  const [busy,setBusy]=useState(false);const [msg,setMsg]=useState('');const [cap,setCap]=useState('');const capRef=useRef();const capId=useRef();
-  useEffect(()=>{
-    if(!TURNSTILE_SITEKEY||user)return;
-    const draw=()=>{if(window.turnstile&&capRef.current&&capId.current===undefined)capId.current=window.turnstile.render(capRef.current,{sitekey:TURNSTILE_SITEKEY,theme:'dark',callback:setCap,'expired-callback':()=>setCap('')})};
-    if(window.turnstile)draw();else{const sc=document.createElement('script');sc.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';sc.async=true;sc.onload=draw;document.head.appendChild(sc)}
-    return()=>{try{if(window.turnstile&&capId.current!==undefined)window.turnstile.remove(capId.current)}catch(e){}capId.current=undefined};
-  },[user]);
+  const [busy,setBusy]=useState(false);const [msg,setMsg]=useState('');const [cap,setCap]=useState('');const [nonce,setNonce]=useState(0);
   const submit=async e=>{
     e.preventDefault();setMsg('');
     if(!sb){setMsg('Auth service failed to load. Refresh the page.');return}
@@ -300,7 +318,7 @@ function AuthPage({user,go}){
         go('home');
       }
     }catch(err){log('auth error',err);setMsg(err.message||'Something went wrong.')}
-    finally{setBusy(false);try{if(TURNSTILE_SITEKEY&&window.turnstile&&capId.current!==undefined){window.turnstile.reset(capId.current);setCap('')}}catch(e){}}
+    finally{setBusy(false);setNonce(n=>n+1)}
   };
   if(user)return <div className="page glass rounded-2xl p-8 max-w-md mx-auto text-center space-y-3"><h1 className="hd text-2xl text-white">You're logged in</h1><p className="text-slate-300 break-all">{user.email}</p>
     <button onClick={()=>sb.auth.signOut()} className="px-5 py-2 rounded-lg glass hover:border-blue-400">Log out</button></div>;
@@ -312,13 +330,89 @@ function AuthPage({user,go}){
     <input type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" aria-label="Email" autoComplete="email" className={inp}/>
     <input type="password" required value={pw} onChange={e=>setPw(e.target.value)} placeholder="Password" aria-label="Password" autoComplete={tab==='login'?'current-password':'new-password'} className={inp}/>
     {tab==='signup'&&<input type="password" required value={pw2} onChange={e=>setPw2(e.target.value)} placeholder="Confirm password" aria-label="Confirm password" autoComplete="new-password" className={inp}/>}
-    {TURNSTILE_SITEKEY&&<div ref={capRef}/>}
+    <Captcha onToken={setCap} nonce={nonce}/>
     {msg&&<p className="text-amber-300 text-sm" role="alert">{msg}</p>}
     <button type="submit" disabled={busy} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?'Please wait...':(tab==='login'?'Log in':'Sign up')}</button>
   </form>;
 }
 
-const NAV=[['home','Home','home'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
+// Community scripts (uploaded by users, shown after approval)
+const toCard=r=>({_id:'u-'+r.id,slug:'u-'+r.id,uid:r.id,isUser:true,title:r.name,game:{name:r.info},description:r.description,author:r.author||'Anonymous',views:0,executes:0,likeCount:0,dislikeCount:0,createdAt:r.created_at});
+function Community({favs,onFav,onOpen,toast}){
+  const [items,setItems]=useState([]);const [more,setMore]=useState(!!sb);const [loading,setLoading]=useState(false);
+  const pageRef=useRef(0);const busy=useRef(false);const moreRef=useRef(!!sb);const sent=useRef();
+  const load=useCallback(async()=>{
+    if(busy.current||!moreRef.current||!sb)return;
+    busy.current=true;setLoading(true);
+    const from=pageRef.current*20;
+    const {data,error}=await sb.from('user_scripts').select('id,name,info,description,author,created_at').eq('status','approved').order('created_at',{ascending:false}).range(from,from+19);
+    if(error){log('community error',error);toast('Failed to load community scripts.');moreRef.current=false;setMore(false)}
+    else{setItems(p=>[...p,...data.map(toCard)]);pageRef.current++;if(data.length<20){moreRef.current=false;setMore(false)}}
+    busy.current=false;setLoading(false);
+  },[toast]);
+  useEffect(()=>{const el=sent.current;if(!el)return;const o=new IntersectionObserver(e=>e[0].isIntersecting&&load(),{rootMargin:'300px'});o.observe(el);return()=>o.disconnect()},[load]);
+  if(!loading&&!more&&!items.length)return <Empty t="No community scripts yet" d="Be the first: log in and use Upload to share a script."/>;
+  return <div><div className="grid grid-cols-2 gap-3 md:gap-4">{items.map((x,i)=><Card key={x._id} i={i} s={x} fav={favs.some(f=>f.slug===x.slug)} onFav={onFav} onOpen={onOpen}/>)}{loading&&Array.from({length:4}).map((_,i)=><Skel key={'s'+i}/>)}</div>
+    <div ref={sent} className="h-10"/><p className="text-center text-sm text-slate-400 py-4" role="status">{loading?'Loading more scripts...':(!more&&items.length?"You've reached the end":'')}</p></div>;
+}
+
+// Upload (logged-in users only). The server checks login + captcha and stores the script as "pending" until approved.
+function UploadPage({user,go,toast}){
+  const [f,setF]=useState({name:'',info:'',description:'',script:'',author:''});
+  const [cap,setCap]=useState('');const [nonce,setNonce]=useState(0);const [busy,setBusy]=useState(false);const [msg,setMsg]=useState('');const [ok,setOk]=useState(false);const [mine,setMine]=useState([]);
+  const set=k=>e=>setF(p=>({...p,[k]:e.target.value}));
+  const uid=user&&user.id;
+  const loadMine=useCallback(async()=>{
+    if(!sb||!uid)return;
+    const {data}=await sb.from('user_scripts').select('id,name,status,created_at').eq('user_id',uid).order('created_at',{ascending:false}).limit(20);
+    setMine(data||[]);
+  },[uid]);
+  useEffect(()=>{loadMine()},[loadMine]);
+  if(!user)return <div className="page glass rounded-2xl p-8 max-w-md mx-auto text-center space-y-3"><h1 className="hd text-2xl text-white">Log in to upload</h1><p className="text-slate-300">Only logged-in users can upload scripts.</p>
+    <button onClick={()=>go('auth')} className="px-5 py-2 rounded-lg font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>Log in / Sign up</button></div>;
+  const submit=async e=>{
+    e.preventDefault();setMsg('');setOk(false);
+    if(!ADMIN_API){setMsg('Upload server is not configured yet.');return}
+    if(!TURNSTILE_SITEKEY){setMsg('Captcha is not configured yet.');return}
+    if(!cap){setMsg('Please complete the captcha.');return}
+    const name=f.name.trim(),info=f.info.trim(),script=f.script.trim();
+    if(name.length<3){setMsg('Script name must be at least 3 characters.');return}
+    if(!info){setMsg('Please fill in the information field.');return}
+    if(!script){setMsg('Please paste your script.');return}
+    setBusy(true);
+    try{
+      const {data:{session}}=await sb.auth.getSession();
+      if(!session){setMsg('Session expired. Please log in again.');return}
+      const r=await fetch(ADMIN_API+'/api/submit-script',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},body:JSON.stringify({name,info,description:f.description.trim(),script,author:f.author.trim(),captchaToken:cap})});
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok){setMsg(d.error||('Upload failed ('+r.status+')'));return}
+      setOk(true);setMsg('Submitted! Your script will appear in Community after it is reviewed.');setF(p=>({name:'',info:'',description:'',script:'',author:p.author}));loadMine();
+    }catch(err){log('upload error',err);setMsg('Could not reach the upload server.')}
+    finally{setBusy(false);setNonce(n=>n+1)}
+  };
+  const del=async id=>{const {error}=await sb.from('user_scripts').delete().eq('id',id);if(error){toast('Could not delete script.')}else loadMine()};
+  const inp="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500";
+  return <div className="page space-y-5">
+    <form onSubmit={submit} className="glass rounded-2xl p-5 md:p-6 space-y-3">
+      <h1 className="hd text-2xl text-white">Upload a script</h1>
+      <input value={f.name} onChange={set('name')} maxLength={80} placeholder="Script name" aria-label="Script name" className={inp}/>
+      <input value={f.info} onChange={set('info')} maxLength={120} placeholder="Information (game, version, keyless...)" aria-label="Information" className={inp}/>
+      <textarea value={f.description} onChange={set('description')} maxLength={1000} rows={4} placeholder="Description" aria-label="Description" className={inp}/>
+      <textarea value={f.script} onChange={set('script')} maxLength={50000} rows={10} spellCheck={false} placeholder="Paste your Lua script here" aria-label="Script code" className={inp+' font-mono text-xs'}/>
+      <input value={f.author} onChange={set('author')} maxLength={30} placeholder="Display name (optional, shown publicly)" aria-label="Display name" className={inp}/>
+      <Captcha onToken={setCap} nonce={nonce}/>
+      {!TURNSTILE_SITEKEY&&<p className="text-amber-300 text-sm">Uploads are disabled until the captcha is configured.</p>}
+      {msg&&<p className={'text-sm '+(ok?'text-green-300':'text-amber-300')} role="alert">{msg}</p>}
+      <button type="submit" disabled={busy||!TURNSTILE_SITEKEY} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?'Uploading...':'Upload script'}</button>
+    </form>
+    {mine.length>0&&<div className="glass rounded-2xl p-5"><h2 className="hd text-lg text-white mb-3">Your uploads</h2><ul className="space-y-2">{mine.map(m=>
+      <li key={m.id} className="flex items-center gap-3 text-sm"><span className="flex-1 truncate">{m.name}</span>
+        <span className={'text-[10px] px-2 py-0.5 rounded-full border '+(m.status==='approved'?'border-green-400/40 text-green-300':m.status==='rejected'?'border-red-400/40 text-red-300':'border-amber-400/40 text-amber-300')}>{m.status}</span>
+        <button onClick={()=>del(m.id)} aria-label={'Delete '+m.name} className="px-3 py-2 text-slate-400 hover:text-red-300">Delete</button></li>)}</ul></div>}
+  </div>;
+}
+
+const NAV=[['home','Home','home'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['community','Community','users'],['upload','Upload','upload'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
 const SORTS=[['trending','Trending'],['newest','Newest'],['views','Most Viewed'],['rated','Top Rated']];
 const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['universal','Universal'],['nokey','No Key']];
 
@@ -411,7 +505,7 @@ function App(){
       </div>
       <div className="flex justify-center gap-6 px-3 md:px-5"><div className="w-full max-w-3xl min-w-0 py-3 md:py-5">
         {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} votes={votes} onVote={onVote} back={x=>x&&x.slug?setDetail(x):setDetail(null)}/>
-        :view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage user={user} go={go}/>
+        :view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage user={user} go={go}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='community'?<Community favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/>
         :<div className="page">{view==='home'&&!dq&&<div className="rounded-2xl p-8 mb-6 glass"><h1 className="hd text-3xl md:text-4xl font-bold text-white">Discover <span className="text-blue-400">Roblox scripts</span> instantly</h1><p className="text-slate-300 mt-2">Browse thousands of free scripts. Fast, clean, ad-supported.</p></div>}
           <Grid mode={mode} query={dq} filter={filter} favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/></div>}
         <div className="mt-8 flex justify-center"><AdSlot kind="wide" label="bottom"/></div>
