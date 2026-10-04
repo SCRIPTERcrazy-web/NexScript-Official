@@ -16,16 +16,20 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <style>
-body{margin:0;font-family:Inter,sans-serif;color:#e2e8f0;background:linear-gradient(135deg,#0a0f2c,#0d1a4d 50%,#0a0f2c);background-attachment:fixed}
+body{margin:0;font-family:Inter,sans-serif;color:#e2e8f0;background:#0a0f2c}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(135deg,#0a0f2c,#0d1a4d 50%,#0a0f2c)}
 h1,h2,h3,.hd{font-family:'Space Grotesk',sans-serif}
 code,pre{font-family:'JetBrains Mono',monospace}
 .grid-bg{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px);background-size:40px 40px;opacity:.15;z-index:0}
-.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.25;pointer-events:none;z-index:0;animation:drift 22s ease-in-out infinite alternate}
+.orb{position:fixed;border-radius:50%;background:radial-gradient(circle,var(--c) 0%,transparent 68%);opacity:.35;pointer-events:none;z-index:0;will-change:transform;animation:drift 22s ease-in-out infinite alternate}
+@media (max-width:767px),(prefers-reduced-motion:reduce){.orb{animation:none}}
 @keyframes drift{to{transform:translate(120px,80px) scale(1.2)}}
-.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08)}
-.card{transition:all .2s ease-out;animation:in .4s ease-out both}
+.glass{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.card{transition:transform .2s ease-out,border-color .2s,box-shadow .2s;animation:in .4s ease-out both}
+.card:active{transform:scale(.985)}
 @media (hover:hover){.card:hover{transform:translateY(-2px);border-color:rgba(59,130,246,.7);box-shadow:0 0 24px rgba(59,130,246,.25)}.card:hover img{transform:scale(1.05)}}
 button,a,input,.card{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .card img{transition:transform .3s}
@@ -38,9 +42,9 @@ button,a,input,.card{touch-action:manipulation;-webkit-tap-highlight-color:trans
 .slot{border:1px dashed rgba(96,165,250,.4);background:#0a1240;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:12px}
 </style></head>
 <body><div class="grid-bg"></div>
-<div class="orb" style="width:380px;height:380px;background:#3b82f6;top:-80px;left:20%"></div>
-<div class="orb" style="width:320px;height:320px;background:#8b5cf6;bottom:0;right:10%;animation-delay:-8s"></div>
-<div class="orb" style="width:260px;height:260px;background:#22d3ee;top:40%;left:50%;animation-delay:-14s"></div>
+<div class="orb" style="width:380px;height:380px;--c:#3b82f6;top:-80px;left:20%"></div>
+<div class="orb" style="width:320px;height:320px;--c:#8b5cf6;bottom:0;right:10%;animation-delay:-8s"></div>
+<div class="orb" style="width:260px;height:260px;--c:#22d3ee;top:40%;left:50%;animation-delay:-14s"></div>
 <div id="root" class="relative z-10"></div>
 <script type="text/babel">
 const {useState,useEffect,useLayoutEffect,useRef,useCallback,useMemo}=React;
@@ -51,6 +55,12 @@ const API='https://scriptblox-proxy-pzq8.vercel.app';
 const ADMIN_API='';
 // Paste your Discord invite link here, e.g. 'https://discord.gg/xxxxxxx'.
 const DISCORD_URL='';
+// Supabase (auth). The publishable key is safe in the browser; never put a secret/service_role key here.
+const SUPABASE_URL='https://jcxvmumfnsgvwnogshnn.supabase.co';
+const SUPABASE_KEY='sb_publishable__5PwKKSpvB6wjEWrD2YpzQ_gvIaOeWb';
+// Cloudflare Turnstile site key (public). Leave empty to disable the captcha. Also enable it in Supabase > Authentication > Attack Protection.
+const TURNSTILE_SITEKEY='';
+const sb=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 // Debug logging: add ?debug to the URL (or run localStorage.setItem('sf_debug','1')).
 const DEBUG=(()=>{try{return /[?&]debug\b/.test(location.search)||localStorage.getItem('sf_debug')==='1'}catch(e){return false}})();
 const log=(...a)=>{if(DEBUG)console.log('[ScriptFinder]',...a)};
@@ -58,8 +68,8 @@ const FETCH_TIMEOUT=6000;
 const backoff=t=>Math.round(800*Math.pow(2,t)+Math.random()*300);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let lastReq=0;
-async function api(path,signal){
-  const wait=1200-(Date.now()-lastReq); if(wait>0) await sleep(wait); lastReq=Date.now();
+async function api(path,signal,opt){
+  const wait=1200-(Date.now()-lastReq); if(wait>0&&!(opt&&opt.immediate)) await sleep(wait); lastReq=Date.now();
   const MAX=3; let kind='network';
   for(let t=0;t<MAX;t++){
     if(signal&&signal.aborted) throw new DOMException('Aborted','AbortError');
@@ -126,8 +136,8 @@ function Card({s,fav,onFav,onOpen,i}){
   return <article className="card glass rounded-xl overflow-hidden cursor-pointer" style={{animationDelay:(i%10)*40+'ms'}} onClick={()=>onOpen(s)} tabIndex={0} onKeyDown={e=>e.key==='Enter'&&onOpen(s)} aria-label={s.title}>
     <Thumb s={s} sm/>
     <div className="p-2.5 md:p-3 relative">
-      <button aria-label={fav?'Remove bookmark':'Bookmark script'} onClick={e=>{e.stopPropagation();onFav(s)}} className={'absolute top-2 right-2 '+(fav?'text-red-400':'text-slate-400 hover:text-red-300')}><Ic n="heart" s={16} fill={fav}/></button>
-      <h3 className="text-sm font-semibold text-white line-clamp-2 pr-6 leading-snug">{s.title}</h3>
+      <button aria-label={fav?'Remove bookmark':'Bookmark script'} onClick={e=>{e.stopPropagation();onFav(s)}} className={'absolute top-0 right-0 p-3 '+(fav?'text-red-400':'text-slate-400 hover:text-red-300')}><Ic n="heart" s={16} fill={fav}/></button>
+      <h3 className="text-sm font-semibold text-white line-clamp-2 pr-8 leading-snug">{s.title}</h3>
       <p className="text-[11px] text-slate-400 mt-0.5 mb-2 line-clamp-1">{s.game&&s.game.name}</p>
       <Badges s={s}/>
       <div className="flex gap-2.5 mt-2 text-[11px] text-slate-400"><span>👍 {fmt(s.likeCount)}</span><span className="hidden sm:inline">👎 {fmt(s.dislikeCount)}</span><span>▶ {fmt(s.executes)}</span><span className="ml-auto">{ago(s.createdAt)}</span></div>
@@ -160,7 +170,7 @@ function Grid({mode,query,filter,favs,onFav,onOpen,toast}){
     const myKey=keyRef.current;
     busy.current=true;setLoading(true);ac.current=new AbortController();
     try{
-      const d=await api(u,ac.current.signal);
+      const d=await api(u,ac.current.signal,{immediate:pageRef.current===1});
       if(myKey!==keyRef.current)return;
       const r=d.result||d;const list=r.scripts||[];
       const fresh=list.filter(x=>{const k=x._id||x.slug;if(seen.current.has(k))return false;seen.current.add(k);return true});
@@ -187,15 +197,15 @@ function Grid({mode,query,filter,favs,onFav,onOpen,toast}){
 }
 const Empty=({t,d})=><div className="glass rounded-2xl p-12 text-center"><h3 className="hd text-xl text-white mb-2">{t}</h3><p className="text-slate-400">{d}</p></div>;
 
-function Detail({s,back,favs,onFav,toast}){
-  const [full,setFull]=useState(s);const [copied,setCopied]=useState(false);const [vote,setVote]=useState(store.get('vote:'+s.slug,0));const [rel,setRel]=useState([]);
+function Detail({s,back,favs,onFav,toast,votes,onVote}){
+  const [full,setFull]=useState(s);const [copied,setCopied]=useState(false);const [rel,setRel]=useState([]);
   useEffect(()=>{const ac=new AbortController();
-    api('/api/script?slug='+s.slug,ac.signal).then(d=>{const x=(d.result&&(d.result.script||d.result))||{};setFull(p=>({...p,...x}))}).catch(()=>{});
+    api('/api/script?slug='+s.slug,ac.signal,{immediate:true}).then(d=>{const x=(d.result&&(d.result.script||d.result))||{};setFull(p=>({...p,...x}))}).catch(()=>{});
     api('/api/search?q='+encodeURIComponent((s.game&&s.game.name)||s.title)+'&page=1',ac.signal).then(d=>setRel(((d.result||{}).scripts||[]).filter(x=>x.slug!==s.slug).slice(0,4))).catch(()=>{});
     return()=>ac.abort()},[s.slug]);
   const code=typeof full.script==='string'?full.script:'-- Loading script...';
   const copy=async()=>{try{await navigator.clipboard.writeText(code);setCopied(true);setTimeout(()=>setCopied(false),2000)}catch{toast('Copy failed')}};
-  const v=n=>{const x=vote===n?0:n;setVote(x);store.set('vote:'+s.slug,x)};
+  const vote=(votes&&votes[s.slug])||0;const v=n=>onVote(s.slug,n);
   const hl=useMemo(()=>code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/(--[^\n]*)|("[^"\n]*"|'[^'\n]*')|\b(local|function|end|if|then|else|elseif|for|while|do|return|true|false|nil|and|or|not|in)\b|\b(\d+)\b/g,(m,c,s2,k,n)=>c?`<span style="color:#64748b">${c}</span>`:s2?`<span style="color:#86efac">${s2}</span>`:k?`<span style="color:#60a5fa">${k}</span>`:`<span style="color:#fbbf24">${n}</span>`),[code]);
   return <div className="page space-y-5">
     <button onClick={back} aria-label="Go back" className="flex items-center gap-1 text-blue-300 hover:text-white"><Ic n="back"/>Back</button>
@@ -258,22 +268,125 @@ function Admin(){
     <div className="glass rounded-xl p-4"><p className="text-sm text-slate-400 mb-3">Daily revenue (last 7 days)</p><div className="flex items-end gap-2 h-40">{data.map((x,i)=><div key={i} className="flex-1 text-center text-[10px]"><div className="rounded-t bg-gradient-to-t from-blue-600 to-cyan-400" style={{height:Math.max(4,(+x.revenue||0)/max*130)}}/>{String(x.date||'').slice(5)}</div>)}</div></div><p className="text-xs text-slate-400">Last updated: {upd}</p></>}</div>;
 }
 
+const slim=s=>({_id:s._id,slug:s.slug,title:s.title,game:s.game?{name:s.game.name,imageUrl:s.game.imageUrl}:undefined,image:s.image,verified:s.verified,key:s.key,keyless:s.keyless,views:s.views,executes:s.executes,isUniversal:s.isUniversal,isHub:s.isHub,isPatched:s.isPatched,likeCount:s.likeCount,dislikeCount:s.dislikeCount,createdAt:s.createdAt});
+
+function AuthPage({user,go}){
+  const [tab,setTab]=useState('login');const [email,setEmail]=useState('');const [pw,setPw]=useState('');const [pw2,setPw2]=useState('');
+  const [busy,setBusy]=useState(false);const [msg,setMsg]=useState('');const [cap,setCap]=useState('');const capRef=useRef();const capId=useRef();
+  useEffect(()=>{
+    if(!TURNSTILE_SITEKEY||user)return;
+    const draw=()=>{if(window.turnstile&&capRef.current&&capId.current===undefined)capId.current=window.turnstile.render(capRef.current,{sitekey:TURNSTILE_SITEKEY,theme:'dark',callback:setCap,'expired-callback':()=>setCap('')})};
+    if(window.turnstile)draw();else{const sc=document.createElement('script');sc.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';sc.async=true;sc.onload=draw;document.head.appendChild(sc)}
+    return()=>{try{if(window.turnstile&&capId.current!==undefined)window.turnstile.remove(capId.current)}catch(e){}capId.current=undefined};
+  },[user]);
+  const submit=async e=>{
+    e.preventDefault();setMsg('');
+    if(!sb){setMsg('Auth service failed to load. Refresh the page.');return}
+    if(TURNSTILE_SITEKEY&&!cap){setMsg('Please complete the captcha.');return}
+    if(tab==='signup'){
+      if(pw.length<8){setMsg('Password must be at least 8 characters.');return}
+      if(pw!==pw2){setMsg('Passwords do not match.');return}
+    }
+    setBusy(true);
+    const captcha=TURNSTILE_SITEKEY?{captchaToken:cap}:{};
+    try{
+      if(tab==='signup'){
+        const {data,error}=await sb.auth.signUp({email:email.trim(),password:pw,options:{...captcha,emailRedirectTo:location.origin+location.pathname}});
+        if(error)throw error;
+        if(data.session)go('home');else setMsg('Check your email to confirm your account, then log in.');
+      }else{
+        const {error}=await sb.auth.signInWithPassword({email:email.trim(),password:pw,options:captcha});
+        if(error)throw error;
+        go('home');
+      }
+    }catch(err){log('auth error',err);setMsg(err.message||'Something went wrong.')}
+    finally{setBusy(false);try{if(TURNSTILE_SITEKEY&&window.turnstile&&capId.current!==undefined){window.turnstile.reset(capId.current);setCap('')}}catch(e){}}
+  };
+  if(user)return <div className="page glass rounded-2xl p-8 max-w-md mx-auto text-center space-y-3"><h1 className="hd text-2xl text-white">You're logged in</h1><p className="text-slate-300 break-all">{user.email}</p>
+    <button onClick={()=>sb.auth.signOut()} className="px-5 py-2 rounded-lg glass hover:border-blue-400">Log out</button></div>;
+  const inp="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500";
+  return <form onSubmit={submit} className="page glass rounded-2xl p-6 md:p-8 max-w-md mx-auto space-y-4">
+    <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/5">{[['login','Log in'],['signup','Sign up']].map(([id,l])=>
+      <button type="button" key={id} onClick={()=>{setTab(id);setMsg('')}} className={'py-2 rounded-lg text-sm font-semibold '+(tab===id?'bg-blue-500 text-white':'text-slate-400')}>{l}</button>)}</div>
+    <h1 className="hd text-2xl text-white">{tab==='login'?'Welcome back':'Create your account'}</h1>
+    <input type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" aria-label="Email" autoComplete="email" className={inp}/>
+    <input type="password" required value={pw} onChange={e=>setPw(e.target.value)} placeholder="Password" aria-label="Password" autoComplete={tab==='login'?'current-password':'new-password'} className={inp}/>
+    {tab==='signup'&&<input type="password" required value={pw2} onChange={e=>setPw2(e.target.value)} placeholder="Confirm password" aria-label="Confirm password" autoComplete="new-password" className={inp}/>}
+    {TURNSTILE_SITEKEY&&<div ref={capRef}/>}
+    {msg&&<p className="text-amber-300 text-sm" role="alert">{msg}</p>}
+    <button type="submit" disabled={busy} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?'Please wait...':(tab==='login'?'Log in':'Sign up')}</button>
+  </form>;
+}
+
 const NAV=[['home','Home','home'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
 const SORTS=[['trending','Trending'],['newest','Newest'],['views','Most Viewed'],['rated','Top Rated']];
 const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['universal','Universal'],['nokey','No Key']];
 
 function App(){
-  const [view,setView]=useState('home');const [detail,setDetail]=useState(null);const [open,setOpen]=useState(false);
+  const [view,setView]=useState('home');const [detail,setDetail]=useState(null);const [open,setOpen]=useState(false);const [user,setUser]=useState(null);
   const [q,setQ]=useState('');const [dq,setDq]=useState('');const [filter,setFilter]=useState('all');const [favs,setFavs]=useState(()=>store.get('favs',[]));const [toasts,setToasts]=useState([]);
+  const [votes,setVotes]=useState(()=>{
+    const v=store.get('votes',null);if(v)return v;
+    const m={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('vote:')===0){const n=JSON.parse(localStorage.getItem(k));if(n)m[k.slice(5)]=n}}}catch(e){}
+    return m;});
+  const favsRef=useRef(favs);favsRef.current=favs;
+  const votesRef=useRef(votes);votesRef.current=votes;
+  const userRef=useRef(null);userRef.current=user;
   useEffect(()=>{const t=setTimeout(()=>setDq(q.trim()),300);return()=>clearTimeout(t)},[q]);
   useEffect(()=>{const h=e=>e.key==='Escape'&&(setOpen(false),setDetail(null));window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h)},[]);
   useEffect(()=>{document.body.style.overflow=(open&&window.innerWidth<768)?'hidden':'';return()=>{document.body.style.overflow=''}},[open]);
   useEffect(()=>{
     const base='ScriptFinder';
-    document.title=detail?`${detail.title} · ${base}`:dq?`Search: ${dq} · ${base}`:view==='home'?`${base} — Roblox Script Hub`:`${(NAV.find(n=>n[0]===view)||[])[1]||'Home'} · ${base}`;
+    document.title=detail?`${detail.title} · ${base}`:dq?`Search: ${dq} · ${base}`:view==='home'?`${base} — Roblox Script Hub`:`${view==='auth'?'Log in':((NAV.find(n=>n[0]===view)||[])[1]||'Home')} · ${base}`;
   },[view,detail,dq]);
+  useEffect(()=>{
+    if(!sb)return;
+    sb.auth.getSession().then(({data})=>setUser(data.session?data.session.user:null));
+    const {data:sub}=sb.auth.onAuthStateChange((ev,session)=>{setUser(session?session.user:null);if(ev==='SIGNED_OUT'){favsRef.current=[];setFavs([]);store.set('favs',[]);votesRef.current={};setVotes({});store.set('votes',{})}});
+    return()=>sub.subscription.unsubscribe();
+  },[]);
   const toast=useCallback(m=>{const id=Math.random();setToasts(t=>[...t,{id,m}]);setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),4000)},[]);
-  const onFav=useCallback(s=>setFavs(f=>{const k=s._id||s.slug;const n=f.some(x=>(x._id||x.slug)===k)?f.filter(x=>(x._id||x.slug)!==k):[...f,s];store.set('favs',n);return n}),[]);
+  const onFav=useCallback(s=>{
+    const k=s._id||s.slug;const cur=favsRef.current;const has=cur.some(x=>(x._id||x.slug)===k);
+    const n=has?cur.filter(x=>(x._id||x.slug)!==k):[...cur,slim(s)];
+    favsRef.current=n;setFavs(n);store.set('favs',n);
+    const u=userRef.current;
+    if(sb&&u&&s.slug){
+      const q=has?sb.from('favorites').delete().eq('user_id',u.id).eq('slug',s.slug):sb.from('favorites').upsert({user_id:u.id,slug:s.slug,script:slim(s)});
+      q.then(({error})=>{if(error){log('favorite sync error',error);toast('Could not sync favorite.')}});
+    }
+  },[toast]);
+  const onVote=useCallback((slug,n)=>{
+    const cur=votesRef.current;const x=cur[slug]===n?0:n;const nv={...cur};
+    if(x===0)delete nv[slug];else nv[slug]=x;
+    votesRef.current=nv;setVotes(nv);store.set('votes',nv);
+    const u=userRef.current;
+    if(sb&&u){
+      const q=x===0?sb.from('votes').delete().eq('user_id',u.id).eq('slug',slug):sb.from('votes').upsert({user_id:u.id,slug,vote:x});
+      q.then(({error})=>{if(error){log('vote sync error',error);toast('Could not sync vote.')}});
+    }
+  },[toast]);
+  // After login: merge saved favorites/votes from the account with this device, then push anything that was only local.
+  useEffect(()=>{
+    if(!sb||!user)return;let dead=false;
+    (async()=>{
+      const [fv,vt]=await Promise.all([sb.from('favorites').select('slug,script').eq('user_id',user.id),sb.from('votes').select('slug,vote').eq('user_id',user.id)]);
+      if(dead)return;
+      if(fv.error||vt.error){log('sync load error',fv.error||vt.error);toast('Could not load your saved data.');return}
+      const remote=fv.data.map(r=>r.script).filter(Boolean);
+      const have=new Set(remote.map(x=>x.slug));
+      const localOnly=favsRef.current.filter(x=>x.slug&&!have.has(x.slug));
+      const merged=[...remote,...localOnly];
+      favsRef.current=merged;setFavs(merged);store.set('favs',merged);
+      if(localOnly.length)await sb.from('favorites').upsert(localOnly.map(x=>({user_id:user.id,slug:x.slug,script:slim(x)})));
+      const rv={};vt.data.forEach(r=>{rv[r.slug]=r.vote});
+      const push=[];Object.keys(votesRef.current).forEach(k=>{const val=votesRef.current[k];if(val&&rv[k]===undefined){rv[k]=val;push.push({user_id:user.id,slug:k,vote:val})}});
+      votesRef.current=rv;setVotes(rv);store.set('votes',rv);
+      if(push.length)await sb.from('votes').upsert(push);
+      log('synced',merged.length,'favorites,',Object.keys(rv).length,'votes');
+    })().catch(e=>log('sync error',e));
+    return()=>{dead=true};
+  },[user&&user.id]);
   const go=v=>{setView(v);setDetail(null);setOpen(false);window.scrollTo(0,0)};
   const grid=['home','trending','newest','views','rated','verified','keyless','fav'].includes(view);
   const mode=view;
@@ -281,21 +394,24 @@ function App(){
     {open&&<div className="fixed inset-0 bg-black/60 z-30 md:hidden" onClick={()=>setOpen(false)}/>}
     <aside className={'fixed top-0 left-0 h-[100dvh] w-60 z-40 flex flex-col p-4 gap-1 overflow-y-auto overscroll-contain transition-transform duration-200 '+(open?'translate-x-0':'-translate-x-full md:translate-x-0')} style={{background:'rgba(8,12,40,.92)',borderRight:'1px solid rgba(255,255,255,.08)'}} aria-label="Sidebar">
       <div className="hd text-xl font-bold text-white flex items-center gap-2 mb-3"><span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:'linear-gradient(135deg,#3b82f6,#22d3ee)'}}>S</span>ScriptFinder</div>
-      {NAV.map(([id,l,ic])=><button key={id} onClick={()=>go(id)} aria-label={l} className={'flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-left border-l-[3px] '+(view===id?'border-blue-400 text-white bg-gradient-to-r from-blue-500/30 to-transparent':'border-transparent text-slate-400 hover:text-white hover:bg-white/5')}><Ic n={ic} s={16}/>{l}{id==='fav'&&favs.length>0&&<span className="ml-auto text-xs">{favs.length}</span>}</button>)}
-      <div className="mt-auto pt-4 text-xs text-slate-500"><button onClick={()=>go('about')} className="flex items-center gap-2 text-slate-300 mb-2"><span className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{background:'linear-gradient(135deg,#3b82f6,#8b5cf6)'}}>TB</span>ThisIsBacon · View Profile</button>Powered by ScriptBlox</div>
+      {NAV.map(([id,l,ic])=><button key={id} onClick={()=>go(id)} aria-label={l} className={'flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-left border-l-[3px] '+(view===id?'border-blue-400 text-white bg-gradient-to-r from-blue-500/30 to-transparent':'border-transparent text-slate-400 hover:text-white hover:bg-white/5')}><Ic n={ic} s={16}/>{l}{id==='fav'&&favs.length>0&&<span className="ml-auto text-xs">{favs.length}</span>}</button>)}
+      <div className="mt-auto pt-3 border-t border-white/10">
+        {user?<div className="text-xs text-slate-300"><p className="truncate mb-2" title={user.email}>{user.email}</p><button onClick={()=>sb.auth.signOut()} aria-label="Log out" className="w-full px-3 py-2 rounded-lg glass hover:border-blue-400 text-sm">Log out</button></div>
+        :<button onClick={()=>go('auth')} aria-label="Log in or sign up" className="w-full px-3 py-2 rounded-lg text-sm font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>Log in / Sign up</button>}</div>
+      <div className="mt-3 pt-1 text-xs text-slate-500"><button onClick={()=>go('about')} className="flex items-center gap-2 text-slate-300 mb-2"><span className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{background:'linear-gradient(135deg,#3b82f6,#8b5cf6)'}}>TB</span>ThisIsBacon · View Profile</button>Powered by ScriptBlox</div>
     </aside>
     <main className="flex-1 min-w-0 md:ml-60">
       <div className="sticky top-0 z-20 p-4 space-y-3" style={{background:'rgba(10,15,44,.85)',backdropFilter:'blur(12px)'}}>
-        <div className="flex items-center gap-3"><button className="md:hidden text-white" aria-label="Open menu" onClick={()=>setOpen(true)}><Ic n="menu" s={24}/></button>
+        <div className="flex items-center gap-3"><button className="md:hidden text-white p-2 -ml-2" aria-label="Open menu" onClick={()=>setOpen(true)}><Ic n="menu" s={24}/></button>
           <div className="relative flex-1"><span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><Ic n="search"/></span>
             <input value={q} onChange={e=>{setQ(e.target.value);if(!grid)go('home')}} aria-label="Search scripts" placeholder="Search scripts, games, or creators..." className="w-full h-12 rounded-full bg-white text-slate-900 pl-12 pr-12 outline-none focus:ring-2 focus:ring-blue-500 focus:shadow-[0_0_20px_rgba(59,130,246,0.3)] placeholder:text-slate-500"/>
-            {q&&<button aria-label="Clear search" onClick={()=>setQ('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"><Ic n="x"/></button>}</div></div>
-        {grid&&!detail&&<div className="flex flex-wrap gap-2">{SORTS.map(([id,l])=><button key={id} onClick={()=>go(id)} className={'px-3 py-1 rounded-full text-sm '+(view===id?'bg-blue-500 text-white':'glass text-slate-300')}>{l}</button>)}
-          <span className="w-px bg-white/10 mx-1"/>{FILTERS.map(([id,l])=><button key={id} onClick={()=>setFilter(id)} className={'px-3 py-1 rounded-full text-xs '+(filter===id?'bg-cyan-400/20 border border-cyan-400 text-cyan-200':'glass text-slate-400')}>{l}</button>)}</div>}
+            {q&&<button aria-label="Clear search" onClick={()=>setQ('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 p-2"><Ic n="x"/></button>}</div></div>
+        {grid&&!detail&&<div className="flex flex-wrap gap-2">{SORTS.map(([id,l])=><button key={id} onClick={()=>go(id)} className={'px-4 py-2 rounded-full text-sm '+(view===id?'bg-blue-500 text-white':'glass text-slate-300')}>{l}</button>)}
+          <span className="w-px bg-white/10 mx-1"/>{FILTERS.map(([id,l])=><button key={id} onClick={()=>setFilter(id)} className={'px-3.5 py-2 rounded-full text-xs '+(filter===id?'bg-cyan-400/20 border border-cyan-400 text-cyan-200':'glass text-slate-400')}>{l}</button>)}</div>}
       </div>
       <div className="flex justify-center gap-6 px-3 md:px-5"><div className="w-full max-w-3xl min-w-0 py-3 md:py-5">
-        {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} back={x=>x&&x.slug?setDetail(x):setDetail(null)}/>
-        :view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>
+        {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} votes={votes} onVote={onVote} back={x=>x&&x.slug?setDetail(x):setDetail(null)}/>
+        :view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage user={user} go={go}/>
         :<div className="page">{view==='home'&&!dq&&<div className="rounded-2xl p-8 mb-6 glass"><h1 className="hd text-3xl md:text-4xl font-bold text-white">Discover <span className="text-blue-400">Roblox scripts</span> instantly</h1><p className="text-slate-300 mt-2">Browse thousands of free scripts. Fast, clean, ad-supported.</p></div>}
           <Grid mode={mode} query={dq} filter={filter} favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/></div>}
         <div className="mt-8 flex justify-center"><AdSlot kind="wide" label="bottom"/></div>
