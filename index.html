@@ -59,7 +59,7 @@ const DISCORD_URL='';
 const SUPABASE_URL='https://jcxvmumfnsgvwnogshnn.supabase.co';
 const SUPABASE_KEY='sb_publishable__5PwKKSpvB6wjEWrD2YpzQ_gvIaOeWb';
 // Cloudflare Turnstile site key (public). Leave empty to disable the captcha. Also enable it in Supabase > Authentication > Attack Protection.
-const TURNSTILE_SITEKEY='0x4AAAAAAFNf5UyykmBpLdyi';
+const TURNSTILE_SITEKEY='';
 const sb=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 // Debug logging: add ?debug to the URL (or run localStorage.setItem('sf_debug','1')).
 const DEBUG=(()=>{try{return /[?&]debug\b/.test(location.search)||localStorage.getItem('sf_debug')==='1'}catch(e){return false}})();
@@ -100,7 +100,7 @@ const abs=u=>!u?null:u.startsWith('/')?API+u:u;
 const ago=d=>{const s=(Date.now()-new Date(d))/1e3;for(const[n,l]of[[31536e3,'y'],[2592e3,'mo'],[86400,'d'],[3600,'h'],[60,'m']])if(s>=n)return Math.floor(s/n)+l+' ago';return 'just now'};
 const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':(n||0);
 
-const P={home:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',flame:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 2 4-5z',spark:'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1z',badge:'M5 12l5 5L20 7',unlock:'M7 11V7a5 5 0 0 1 9-3M5 11h14v10H5z',heart:'M12 21s-8-5-8-11a5 5 0 0 1 8-3 5 5 0 0 1 8 3c0 6-8 11-8 11z',info:'M12 8h.01M11 12h1v5h1M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0',coffee:'M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M7 2v3M11 2v3',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5',x:'M6 6l12 12M18 6L6 18',menu:'M3 6h18M3 12h18M3 18h18',copy:'M9 9h11v11H9zM5 15V5h10',back:'M15 6l-6 6 6 6',shield:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z',upload:'M12 16V4M7 9l5-5 5 5M4 20h16',users:'M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9'};
+const P={home:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',flame:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 2 4-5z',spark:'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1z',badge:'M5 12l5 5L20 7',unlock:'M7 11V7a5 5 0 0 1 9-3M5 11h14v10H5z',heart:'M12 21s-8-5-8-11a5 5 0 0 1 8-3 5 5 0 0 1 8 3c0 6-8 11-8 11z',info:'M12 8h.01M11 12h1v5h1M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0',coffee:'M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M7 2v3M11 2v3',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5',x:'M6 6l12 12M18 6L6 18',menu:'M3 6h18M3 12h18M3 18h18',copy:'M9 9h11v11H9zM5 15V5h10',back:'M15 6l-6 6 6 6',shield:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z',upload:'M12 16V4M7 9l5-5 5 5M4 20h16',chat:'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',gamepad:'M6 12h4M8 10v4M15 13h.01M18 11h.01M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.5 7A3 3 0 0 0 4.2 19a3 3 0 0 0 2.3-1l1.5-2h8l1.5 2a3 3 0 0 0 2.300 1 3 3 0 0 0 2.900-3.800l-1.500-7A4 4 0 0 0 17.300 5z',book:'M4 19.500A2.500 2.500 0 0 1 6.500 17H20V3H6.500A2.500 2.500 0 0 0 4 5.500zM4 19.500A2.500 2.500 0 0 0 6.500 22H20v-5',file:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8',users:'M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9'};
 const Ic=({n,s=18,fill,className=''})=><svg width={s} height={s} viewBox="0 0 24 24" fill={fill?'currentColor':'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true"><path d={P[n]}/></svg>;
 
 // Adsterra banner units (key per size). Rendered inside iframes (no sandbox, so the ad network can read the site origin).
@@ -115,6 +115,68 @@ const AdSlot=({kind='wide',label,className=''})=>{
     {w>0&&<iframe key={u} title={'Ad '+label} srcDoc={adDoc(UNITS[u],W,H)} width={W} height={H} scrolling="no" frameBorder="0" style={{border:0,maxWidth:'100%'}}/>}</div>;
 };
 
+// ---------- Aesthetic art (inline SVG / CSS, no external images) ----------
+const hashHue=n=>[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%360;
+const artBg=name=>{const h=hashHue(name);return {background:`radial-gradient(circle at 18% 22%,hsla(${(h+40)%360},90%,62%,.55),transparent 42%),radial-gradient(circle at 82% 78%,hsla(${(h+300)%360},90%,58%,.5),transparent 46%),linear-gradient(135deg,hsl(${h},60%,20%),hsl(${(h+60)%360},60%,12%))`}};
+const HeroArt=()=><svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="hg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#0a0f2c"/><stop offset=".55" stopColor="#1e1b6b"/><stop offset="1" stopColor="#6d28d9"/></linearGradient>
+    <linearGradient id="hg-sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#22d3ee"/><stop offset="1" stopColor="#8b5cf6"/></linearGradient>
+    <mask id="hg-mask"><rect width="800" height="260" fill="#fff"/>{[0,1,2,3,4].map(i=><rect key={i} x="500" y={128+i*13} width="200" height={2+i*1.6} fill="#000"/>)}</mask>
+  </defs>
+  <rect width="800" height="260" fill="url(#hg-sky)"/>
+  {Array.from({length:40}).map((_,i)=><circle key={i} cx={(i*97)%800} cy={(i*53)%110} r={(i%4)*.35+.5} fill="#fff" opacity={.25+(i%5)*.12}/>)}
+  <circle cx="600" cy="130" r="72" fill="url(#hg-sun)" mask="url(#hg-mask)"/>
+  <polygon points="0,190 90,120 170,180 260,100 360,190 460,130 560,190 680,110 800,190 800,260 0,260" fill="#0d1240" opacity=".95"/>
+  <polygon points="0,215 120,165 220,210 330,150 450,215 580,160 700,215 800,180 800,260 0,260" fill="#080c2e"/>
+  <g stroke="#22d3ee" strokeOpacity=".32" strokeWidth="1">
+    {Array.from({length:17}).map((_,i)=><line key={'v'+i} x1="400" y1="205" x2={-400+i*100} y2="260"/>)}
+    {[212,222,236,254].map(y=><line key={y} x1="0" y1={y} x2="800" y2={y}/>)}
+  </g>
+</svg>;
+const Banner=({title,sub,hue=220})=><div className="relative overflow-hidden rounded-2xl glass p-6 md:p-8 mb-5" style={{background:`linear-gradient(135deg,hsla(${hue},70%,25%,.55),hsla(${(hue+60)%360},70%,15%,.4))`}}>
+  <svg className="absolute right-0 top-0 h-full w-2/3 opacity-70" viewBox="0 0 400 200" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+    {[0,1,2,3,4].map(i=><circle key={i} cx="320" cy="60" r={30+i*28} fill="none" stroke={`hsl(${(hue+i*18)%360},85%,65%)`} strokeOpacity={.5-i*.08} strokeWidth="1.5"/>)}
+    {Array.from({length:18}).map((_,i)=><circle key={'d'+i} cx={200+(i*37)%190} cy={20+(i*53)%160} r={1.5+(i%3)} fill={`hsl(${(hue+40)%360},90%,75%)`} opacity=".6"/>)}
+    <path d="M0 190 Q100 130 200 170 T400 140 V200 H0z" fill={`hsl(${hue},70%,55%)`} opacity=".18"/>
+  </svg>
+  <div className="relative"><h1 className="hd text-2xl md:text-3xl font-bold text-white">{title}</h1>{sub&&<p className="text-slate-300 mt-1 max-w-md text-sm md:text-base">{sub}</p>}</div></div>;
+const LogoMark=()=><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#3b82f6"/><stop offset="1" stopColor="#22d3ee"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)"/><circle cx="14" cy="14" r="6" fill="none" stroke="#fff" strokeWidth="2.5"/><path d="M19 19l6 6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>;
+const BANNERS={community:['Community Scripts','Scripts shared by the community, reviewed before they go live.',200],chat:['Global Chat','Talk with other script hunters in real time.',280],upload:['Upload a Script','Share your script with the community.',160],games:['Popular Games','Pick a game and jump straight to its scripts.',320],guide:['Guide & FAQ','Everything to know before running a script.',190],legal:['Terms & Privacy','How ScriptFinder handles your data.',240]};
+
+const GAMES=['Blox Fruits','Pet Simulator 99','Arsenal','Brookhaven','Doors','Murder Mystery 2','Blade Ball','Da Hood','Adopt Me','Tower of Hell','King Legacy','Fisch'];
+function GamesPage({onPick}){
+  return <div className="page grid grid-cols-2 gap-3 md:gap-4">{GAMES.map(g=>
+    <button key={g} onClick={()=>onPick(g)} aria-label={'Browse '+g+' scripts'} className="card relative overflow-hidden rounded-xl text-left p-4 h-28 border border-white/10" style={artBg(g)}>
+      <span className="hd font-bold text-white text-base leading-tight block pr-2">{g}</span>
+      <span className="absolute bottom-3 left-4 text-xs text-white/80">Browse scripts →</span></button>)}</div>;
+}
+const Faq=({q,a})=><details className="glass rounded-xl p-4"><summary className="cursor-pointer font-semibold text-white">{q}</summary><p className="text-slate-300 text-sm mt-2">{a}</p></details>;
+function GuidePage(){
+  return <div className="page space-y-5">
+    <div className="glass rounded-2xl p-5"><h2 className="hd text-lg text-white mb-3">How to use a script</h2>
+      <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-300"><li>Open a script and tap <b>Copy Script</b>.</li><li>Join the matching Roblox game.</li><li>Open your executor, paste the script and run it.</li><li>If the script asks for a key, follow the steps shown by the script.</li></ol>
+      <p className="text-xs text-slate-500 mt-3">ScriptFinder does not provide executors or host game files.</p></div>
+    <div className="glass rounded-2xl p-5 border-amber-400/30"><h2 className="hd text-lg text-white mb-3">Stay safe</h2>
+      <ul className="list-disc pl-5 space-y-2 text-sm text-slate-300"><li>Using scripts can break Roblox's Terms of Service and may get an account banned. Use at your own risk, ideally on an alternate account.</li><li>Never run a script that asks for your password, your .ROBLOSECURITY cookie or your Robux.</li><li>Be careful with heavily obfuscated code from unknown authors.</li><li>Community uploads are reviewed, but nobody can guarantee a script is safe.</li></ul></div>
+    <div className="space-y-2"><h2 className="hd text-lg text-white">FAQ</h2>
+      <Faq q="What does KEY mean?" a="The script asks you to get a key (usually from a link) before it works. KEYLESS scripts run without one."/>
+      <Faq q="What is VERIFIED?" a="The script has been checked by the ScriptBlox team or marked as working by its source."/>
+      <Faq q="What is PATCHED?" a="The game or executor changed and the script no longer works. Look for a newer one."/>
+      <Faq q="What are UNIVERSAL and HUB?" a="UNIVERSAL scripts work in many games. A HUB bundles many features or games into one menu."/>
+      <Faq q="What is COMMUNITY?" a="Scripts uploaded by ScriptFinder users. They go live after review."/>
+      <Faq q="A script is not working. Why?" a="It may be patched or outdated, need a key, or your executor may not support it. Try another script or a different executor."/>
+      <Faq q="How do I upload my own script?" a="Create an account, log in, open Upload, fill in the form and submit. It appears in Community after review."/></div>
+  </div>;
+}
+function LegalPage(){
+  const H=({children})=><h2 className="hd text-lg text-white mb-2">{children}</h2>;
+  return <div className="page space-y-5 text-sm text-slate-300">
+    <div className="glass rounded-2xl p-5"><H>Terms of use</H><ul className="list-disc pl-5 space-y-2"><li>ScriptFinder is a free directory. Script data comes from ScriptBlox and from user uploads.</li><li>You use scripts at your own risk. We are not responsible for bans, losses or damage.</li><li>Do not upload malware, stolen content or anything that steals accounts. We may remove content or accounts without notice.</li><li>We are not affiliated with Roblox or ScriptBlox.</li></ul></div>
+    <div className="glass rounded-2xl p-5"><H>Privacy</H><ul className="list-disc pl-5 space-y-2"><li>If you sign up we store your email and password (hashed) with our login provider, Supabase.</li><li>We store your favorites, likes, ratings, uploads and chat messages (chat keeps only the latest 250 messages).</li><li>Your device stores some data locally, such as favorites and your chat nickname.</li><li>Ad networks such as Adsterra may use cookies to show ads.</li><li>To delete your account or data, contact us through the links on the About page.</li></ul></div>
+    <p className="text-xs text-slate-500">This page is a general summary, not legal advice.</p></div>;
+}
+
 function Thumb({s,className='',sm=false}){
   const chain=useMemo(()=>[abs(s.image),abs(s.game&&s.game.imageUrl)].filter(Boolean),[s]);
   const [i,setI]=useState(0);
@@ -122,7 +184,7 @@ function Thumb({s,className='',sm=false}){
   const hue=[...name].reduce((a,c)=>a+c.charCodeAt(0),0)%360;
   return <div className={'relative overflow-hidden bg-slate-900 '+className} style={{aspectRatio:'16/9'}}>
     {i<chain.length?<img src={chain[i]} alt={name+' thumbnail'} loading="lazy" onError={()=>setI(i+1)} className="w-full h-full object-cover"/>
-    :<div className={'w-full h-full flex items-center justify-center hd font-bold text-white/90 text-center '+(sm?'text-sm p-2':'text-xl p-4')} style={{background:`linear-gradient(135deg,hsl(${hue},70%,35%),hsl(${(hue+60)%360},70%,20%))`}}>{name}</div>}
+    :<div className={'w-full h-full flex items-center justify-center hd font-bold text-white/90 text-center '+(sm?'text-sm p-2':'text-xl p-4')} style={artBg(name)}>{name}</div>}
     <div className={'absolute inset-x-0 bottom-0 font-semibold text-white '+(sm?'p-2 pt-6 text-xs line-clamp-1':'p-3 pt-8 text-sm')} style={{background:'linear-gradient(transparent,rgba(5,10,40,.9))'}}>{name}</div>
     <span className={'absolute rounded-full bg-black/60 flex items-center gap-1 '+(sm?'top-1.5 left-1.5 text-[10px] px-1.5 py-0.5':'top-2 left-2 text-xs px-2 py-1')}><Ic n="eye" s={12}/>{fmt(s.views)}</span>
     <span className={'absolute flex bg-black/60 rounded-full '+(sm?'top-1.5 right-1.5 gap-1 px-1.5 py-1':'top-2 right-2 gap-1.5 px-2 py-1.5')}>
@@ -195,9 +257,79 @@ function Grid({mode,query,filter,favs,onFav,onOpen,toast}){
     <div ref={sent} className="h-10"/>
     <p className="text-center text-sm text-slate-400 py-4" role="status">{loading?'Loading more scripts...':(!more&&list.length?"You've reached the end":'')}</p></div>;
 }
-const Empty=({t,d})=><div className="glass rounded-2xl p-12 text-center"><h3 className="hd text-xl text-white mb-2">{t}</h3><p className="text-slate-400">{d}</p></div>;
+const Empty=({t,d})=><div className="glass rounded-2xl p-12 text-center"><svg className="mx-auto mb-4" width="96" height="96" viewBox="0 0 96 96" fill="none" aria-hidden="true"><circle cx="48" cy="48" r="40" fill="#3b82f6" opacity=".12"/><circle cx="42" cy="42" r="17" stroke="#60a5fa" strokeWidth="4"/><path d="M55 55l17 17" stroke="#22d3ee" strokeWidth="5" strokeLinecap="round"/><circle cx="72" cy="24" r="3" fill="#8b5cf6"/><circle cx="22" cy="70" r="2.5" fill="#22d3ee"/><circle cx="76" cy="62" r="2" fill="#60a5fa"/></svg><h3 className="hd text-xl text-white mb-2">{t}</h3><p className="text-slate-400">{d}</p></div>;
 
-function Detail({s,back,favs,onFav,toast,votes,onVote}){
+function Rating({slug,user,toast}){
+  const [st,setSt]=useState({avg:0,count:0});const [mine,setMine]=useState(0);const [hover,setHover]=useState(0);
+  const uid=user&&user.id;
+  const load=useCallback(async()=>{
+    if(!sb)return;
+    const a=await sb.from('rating_stats').select('avg_rating,rating_count').eq('slug',slug).maybeSingle();
+    setSt(a.data?{avg:Number(a.data.avg_rating),count:a.data.rating_count}:{avg:0,count:0});
+    if(uid){const m=await sb.from('ratings').select('rating').eq('slug',slug).eq('user_id',uid).maybeSingle();setMine(m.data?m.data.rating:0)}else setMine(0);
+  },[slug,uid]);
+  useEffect(()=>{load()},[load]);
+  const rate=async n=>{
+    if(!user){toast('Log in to rate this script.');return}
+    const prev=mine;setMine(n);
+    const {error}=await sb.from('ratings').upsert({user_id:user.id,slug,rating:n});
+    if(error){log('rating error',error);setMine(prev);toast('Could not save rating.')}else load();
+  };
+  const shown=hover||mine;
+  return <div className="flex items-center gap-2 flex-wrap"><div className="flex" onMouseLeave={()=>setHover(0)}>{[1,2,3,4,5].map(n=>
+    <button key={n} type="button" onClick={()=>rate(n)} onMouseEnter={()=>setHover(n)} aria-label={'Rate '+n+' stars'} className={'px-1.5 py-1 text-2xl leading-none '+(n<=shown?'text-amber-400':'text-slate-600')}>★</button>)}</div>
+    <span className="text-sm text-slate-400">{st.count?st.avg.toFixed(1)+' ('+st.count+' rating'+(st.count>1?'s':'')+')':'No ratings yet'}</span></div>;
+}
+
+function ChatPage({user,go,toast}){
+  const [msgs,setMsgs]=useState([]);const [text,setText]=useState('');const [sending,setSending]=useState(false);
+  const [nick,setNick]=useState(()=>store.get('nick','')||('user'+Math.floor(1000+Math.random()*9000)));
+  const listRef=useRef();const stick=useRef(true);const last=useRef(0);
+  useEffect(()=>{store.set('nick',nick)},[nick]);
+  useEffect(()=>{
+    if(!sb)return;let dead=false;
+    sb.from('chat_messages').select('id,user_id,author,body,created_at').order('id',{ascending:false}).limit(250).then(({data,error})=>{
+      if(dead)return;if(error){log('chat load error',error);toast('Could not load chat.');return}
+      setMsgs(data.slice().reverse());
+    });
+    const ch=sb.channel('global-chat').on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},p=>{
+      setMsgs(m=>m.some(x=>x.id===p.new.id)?m:[...m,p.new].slice(-250));
+    }).subscribe();
+    return()=>{dead=true;sb.removeChannel(ch)};
+  },[toast]);
+  useEffect(()=>{const el=listRef.current;if(el&&stick.current)el.scrollTop=el.scrollHeight},[msgs.length]);
+  const send=async e=>{
+    e.preventDefault();
+    if(!user){go('auth');return}
+    const body=text.trim(),author=nick.trim();
+    if(!body)return;
+    if(author.length<2||author.length>20){toast('Nickname must be 2-20 characters.');return}
+    if(Date.now()-last.current<2000){toast('Slow down a little.');return}
+    last.current=Date.now();setSending(true);
+    const {data,error}=await sb.from('chat_messages').insert({user_id:user.id,author,body}).select('id,user_id,author,body,created_at').single();
+    setSending(false);
+    if(error){log('chat send error',error);toast((error.message||'').indexOf('Slow')>=0?'Slow down a little.':'Message not sent.');return}
+    setText('');stick.current=true;
+    setMsgs(m=>m.some(x=>x.id===data.id)?m:[...m,data].slice(-250));
+  };
+  const inp="px-3 py-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500";
+  return <div className="page glass rounded-2xl p-4 md:p-5 space-y-3">
+    <p className="text-xs text-slate-400 text-right">Last 250 messages</p>
+    <div ref={listRef} onScroll={e=>{const el=e.target;stick.current=el.scrollHeight-el.scrollTop-el.clientHeight<120}} className="h-[55vh] overflow-y-auto overscroll-contain space-y-2 pr-1" aria-live="polite">
+      {msgs.length===0&&<p className="text-center text-slate-500 text-sm pt-10">No messages yet. Say hi!</p>}
+      {msgs.map(m=><div key={m.id} className={'rounded-xl px-3 py-2 text-sm '+(user&&m.user_id===user.id?'bg-blue-500/20 border border-blue-400/30':'bg-white/5')}>
+        <div className="flex items-baseline gap-2"><span className="font-semibold text-blue-300 truncate">{m.author}</span><span className="text-[10px] text-slate-500">{ago(m.created_at)}</span></div>
+        <p className="text-slate-200 break-words whitespace-pre-wrap">{m.body}</p></div>)}
+    </div>
+    {user?<form onSubmit={send} className="flex gap-2 flex-wrap">
+      <input value={nick} onChange={e=>setNick(e.target.value)} maxLength={20} aria-label="Nickname" placeholder="Nickname" className={inp+' w-28'}/>
+      <input value={text} onChange={e=>setText(e.target.value)} maxLength={300} aria-label="Message" placeholder="Type a message..." className={inp+' flex-1 min-w-[140px]'}/>
+      <button type="submit" disabled={sending} className="px-5 py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>Send</button></form>
+    :<button onClick={()=>go('auth')} className="w-full py-3 rounded-lg font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>Log in to chat</button>}
+  </div>;
+}
+
+function Detail({s,back,favs,onFav,toast,votes,onVote,user}){
   const [full,setFull]=useState(s);const [copied,setCopied]=useState(false);const [rel,setRel]=useState([]);
   useEffect(()=>{
     if(s.isUser){
@@ -222,6 +354,7 @@ function Detail({s,back,favs,onFav,toast,votes,onVote}){
         <Badges s={full}/>
         {full.isUser&&full.description&&<p className="text-sm text-slate-300 whitespace-pre-wrap break-words">{full.description}</p>}
         <div className="flex flex-wrap gap-5 text-sm text-slate-300"><span>👁 {fmt(full.views)}</span><span>▶ {fmt(full.executes)}</span><span>{ago(full.createdAt)}</span></div>
+        <Rating slug={s.slug} user={user} toast={toast}/>
         <div className="flex gap-2"><button aria-label="Like" onClick={()=>v(1)} className={'px-4 py-2 rounded-lg border '+(vote===1?'bg-green-500/20 border-green-400':'border-white/10')}>👍 {fmt((full.likeCount||0)+(vote===1?1:0))}</button>
           <button aria-label="Dislike" onClick={()=>v(-1)} className={'px-4 py-2 rounded-lg border '+(vote===-1?'bg-red-500/20 border-red-400':'border-white/10')}>👎 {fmt((full.dislikeCount||0)+(vote===-1?1:0))}</button></div>
       </div></div>
@@ -373,8 +506,7 @@ function UploadPage({user,go,toast}){
   const submit=async e=>{
     e.preventDefault();setMsg('');setOk(false);
     if(!ADMIN_API){setMsg('Upload server is not configured yet.');return}
-    if(!TURNSTILE_SITEKEY){setMsg('Captcha is not configured yet.');return}
-    if(!cap){setMsg('Please complete the captcha.');return}
+    if(TURNSTILE_SITEKEY&&!cap){setMsg('Please complete the captcha.');return}
     const name=f.name.trim(),info=f.info.trim(),script=f.script.trim();
     if(name.length<3){setMsg('Script name must be at least 3 characters.');return}
     if(!info){setMsg('Please fill in the information field.');return}
@@ -394,16 +526,14 @@ function UploadPage({user,go,toast}){
   const inp="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500";
   return <div className="page space-y-5">
     <form onSubmit={submit} className="glass rounded-2xl p-5 md:p-6 space-y-3">
-      <h1 className="hd text-2xl text-white">Upload a script</h1>
       <input value={f.name} onChange={set('name')} maxLength={80} placeholder="Script name" aria-label="Script name" className={inp}/>
       <input value={f.info} onChange={set('info')} maxLength={120} placeholder="Information (game, version, keyless...)" aria-label="Information" className={inp}/>
       <textarea value={f.description} onChange={set('description')} maxLength={1000} rows={4} placeholder="Description" aria-label="Description" className={inp}/>
       <textarea value={f.script} onChange={set('script')} maxLength={50000} rows={10} spellCheck={false} placeholder="Paste your Lua script here" aria-label="Script code" className={inp+' font-mono text-xs'}/>
       <input value={f.author} onChange={set('author')} maxLength={30} placeholder="Display name (optional, shown publicly)" aria-label="Display name" className={inp}/>
       <Captcha onToken={setCap} nonce={nonce}/>
-      {!TURNSTILE_SITEKEY&&<p className="text-amber-300 text-sm">Uploads are disabled until the captcha is configured.</p>}
       {msg&&<p className={'text-sm '+(ok?'text-green-300':'text-amber-300')} role="alert">{msg}</p>}
-      <button type="submit" disabled={busy||!TURNSTILE_SITEKEY} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?'Uploading...':'Upload script'}</button>
+      <button type="submit" disabled={busy} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?'Uploading...':'Upload script'}</button>
     </form>
     {mine.length>0&&<div className="glass rounded-2xl p-5"><h2 className="hd text-lg text-white mb-3">Your uploads</h2><ul className="space-y-2">{mine.map(m=>
       <li key={m.id} className="flex items-center gap-3 text-sm"><span className="flex-1 truncate">{m.name}</span>
@@ -412,7 +542,7 @@ function UploadPage({user,go,toast}){
   </div>;
 }
 
-const NAV=[['home','Home','home'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['community','Community','users'],['upload','Upload','upload'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
+const NAV=[['home','Home','home'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['community','Community','users'],['chat','Global Chat','chat'],['games','Games','gamepad'],['upload','Upload','upload'],['guide','Guide & FAQ','book'],['legal','Terms & Privacy','file'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
 const SORTS=[['trending','Trending'],['newest','Newest'],['views','Most Viewed'],['rated','Top Rated']];
 const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['universal','Universal'],['nokey','No Key']];
 
@@ -487,7 +617,7 @@ function App(){
   return <div className="flex min-h-screen">
     {open&&<div className="fixed inset-0 bg-black/60 z-30 md:hidden" onClick={()=>setOpen(false)}/>}
     <aside className={'fixed top-0 left-0 h-[100dvh] w-60 z-40 flex flex-col p-4 gap-1 overflow-y-auto overscroll-contain transition-transform duration-200 '+(open?'translate-x-0':'-translate-x-full md:translate-x-0')} style={{background:'rgba(8,12,40,.92)',borderRight:'1px solid rgba(255,255,255,.08)'}} aria-label="Sidebar">
-      <div className="hd text-xl font-bold text-white flex items-center gap-2 mb-3"><span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:'linear-gradient(135deg,#3b82f6,#22d3ee)'}}>S</span>ScriptFinder</div>
+      <div className="hd text-xl font-bold text-white flex items-center gap-2 mb-3"><LogoMark/>ScriptFinder</div>
       {NAV.map(([id,l,ic])=><button key={id} onClick={()=>go(id)} aria-label={l} className={'flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-left border-l-[3px] '+(view===id?'border-blue-400 text-white bg-gradient-to-r from-blue-500/30 to-transparent':'border-transparent text-slate-400 hover:text-white hover:bg-white/5')}><Ic n={ic} s={16}/>{l}{id==='fav'&&favs.length>0&&<span className="ml-auto text-xs">{favs.length}</span>}</button>)}
       <div className="mt-auto pt-3 border-t border-white/10">
         {user?<div className="text-xs text-slate-300"><p className="truncate mb-2" title={user.email}>{user.email}</p><button onClick={()=>sb.auth.signOut()} aria-label="Log out" className="w-full px-3 py-2 rounded-lg glass hover:border-blue-400 text-sm">Log out</button></div>
@@ -504,9 +634,10 @@ function App(){
           <span className="w-px bg-white/10 mx-1"/>{FILTERS.map(([id,l])=><button key={id} onClick={()=>setFilter(id)} className={'px-3.5 py-2 rounded-full text-xs '+(filter===id?'bg-cyan-400/20 border border-cyan-400 text-cyan-200':'glass text-slate-400')}>{l}</button>)}</div>}
       </div>
       <div className="flex justify-center gap-6 px-3 md:px-5"><div className="w-full max-w-3xl min-w-0 py-3 md:py-5">
-        {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} votes={votes} onVote={onVote} back={x=>x&&x.slug?setDetail(x):setDetail(null)}/>
-        :view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage user={user} go={go}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='community'?<Community favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/>
-        :<div className="page">{view==='home'&&!dq&&<div className="rounded-2xl p-8 mb-6 glass"><h1 className="hd text-3xl md:text-4xl font-bold text-white">Discover <span className="text-blue-400">Roblox scripts</span> instantly</h1><p className="text-slate-300 mt-2">Browse thousands of free scripts. Fast, clean, ad-supported.</p></div>}
+        {!detail&&BANNERS[view]&&<Banner title={BANNERS[view][0]} sub={BANNERS[view][1]} hue={BANNERS[view][2]}/>}
+        {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} votes={votes} onVote={onVote} user={user} back={x=>x&&x.slug?setDetail(x):setDetail(null)}/>
+        :view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage user={user} go={go}/>:view==='games'?<GamesPage onPick={n=>{setQ(n);go('home')}}/>:view==='guide'?<GuidePage/>:view==='legal'?<LegalPage/>:view==='chat'?<ChatPage user={user} go={go} toast={toast}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='community'?<Community favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/>
+        :<div className="page">{view==='home'&&!dq&&<div className="relative overflow-hidden rounded-2xl mb-6 glass p-8 md:p-10 min-h-[190px]"><HeroArt/><div className="absolute inset-0 bg-gradient-to-r from-[#0a0f2c]/85 via-[#0a0f2c]/40 to-transparent"/><div className="relative"><h1 className="hd text-3xl md:text-4xl font-bold text-white">Discover <span className="text-blue-400">Roblox scripts</span> instantly</h1><p className="text-slate-300 mt-2">Browse thousands of free scripts. Fast, clean, ad-supported.</p></div></div>}
           <Grid mode={mode} query={dq} filter={filter} favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/></div>}
         <div className="mt-8 flex justify-center"><AdSlot kind="wide" label="bottom"/></div>
       </div>
