@@ -1,1350 +1,877 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HANZZ. — Roblox Script Archive</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0a0a0c;
-      color: #e4e4e7;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    /* Scrollbar styling */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2a2a30;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #3a3a44;
-    }
-
-    /* Layout */
-    .app {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 16px 80px;
-    }
-
-    /* Top Bar */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(10, 10, 12, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid #1a1a1f;
-      padding: 12px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .topbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 800;
-      font-size: 18px;
-      letter-spacing: -0.5px;
-      color: #fff;
-    }
-
-    .topbar-brand .badge {
-      font-size: 10px;
-      font-weight: 600;
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 4px;
-      padding: 2px 6px;
-      color: #71717a;
-      letter-spacing: 0.5px;
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .topbar-actions button {
-      background: transparent;
-      border: 1px solid #27272a;
-      border-radius: 8px;
-      color: #a1a1aa;
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-
-    .topbar-actions button:hover {
-      border-color: #3f3f46;
-      color: #e4e4e7;
-    }
-
-    /* Header */
-    .header {
-      padding: 48px 0 32px;
-      text-align: center;
-    }
-
-    .header-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      color: #52525b;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .header h1 {
-      font-size: 56px;
-      font-weight: 800;
-      letter-spacing: -2px;
-      line-height: 1;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-
-    .header h1 .dot {
-      color: #6366f1;
-    }
-
-    .header p {
-      font-size: 15px;
-      color: #71717a;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-
-    /* Search */
-    .search-wrap {
-      margin: 32px 0;
-      position: relative;
-    }
-
-    .search-wrap input {
-      width: 100%;
-      height: 48px;
-      background: #141417;
-      border: 1px solid #27272a;
-      border-radius: 12px;
-      color: #e4e4e7;
-      font-size: 14px;
-      font-family: inherit;
-      padding: 0 16px 0 44px;
-      outline: none;
-      transition: all 0.2s;
-    }
-
-    .search-wrap input::placeholder {
-      color: #52525b;
-    }
-
-    .search-wrap input:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-      background: #17171a;
-    }
-
-    .search-wrap .icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #52525b;
-      display: flex;
-      pointer-events: none;
-    }
-
-    /* Sections */
-    .section {
-      margin: 40px 0;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #1a1a1f;
-    }
-
-    .section-header h2 {
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.3px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-header h2 .tag {
-      font-size: 10px;
-      font-weight: 600;
-      color: #6366f1;
-      background: rgba(99, 102, 241, 0.1);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-      border-radius: 4px;
-      padding: 2px 8px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .section-header .online {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: #71717a;
-      font-weight: 500;
-    }
-
-    .online-dot {
-      width: 6px;
-      height: 6px;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    /* Script Grid */
-    .script-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
-    }
-
-    .script-card {
-      background: #141417;
-      border: 1px solid #1f1f23;
-      border-radius: 12px;
-      padding: 16px;
-      transition: all 0.2s;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .script-card:hover {
-      border-color: #3f3f46;
-      background: #18181b;
-      transform: translateY(-1px);
-    }
-
-    .script-card .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .script-card h3 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.3;
-    }
-
-    .script-card .card-badge {
-      font-size: 9px;
-      font-weight: 700;
-      padding: 3px 7px;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      flex-shrink: 0;
-    }
-
-    .badge-key {
-      background: rgba(245, 158, 11, 0.1);
-      color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-
-    .badge-free {
-      background: rgba(34, 197, 94, 0.1);
-      color: #22c55e;
-      border: 1px solid rgba(34, 197, 94, 0.2);
-    }
-
-    .badge-new {
-      background: rgba(99, 102, 241, 0.1);
-      color: #818cf8;
-      border: 1px solid rgba(99, 102, 241, 0.2);
-    }
-
-    .script-card .card-meta {
-      font-size: 12px;
-      color: #71717a;
-      margin-bottom: 12px;
-    }
-
-    .script-card .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 11px;
-      color: #52525b;
-    }
-
-    .script-card .card-footer .stats {
-      display: flex;
-      gap: 12px;
-    }
-
-    .script-card .card-footer .stats span {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 48px 16px;
-      color: #52525b;
-      font-size: 13px;
-      grid-column: 1 / -1;
-    }
-
-    /* Chat */
-    .chat-box {
-      background: #141417;
-      border: 1px solid #1f1f23;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .chat-messages {
-      height: 260px;
-      overflow-y: auto;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .chat-msg {
-      display: flex;
-      gap: 8px;
-      font-size: 13px;
-      line-height: 1.4;
-      animation: fadeIn 0.2s;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .chat-msg .name {
-      font-weight: 600;
-      color: #818cf8;
-      flex-shrink: 0;
-    }
-
-    .chat-msg .text {
-      color: #a1a1aa;
-      word-break: break-word;
-    }
-
-    .chat-msg .time {
-      font-size: 10px;
-      color: #3f3f46;
-      flex-shrink: 0;
-      margin-left: auto;
-      padding-left: 8px;
-    }
-
-    .chat-input-wrap {
-      display: flex;
-      border-top: 1px solid #1f1f23;
-    }
-
-    .chat-input-wrap input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: #e4e4e7;
-      font-size: 13px;
-      font-family: inherit;
-      padding: 12px 14px;
-      outline: none;
-    }
-
-    .chat-input-wrap input::placeholder {
-      color: #3f3f46;
-    }
-
-    .chat-input-wrap button {
-      background: #6366f1;
-      border: none;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      padding: 0 20px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-
-    .chat-input-wrap button:hover {
-      background: #4f46e5;
-    }
-
-    /* Rating section */
-    .rating-summary {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    .rating-big {
-      font-size: 48px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1;
-    }
-
-    .rating-stars {
-      color: #f59e0b;
-      font-size: 20px;
-      letter-spacing: 2px;
-    }
-
-    .rating-count {
-      font-size: 13px;
-      color: #71717a;
-      margin-top: 2px;
-    }
-
-    .rating-bars {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .rating-bar-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: #71717a;
-    }
-
-    .rating-bar-row .bar {
-      flex: 1;
-      height: 6px;
-      background: #1f1f23;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .rating-bar-row .bar-fill {
-      height: 100%;
-      background: #6366f1;
-      border-radius: 3px;
-      transition: width 0.3s;
-    }
-
-    .rating-bar-row .bar-fill.star5 { background: #22c55e; }
-    .rating-bar-row .bar-fill.star4 { background: #84cc16; }
-    .rating-bar-row .bar-fill.star3 { background: #f59e0b; }
-    .rating-bar-row .bar-fill.star2 { background: #f97316; }
-    .rating-bar-row .bar-fill.star1 { background: #ef4444; }
-
-    /* Review list */
-    .review-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 400px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .review-item {
-      display: flex;
-      gap: 12px;
-      padding: 12px;
-      background: #141417;
-      border: 1px solid #1f1f23;
-      border-radius: 10px;
-      animation: fadeIn 0.2s;
-    }
-
-    .review-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 14px;
-      color: #fff;
-      flex-shrink: 0;
-    }
-
-    .review-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .review-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 2px;
-    }
-
-    .review-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: #e4e4e7;
-    }
-
-    .review-stars {
-      font-size: 12px;
-      color: #f59e0b;
-      letter-spacing: 1px;
-    }
-
-    .review-time {
-      font-size: 10px;
-      color: #52525b;
-      margin-left: auto;
-    }
-
-    .review-text {
-      font-size: 12px;
-      color: #a1a1aa;
-      line-height: 1.5;
-      word-break: break-word;
-    }
-
-    /* Owner section */
-    .owner-card {
-      background: linear-gradient(135deg, #141417, #1a1a1f);
-      border: 1px solid #27272a;
-      border-radius: 16px;
-      padding: 32px;
-      text-align: center;
-    }
-
-    .owner-avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 24px;
-      color: #fff;
-      margin: 0 auto 16px;
-    }
-
-    .owner-card h3 {
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .owner-card p {
-      font-size: 13px;
-      color: #71717a;
-      margin-bottom: 20px;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #6366f1;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 24px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.15s;
-    }
-
-    .btn-primary:hover {
-      background: #4f46e5;
-      transform: translateY(-1px);
-    }
-
-    /* Name picker modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal {
-      background: #141417;
-      border: 1px solid #27272a;
-      border-radius: 16px;
-      padding: 28px;
-      width: 100%;
-      max-width: 360px;
-      animation: modalIn 0.2s;
-    }
-
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .modal h3 {
-      font-size: 18px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .modal p {
-      font-size: 12px;
-      color: #71717a;
-      margin-bottom: 16px;
-    }
-
-    .modal input {
-      width: 100%;
-      height: 44px;
-      background: #0a0a0c;
-      border: 1px solid #27272a;
-      border-radius: 10px;
-      color: #e4e4e7;
-      font-size: 14px;
-      font-family: inherit;
-      padding: 0 14px;
-      outline: none;
-      margin-bottom: 12px;
-      transition: border-color 0.15s;
-    }
-
-    .modal input:focus {
-      border-color: #6366f1;
-    }
-
-    .modal .btn-primary {
-      width: 100%;
-      justify-content: center;
-    }
-
-    /* Music widget */
-    .music-widget {
-      background: #141417;
-      border: 1px solid #1f1f23;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 16px;
-    }
-
-    .music-widget h3 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .music-widget .sub {
-      font-size: 11px;
-      color: #52525b;
-      margin-bottom: 16px;
-    }
-
-    .music-search {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .music-search input {
-      flex: 1;
-      height: 40px;
-      background: #0a0a0c;
-      border: 1px solid #27272a;
-      border-radius: 8px;
-      color: #e4e4e7;
-      font-size: 13px;
-      font-family: inherit;
-      padding: 0 12px;
-      outline: none;
-    }
-
-    .music-search input:focus {
-      border-color: #6366f1;
-    }
-
-    .music-search button {
-      background: #6366f1;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      padding: 0 16px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-    }
-
-    .music-player {
-      background: #0a0a0c;
-      border-radius: 10px;
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .music-player .play-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #6366f1;
-      border: none;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.15s;
-    }
-
-    .music-player .play-btn:hover {
-      background: #4f46e5;
-    }
-
-    .music-player .track-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .music-player .track-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #e4e4e7;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .music-player .track-artist {
-      font-size: 11px;
-      color: #52525b;
-    }
-
-    .music-player .progress {
-      height: 4px;
-      background: #1f1f23;
-      border-radius: 2px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-
-    .music-player .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: #6366f1;
-      border-radius: 2px;
-      transition: width 0.3s linear;
-    }
-
-    .music-player .time {
-      font-size: 11px;
-      color: #52525b;
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* Toast */
-    .toast-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .toast {
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-size: 13px;
-      color: #e4e4e7;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      animation: toastIn 0.3s;
-      max-width: 320px;
-    }
-
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateX(40px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    /* Responsive */
-    @media (max-width: 640px) {
-      .header h1 { font-size: 36px; }
-      .header { padding: 32px 0 24px; }
-      .script-grid { grid-template-columns: 1fr; }
-      .rating-summary { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .owner-card { padding: 24px 16px; }
-    }
-
-    /* Utility */
-    .hidden { display: none !important; }
-    .text-muted { color: #52525b; }
-    .mt-2 { margin-top: 8px; }
-    .mt-4 { margin-top: 16px; }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <!-- Top Bar -->
-    <div class="topbar">
-      <div class="topbar-brand">
-        HANZZ<span style="color:#6366f1">.</span>
-        <span class="badge">ROBLOX / SCRIPT</span>
-      </div>
-      <div class="topbar-actions">
-        <button id="nameBtn" onclick="openNameModal()">Pilih Nama</button>
-      </div>
-    </div>
-
-    <!-- Header -->
-    <div class="header">
-      <div class="header-label">Roblox / Script Archive</div>
-      <h1>HANZZ<span class="dot">.</span></h1>
-      <p>Curated scripts. Auto-updated.</p>
-    </div>
-
-    <!-- Search -->
-    <div class="search-wrap">
-      <span class="icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-        </svg>
-      </span>
-      <input type="text" id="searchInput" placeholder="Cari script, game, atau pembuat..." />
-    </div>
-
-    <!-- Latest Scripts -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Latest Scripts <span class="tag">Live</span></h2>
-        <span class="online"><span class="online-dot"></span>70 online</span>
-      </div>
-      <div class="script-grid" id="scriptGrid">
-        <!-- Scripts will be rendered here -->
-      </div>
-    </div>
-
-    <!-- Global Chat -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Global Chat</h2>
-        <span class="online"><span class="online-dot"></span>70 online</span>
-      </div>
-      <div class="chat-box">
-        <div class="chat-messages" id="chatMessages">
-          <!-- Chat messages will be rendered here -->
-        </div>
-        <div class="chat-input-wrap">
-          <input type="text" id="chatInput" placeholder="Tulis pesan..." maxlength="200" />
-          <button onclick="sendChat()">Kirim</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ratings -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Ratings</h2>
-        <span class="online" id="ratingCountLabel">200 ulasan</span>
-      </div>
-
-      <div class="rating-summary">
-        <div>
-          <div class="rating-big" id="avgRating">1.9</div>
-          <div class="rating-stars" id="avgStars">★★☆☆☆</div>
-          <div class="rating-count" id="ratingCountText">200 ulasan</div>
-        </div>
-        <div class="rating-bars" id="ratingBars">
-          <!-- Bars will be rendered here -->
-        </div>
-      </div>
-
-      <div style="margin-bottom:12px;">
-        <button class="btn-primary" onclick="openNameModal()" style="font-size:12px;padding:8px 16px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-          Pilih Nama
-        </button>
-      </div>
-
-      <div class="review-list" id="reviewList">
-        <!-- Reviews will be rendered here -->
-      </div>
-    </div>
-
-    <!-- Owner -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Owner</h2>
-      </div>
-      <div class="owner-card">
-        <div class="owner-avatar">H</div>
-        <h3>HANZZ.</h3>
-        <p>Curated Roblox scripts by Hanzz. Join our channel for updates.</p>
-        <a href="#" class="btn-primary" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          Join WhatsApp Channel
-        </a>
-      </div>
-    </div>
-
-    <!-- Music -->
-    <div class="section">
-      <div class="section-header">
-        <h2>Music</h2>
-      </div>
-      <div class="music-widget">
-        <h3>Music API by IzzXd</h3>
-        <div class="sub">Search any song to start listening</div>
-        <div class="music-search">
-          <input type="text" id="musicInput" placeholder="Cari lagu..." />
-          <button onclick="searchMusic()">Cari</button>
-        </div>
-        <div class="music-player">
-          <button class="play-btn" id="playBtn" onclick="togglePlay()">
-            <svg id="playIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            <svg id="pauseIcon" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
-          </button>
-          <div class="track-info">
-            <div class="track-title" id="trackTitle">Belum ada lagu</div>
-            <div class="track-artist" id="trackArtist">—</div>
-            <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-          </div>
-          <div class="time" id="trackTime">0:00</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Name Picker Modal -->
-  <div class="modal-overlay" id="nameModal">
-    <div class="modal">
-      <h3>Pilih Nama</h3>
-      <p>Dipakai di chat & rating. 1 device = 1 akun.</p>
-      <input type="text" id="nameInput" placeholder="Masukkan nama kamu..." maxlength="20" />
-      <button class="btn-primary" onclick="saveName()">Simpan</button>
-    </div>
-  </div>
-
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
-
-  <script>
-    // ==================== DATA ====================
-    const SCRIPTS = [
-      { name: 'Blox Fruits Auto Farm', game: 'Blox Fruits', type: 'key', views: '12.4K', likes: 892, date: '2 jam lalu' },
-      { name: 'Pet Simulator 99 Auto Hatch', game: 'Pet Simulator 99', type: 'free', views: '8.1K', likes: 654, date: '5 jam lalu' },
-      { name: 'Arsenal Aimbot + ESP', game: 'Arsenal', type: 'key', views: '6.7K', likes: 423, date: '1 hari lalu' },
-      { name: 'Brookhaven Admin Panel', game: 'Brookhaven', type: 'free', views: '5.2K', likes: 389, date: '1 hari lalu' },
-      { name: 'Doors Entity Radar', game: 'Doors', type: 'new', views: '4.9K', likes: 312, date: '2 hari lalu' },
-      { name: 'Murder Mystery 2 Auto Win', game: 'Murder Mystery 2', type: 'key', views: '4.1K', likes: 278, date: '3 hari lalu' },
-      { name: 'Blade Ball Auto Parry', game: 'Blade Ball', type: 'free', views: '3.8K', likes: 245, date: '3 hari lalu' },
-      { name: 'Da Hood Auto Farm', game: 'Da Hood', type: 'new', views: '3.2K', likes: 201, date: '4 hari lalu' },
-    ];
-
-    const CHAT_MESSAGES = [
-      { name: 'Tempe', text: 'Bang SC bettle bricks bang', time: '00:01' },
-      { name: 'Hannn', text: 'Gokil sc nya moga bermanfaat 👍', time: '00:02' },
-      { name: 'Naufal', text: 'Mantap min', time: '00:03' },
-      { name: 'Boku', text: 'Request script locust dong', time: '00:04' },
-      { name: 'amba', text: 'Nice work', time: '00:05' },
-      { name: 'idk', text: 'HACKED BY IDKxID Security level:1/5', time: '00:06' },
-      { name: 'Tiarzz', text: 'Sangat bagus dan keren', time: '00:07' },
-      { name: 'JAMAL', text: 'GG', time: '00:08' },
-      { name: 'WitchA3X', text: 'Request script locust yang bisa kill kill player bg, btw all game', time: '00:09' },
-      { name: 'budibam', text: 'bagus', time: '00:10' },
-      { name: 'Kzex', text: 'I like it your web bro', time: '00:11' },
-      { name: 'kontolman_ID', text: 'Mantap', time: '00:12' },
-      { name: 'juntul', text: 'gg gaming', time: '00:13' },
-    ];
-
-    const REVIEWS = [
-      { name: '?', rating: 0, text: '', time: '5 Oktober 2026' },
-      { name: 'Tempe', rating: 5, text: 'Bang SC bettle bricks bang', time: '5 Oktober 2026' },
-      { name: 'Hannn', rating: 5, text: 'Gokil sc nya moga bermanfaat 👍', time: '5 Oktober 2026' },
-      { name: 'Naufal', rating: 5, text: '', time: '5 Oktober 2026' },
-      { name: 'Boku', rating: 5, text: '', time: '5 Oktober 2026' },
-      { name: 'amba', rating: 1, text: '', time: '5 Oktober 2026' },
-      { name: 'idk', rating: 1, text: 'HACKED BY IDKxID Security level:1/5', time: '5 Oktober 2026' },
-      { name: 'Tiarzz', rating: 5, text: 'Sangat bagus dan keren', time: '5 Oktober 2026' },
-      { name: 'JAMAL', rating: 5, text: '', time: '5 Oktober 2026' },
-      { name: 'WitchA3X', rating: 5, text: 'Request script locust yang bisa kill kill player bg, btw all game', time: '5 Oktober 2026' },
-      { name: 'budibam', rating: 5, text: 'bagus', time: '5 Oktober 2026' },
-      { name: 'Kzex', rating: 5, text: 'I like it your web bro', time: '5 Oktober 2026' },
-      { name: 'kontolman_ID', rating: 4, text: '', time: '5 Oktober 2026' },
-      { name: 'juntul', rating: 5, text: 'gg gaming', time: '5 Oktober 2026' },
-      { name: 'Gadrikalp', rating: 5, text: 'Bagusss bat', time: '5 Oktober 2026' },
-      { name: 'Dewww', rating: 5, text: 'GG', time: '5 Oktober 2026' },
-      { name: 'val', rating: 5, text: '', time: '5 Oktober 2026' },
-      { name: 'jib co', rating: 5, text: '', time: '5 Oktober 2026' },
-      { name: 'Yaxxxxxxxxxx', rating: 5, text: 'Gila sih ini website bagus hampir semua game yg gw mainin ada script nya wuhhh gg gg', time: '5 Oktober 2026' },
-      { name: 'Xyra', rating: 5, text: '', time: '5 Oktober 2026' },
-      { name: 'Reyy', rating: 5, text: 'WOW', time: '5 Oktober 2026' },
-      { name: 'hellooo', rating: 5, text: 'jos jis lah min han', time: '5 Oktober 2026' },
-      { name: 'Orang suka coli', rating: 1, text: 'Gatau', time: '5 Oktober 2026' },
-      { name: 'Zayan', rating: 4, text: '', time: '5 Oktober 2026' },
-      { name: 'junhandsome', rating: 5, text: '', time: '5 Oktober 2026' },
-      { name: 'Shaa', rating: 5, text: 'gg', time: '5 Oktober 2026' },
-      { name: 'Rizz', rating: 5, text: 'hanz ganteng', time: '5 Oktober 2026' },
-      { name: 'Info SC', rating: 5, text: 'Tinggal up up SC nya mas', time: '5 Oktober 2026' },
-      { name: 'Relz', rating: 5, text: 'lope lope buat admin', time: '5 Oktober 2026' },
-      { name: 'Reii', rating: 1, text: 'Nice', time: '5 Oktober 2026' },
-      { name: 'dimzz', rating: 5, text: 'baguss bangett uyy banyakk sC nyaa', time: '5 Oktober 2026' },
-      { name: 'athar', rating: 5, text: 'work sih', time: '5 Oktober 2026' },
-      { name: 'Nas', rating: 5, text: 'Baguss, tapi tambahin tombol nokey sama key min, biar ga ribet', time: '5 Oktober 2026' },
-      { name: 'PENYUKA DELTA', rating: 5, text: 'Tulis pendapatmu (opsional)', time: '5 Oktober 2026' },
-      { name: 'ky𓃘', rating: 5, text: 'Oke laahh baguss nihhh', time: '5 Oktober 2026' },
-      { name: 'ky𓃘', rating: 5, text: 'Gak jadi bilang nya no key apaan ujung ujung nya pake key', time: '5 Oktober 2026' },
-      { name: 'Kzex', rating: 5, text: 'Pretty good', time: '5 Oktober 2026' },
-      { name: '9_10', rating: 5, text: 'Bagus min website nya', time: '5 Oktober 2026' },
-      { name: 'Asep', rating: 5, text: 'Bagus tapi kebanyakan yg pakai key🗿', time: '5 Oktober 2026' },
-      { name: 'Asep', rating: 1, text: '', time: '5 Oktober 2026' },
-      { name: 'ggxz', rating: 5, text: 'bagus atmin ramah tp karna baru y masi ad bug', time: '5 Oktober 2026' },
-      { name: 'Ammar', rating: 5, text: 'Kelazzzz bang hanzz gantengg', time: '5 Oktober 2026' },
-      { name: 'Rama', rating: 5, text: 'Kelas hanzzz', time: '5 Oktober 2026' },
-      { name: 'Xxdos_samm', rating: 5, text: 'Kelas king, btw semangat 🗿👍', time: '5 Oktober 2026' },
-      { name: 'Dezz', rating: 5, text: 'ahh angew banyakk bangett sc nya', time: '5 Oktober 2026' },
-      { name: 'Dilzzhyy', rating: 5, text: 'Keren', time: '5 Oktober 2026' },
-      { name: 'mr. bagigi', rating: 5, text: 'makasih min makin sayang ke mimin 💞', time: '5 Oktober 2026' },
-      { name: 'ceplik', rating: 5, text: 'Keren web nya thanks admin ganteng', time: '5 Oktober 2026' },
-      { name: 'Rydermannn', rating: 5, text: '.', time: '5 Oktober 2026' },
-      { name: 'KHOLIL9097', rating: 5, text: 'puqi', time: '5 Oktober 2026' },
-      { name: 'R0bl0x14N_2point0', rating: 5, text: 'Mantap jir semua(keknya) script nya gacorrrr', time: '5 Oktober 2026' },
-      { name: 'Riski', rating: 5, text: 'Super gg', time: '5 Oktober 2026' },
-    ];
-
-    // ==================== STATE ====================
-    let userName = localStorage.getItem('hanzz_name') || '';
-    let isPlaying = false;
-    let currentTrack = null;
-    let progressInterval = null;
-
-    // ==================== RENDER SCRIPTS ====================
-    function renderScripts(filter = '') {
-      const grid = document.getElementById('scriptGrid');
-      const q = filter.toLowerCase().trim();
-      const filtered = q
-        ? SCRIPTS.filter(s =>
-            s.name.toLowerCase().includes(q) ||
-            s.game.toLowerCase().includes(q)
-          )
-        : SCRIPTS;
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '<div class="empty-state">No scripts found</div>';
-        return;
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NexScript — Roblox Script Hub</title>
+<meta name="description" content="NexScript is a free Roblox script discovery tool. Search, browse and copy scripts for your favorite games.">
+<meta name="theme-color" content="#0a0f2c">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NexScript">
+<meta property="og:title" content="NexScript — Roblox Script Hub">
+<meta property="og:description" content="Search, browse and copy free Roblox scripts. Fast, clean and always improving.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NexScript — Roblox Script Hub">
+<meta name="twitter:description" content="Search, browse and copy free Roblox scripts.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<!-- Adsterra Anti-AdBlock -->
+<script data-cfasync="false" src="https://afders.org/1/0789735114d7733c0f53303e8b7c69ac"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+body{margin:0;font-family:Inter,sans-serif;color:#e2e8f0;background:#0a0f2c}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(135deg,#0a0f2c,#0d1a4d 50%,#0a0f2c)}
+h1,h2,h3,.hd{font-family:'Space Grotesk',sans-serif}
+code,pre{font-family:'JetBrains Mono',monospace}
+.grid-bg{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px);background-size:40px 40px;opacity:.15;z-index:0}
+.orb{position:fixed;border-radius:50%;background:radial-gradient(circle,var(--c) 0%,transparent 68%);opacity:.35;pointer-events:none;z-index:0;will-change:transform;animation:drift 22s ease-in-out infinite alternate}
+@media (max-width:767px),(prefers-reduced-motion:reduce){.orb{animation:none}}
+@keyframes drift{to{transform:translate(120px,80px) scale(1.2)}}
+.glass{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.card{transition:transform .2s ease-out,border-color .2s,box-shadow .2s;animation:in .4s ease-out both}
+.card:active{transform:scale(.985)}
+@media (hover:hover){.card:hover{transform:translateY(-2px);border-color:rgba(59,130,246,.7);box-shadow:0 0 24px rgba(59,130,246,.25)}.card:hover img{transform:scale(1.05)}}
+button,a,input,.card{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.card img{transition:transform .3s}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.page{animation:in .35s ease-out}
+.sk{background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.12),rgba(255,255,255,.04));background-size:200% 100%;animation:sh 1.3s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.toast{animation:tin .3s ease-out}@keyframes tin{from{transform:translateX(120%)}}
+:focus-visible{outline:2px solid #60a5fa;outline-offset:2px}
+.slot{border:1px dashed rgba(96,165,250,.4);background:#0a1240;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:12px}
+html{scroll-behavior:smooth}
+button,a{transition:transform .15s ease,background-color .2s ease,border-color .2s ease,opacity .2s ease}
+button:active:not(:disabled){transform:scale(.97)}
+@keyframes skyshift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes scrollx{to{transform:translateX(-50%)}}
+@keyframes fall{0%{transform:translate3d(0,-10vh,0) rotate(0)}100%{transform:translate3d(var(--dx),110vh,0) rotate(540deg)}}
+@keyframes shoot{0%{transform:translate(0,0);opacity:0}6%{opacity:1}28%{transform:translate(-520px,360px);opacity:0}100%{transform:translate(-520px,360px);opacity:0}}
+@keyframes glow{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:1;transform:scale(1.07)}}
+@keyframes streak{0%{transform:translateX(-130%)}100%{transform:translateX(260%)}}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:1}}
+@keyframes rise{from{opacity:0;transform:translateY(22px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes introOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}
+.intro-out{animation:introOut .55s ease forwards}
+.petal{position:absolute;top:-6vh;border-radius:150% 0 150% 0;background:linear-gradient(135deg,#ffd1e8,#ff8fc2);opacity:.85;animation:fall linear infinite;will-change:transform}
+.shoot{position:absolute;height:2px;width:120px;background:linear-gradient(90deg,transparent,#fff);transform:rotate(35deg);animation:shoot 5s ease-in infinite}
+.streak{position:absolute;height:1px;width:40%;background:linear-gradient(90deg,transparent,rgba(125,211,252,.7),transparent);animation:streak linear infinite}
+@media (prefers-reduced-motion:reduce){.petal,.shoot,.streak{animation:none}}
+</style></head>
+<body><div class="grid-bg"></div>
+<div class="orb" style="width:380px;height:380px;--c:#3b82f6;top:-80px;left:20%"></div>
+<div class="orb" style="width:320px;height:320px;--c:#8b5cf6;bottom:0;right:10%;animation-delay:-8s"></div>
+<div class="orb" style="width:260px;height:260px;--c:#22d3ee;top:40%;left:50%;animation-delay:-14s"></div>
+<div id="root" class="relative z-10"></div>
+<script type="text/babel">
+const {useState,useEffect,useLayoutEffect,useRef,useCallback,useMemo}=React;
+const useIso=typeof window!=='undefined'?useLayoutEffect:useEffect;
+const API='https://scriptblox-proxy-pzq8.vercel.app';
+// WARNING: exposing this key client-side is MVP/demo only. For production, move to a server-side proxy (Vercel/Netlify function).
+// Admin runs on a server (Vercel/Netlify). Deploy api/admin-stats.js, then paste its base URL here, e.g. 'https://your-app.vercel.app'.
+const ADMIN_API='';
+// Paste your Discord invite link here, e.g. 'https://discord.gg/xxxxxxx'.
+const DISCORD_URL='https://discord.gg/ET2gVgNdS';
+// Supabase (auth). The publishable key is safe in the browser; never put a secret/service_role key here.
+const SUPABASE_URL='https://jcxvmumfnsgvwnogshnn.supabase.co';
+const SUPABASE_KEY='sb_publishable__5PwKKSpvB6wjEWrD2YpzQ_gvIaOeWb';
+// Cloudflare Turnstile site key (public). Leave empty to disable the captcha. Also enable it in Supabase > Authentication > Attack Protection.
+const TURNSTILE_SITEKEY='';
+const sb=(window.supabase&&window.supabase.createClient)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+// Debug logging: add ?debug to the URL (or run localStorage.setItem('sf_debug','1')).
+const DEBUG=(()=>{try{return /[?&]debug\b/.test(location.search)||localStorage.getItem('sf_debug')==='1'}catch(e){return false}})();
+const log=(...a)=>{if(DEBUG)console.log('[NexScript]',...a)};
+const FETCH_TIMEOUT=6000;
+// ---- Language (EN / ID) ----
+let LANG='en';try{LANG=localStorage.getItem('lang')==='id'?'id':'en'}catch(e){}
+const ID={"Home": "Beranda", "Trending": "Trending", "Newest": "Terbaru", "Most Viewed": "Paling Banyak Dilihat", "Top Rated": "Rating Tertinggi", "Verified": "Terverifikasi", "Keyless": "Tanpa Key", "Favorites": "Favorit", "Community": "Komunitas", "Global Chat": "Chat Global", "Games": "Game", "Upload": "Unggah", "Guide & FAQ": "Panduan & FAQ", "Terms & Privacy": "Syarat & Privasi", "About": "Tentang", "Donate": "Donasi", "Admin": "Admin", "All": "Semua", "Universal": "Universal", "No Key": "Tanpa Key", "View Profile": "Lihat Profil", "Search scripts, games, or creators...": "Cari script, game, atau kreator...", "Search scripts": "Cari script", "Discover": "Temukan", "Roblox scripts": "script Roblox", "instantly": "dalam sekejap", "Browse thousands of free scripts. Fast, clean, ad-supported.": "Jelajahi ribuan script gratis. Cepat, bersih, didukung iklan.", "Loading more scripts...": "Memuat script lainnya...", "You've reached the end": "Kamu sudah sampai di akhir", "No scripts found": "Script tidak ditemukan", "Try a different keyword like “blox fruits” or “universal”.": "Coba kata kunci lain seperti “blox fruits” atau “universal”.", "No favorites yet": "Belum ada favorit", "Tap the heart on any script to save it here.": "Ketuk hati pada script untuk menyimpannya di sini.", "No community scripts yet": "Belum ada script komunitas", "Be the first: log in and use Upload to share a script.": "Jadilah yang pertama: login lalu gunakan Unggah untuk membagikan script.", "Failed to load scripts.": "Gagal memuat script.", "Rate limited. Try again shortly.": "Terlalu banyak permintaan. Coba lagi sebentar.", "Failed to load community scripts.": "Gagal memuat script komunitas.", "Back": "Kembali", "Copy Script": "Salin Script", "Copied!": "Tersalin!", "Lua script": "Script Lua", "Related scripts": "Script terkait", "Copy failed": "Gagal menyalin", "No ratings yet": "Belum ada rating", "Log in to rate this script.": "Login untuk memberi rating.", "Could not save rating.": "Gagal menyimpan rating.", "Could not sync favorite.": "Gagal menyinkronkan favorit.", "Could not sync vote.": "Gagal menyinkronkan vote.", "Could not load your saved data.": "Gagal memuat data tersimpanmu.", "Log in": "Masuk", "Sign up": "Daftar", "Welcome back": "Selamat datang kembali", "Create your account": "Buat akunmu", "Email": "Email", "Password": "Kata sandi", "Confirm password": "Konfirmasi kata sandi", "Username": "Username", "Please wait...": "Mohon tunggu...", "You're logged in": "Kamu sudah masuk", "Log out": "Keluar", "Log in / Sign up": "Masuk / Daftar", "Your username is permanent and shown in chat.": "Username bersifat permanen dan tampil di chat.", "Username must be 3-20 letters, numbers or underscores, and cannot be reserved or inappropriate.": "Username harus 3-20 huruf, angka, atau garis bawah, dan tidak boleh nama yang dicadangkan atau tidak pantas.", "That username is taken.": "Username itu sudah dipakai.", "Could not save username.": "Gagal menyimpan username.", "Choose your username": "Pilih username-mu", "This name is shown in chat and cannot be changed later.": "Nama ini tampil di chat dan tidak bisa diganti nanti.", "Save username": "Simpan username", "Auth service failed to load. Refresh the page.": "Layanan login gagal dimuat. Muat ulang halaman.", "Password must be at least 8 characters.": "Kata sandi minimal 8 karakter.", "Passwords do not match.": "Kata sandi tidak cocok.", "Check your email to confirm your account, then log in.": "Cek emailmu untuk konfirmasi akun, lalu login.", "Something went wrong.": "Terjadi kesalahan.", "Please complete the captcha.": "Selesaikan captcha dulu.", "Welcome to NexScript": "Selamat datang di NexScript", "Your hub for Roblox scripts": "Pusat script Roblox kamu", "Skip for now": "Lewati dulu", "You can use everything without an account. Log in later any time.": "Semua fitur bisa dipakai tanpa akun. Kamu bisa login kapan saja.", "Log in to upload": "Login untuk mengunggah", "Only logged-in users can upload scripts.": "Hanya pengguna yang sudah login yang bisa mengunggah script.", "Script name": "Nama script", "Information (game, version, keyless...)": "Informasi (game, versi, keyless...)", "Description": "Deskripsi", "Paste your Lua script here": "Tempel script Lua kamu di sini", "Display name (optional, shown publicly)": "Nama tampilan (opsional, tampil publik)", "Upload script": "Unggah script", "Uploading...": "Mengunggah...", "Your uploads": "Unggahanmu", "Delete": "Hapus", "Could not delete script.": "Gagal menghapus script.", "Upload server is not configured yet.": "Server unggah belum dikonfigurasi.", "Script name must be at least 3 characters.": "Nama script minimal 3 karakter.", "Please fill in the information field.": "Isi kolom informasi.", "Please paste your script.": "Tempel script-mu.", "Session expired. Please log in again.": "Sesi habis. Silakan login lagi.", "Could not reach the upload server.": "Tidak bisa terhubung ke server unggah.", "Submitted! Your script will appear in Community after it is reviewed.": "Terkirim! Script-mu akan tampil di Komunitas setelah direview.", "Last 250 messages": "250 pesan terakhir", "Type a message...": "Ketik pesan...", "Send": "Kirim", "Log in to chat": "Login untuk chat", "No messages yet. Say hi!": "Belum ada pesan. Sapa duluan!", "Chatting as": "Chat sebagai", "Cancel": "Batal", "Send voice": "Kirim suara", "Could not load chat.": "Gagal memuat chat.", "Choose a username first.": "Pilih username dulu.", "Slow down a little.": "Pelan-pelan sedikit.", "Your message contains inappropriate language.": "Pesanmu mengandung kata yang tidak pantas.", "Message not sent.": "Pesan tidak terkirim.", "Please choose an image.": "Pilih gambar.", "Could not send image.": "Gagal mengirim gambar.", "Voice recording is not supported on this browser.": "Rekam suara tidak didukung di browser ini.", "Recording too short.": "Rekaman terlalu pendek.", "Could not send voice message.": "Gagal mengirim pesan suara.", "Microphone permission denied.": "Izin mikrofon ditolak.", "Could not delete message.": "Gagal menghapus pesan.", "Community Scripts": "Script Komunitas", "Scripts shared by the community, reviewed before they go live.": "Script dari komunitas, direview sebelum tayang.", "Talk with other script hunters in real time.": "Ngobrol real-time dengan pemburu script lain.", "Upload a Script": "Unggah Script", "Share your script with the community.": "Bagikan script-mu ke komunitas.", "Popular Games": "Game Populer", "Pick a game and jump straight to its scripts.": "Pilih game dan langsung lihat script-nya.", "Everything to know before running a script.": "Semua yang perlu diketahui sebelum menjalankan script.", "How NexScript handles your data.": "Cara NexScript mengelola datamu.", "Browse scripts →": "Lihat script →", "How to use a script": "Cara memakai script", "Open a script and tap": "Buka script lalu ketuk", "Join the matching Roblox game.": "Masuk ke game Roblox yang sesuai.", "Open your executor, paste the script and run it.": "Buka executor-mu, tempel script, lalu jalankan.", "If the script asks for a key, follow the steps shown by the script.": "Jika script meminta key, ikuti langkah yang ditampilkan script.", "NexScript does not provide executors or host game files.": "NexScript tidak menyediakan executor atau menyimpan file game.", "Stay safe": "Tetap aman", "Using scripts can break Roblox's Terms of Service and may get an account banned. Use at your own risk, ideally on an alternate account.": "Memakai script bisa melanggar Ketentuan Layanan Roblox dan berisiko membuat akun diblokir. Gunakan dengan risiko sendiri, sebaiknya di akun cadangan.", "Never run a script that asks for your password, your .ROBLOSECURITY cookie or your Robux.": "Jangan pernah menjalankan script yang meminta password, cookie .ROBLOSECURITY, atau Robux-mu.", "Be careful with heavily obfuscated code from unknown authors.": "Hati-hati dengan kode yang sangat di-obfuscate dari pembuat yang tidak dikenal.", "Community uploads are reviewed, but nobody can guarantee a script is safe.": "Unggahan komunitas direview, tapi tidak ada yang bisa menjamin script itu aman.", "FAQ": "FAQ", "What does KEY mean?": "Apa arti KEY?", "The script asks you to get a key (usually from a link) before it works. KEYLESS scripts run without one.": "Script meminta kamu mengambil key (biasanya lewat tautan) sebelum bisa jalan. Script KEYLESS jalan tanpa key.", "What is VERIFIED?": "Apa itu VERIFIED?", "The script has been checked by the ScriptBlox team or marked as working by its source.": "Script sudah dicek tim ScriptBlox atau ditandai berfungsi oleh sumbernya.", "What is PATCHED?": "Apa itu PATCHED?", "The game or executor changed and the script no longer works. Look for a newer one.": "Game atau executor berubah dan script tidak lagi berfungsi. Cari yang lebih baru.", "What are UNIVERSAL and HUB?": "Apa itu UNIVERSAL dan HUB?", "UNIVERSAL scripts work in many games. A HUB bundles many features or games into one menu.": "Script UNIVERSAL jalan di banyak game. HUB menggabungkan banyak fitur atau game dalam satu menu.", "What is COMMUNITY?": "Apa itu COMMUNITY?", "Scripts uploaded by NexScript users. They go live after review.": "Script yang diunggah pengguna NexScript. Tayang setelah direview.", "A script is not working. Why?": "Script tidak jalan. Kenapa?", "It may be patched or outdated, need a key, or your executor may not support it. Try another script or a different executor.": "Mungkin sudah patched atau kedaluwarsa, butuh key, atau executor-mu tidak mendukungnya. Coba script lain atau executor berbeda.", "How do I upload my own script?": "Bagaimana cara mengunggah script sendiri?", "Create an account, log in, open Upload, fill in the form and submit. It appears in Community after review.": "Buat akun, login, buka Unggah, isi formulir lalu kirim. Script tampil di Komunitas setelah direview.", "Terms of use": "Syarat penggunaan", "NexScript is a free directory. Script data comes from ScriptBlox and from user uploads.": "NexScript adalah direktori gratis. Data script berasal dari ScriptBlox dan unggahan pengguna.", "You use scripts at your own risk. We are not responsible for bans, losses or damage.": "Kamu memakai script dengan risiko sendiri. Kami tidak bertanggung jawab atas pemblokiran, kerugian, atau kerusakan.", "Do not upload malware, stolen content or anything that steals accounts. We may remove content or accounts without notice.": "Jangan mengunggah malware, konten curian, atau apa pun yang mencuri akun. Kami dapat menghapus konten atau akun tanpa pemberitahuan.", "We are not affiliated with Roblox or ScriptBlox.": "Kami tidak berafiliasi dengan Roblox atau ScriptBlox.", "Privacy": "Privasi", "If you sign up we store your email and password (hashed) with our login provider, Supabase.": "Jika kamu mendaftar, email dan kata sandi (ter-hash) disimpan di penyedia login kami, Supabase.", "We store your favorites, likes, ratings, uploads and chat messages (chat keeps only the latest 250 messages).": "Kami menyimpan favorit, like, rating, unggahan, dan pesan chat-mu (chat hanya menyimpan 250 pesan terakhir).", "Your device stores some data locally, such as favorites and your chat nickname.": "Perangkatmu menyimpan sebagian data secara lokal, seperti favorit dan pengaturan bahasa.", "Ad networks such as Adsterra may use cookies to show ads.": "Jaringan iklan seperti Adsterra dapat memakai cookie untuk menampilkan iklan.", "To delete your account or data, contact us through the links on the About page.": "Untuk menghapus akun atau datamu, hubungi kami lewat tautan di halaman Tentang.", "This page is a general summary, not legal advice.": "Halaman ini hanya ringkasan umum, bukan nasihat hukum.", "Full-stack developer · Roblox enthusiast · Building tools for the community": "Developer full-stack · Penggemar Roblox · Membuat alat untuk komunitas", "I build bots, websites, and tools for the Roblox scripting community. NexScript is one of my projects — free, ad-supported, and always improving.": "Aku membuat bot, website, dan alat untuk komunitas scripting Roblox. NexScript adalah salah satu proyekku — gratis, didukung iklan, dan terus berkembang.", "5+ Projects": "5+ Proyek", "0 User :)": "0 Pengguna :)", "3 Years Coding": "3 Tahun Ngoding", "Join My Discord For A Cookies": "Gabung Discord-ku untuk Dapat Cookies", "Free Executor": "Executor Gratis", "Join My Discord": "Gabung Discord-ku", "Invite link coming soon": "Link undangan segera hadir", "Buy Me a Coffee": "Traktir Aku Kopi", "Support the development of NexScript": "Dukung pengembangan NexScript", "☕ Buy Me a Coffee": "☕ Traktir Aku Kopi", "Links": "Tautan", "NexScript is a free Roblox script discovery tool.": "NexScript adalah alat penemu script Roblox gratis.", "© 2026 NexScript. Powered by ScriptBlox. Not affiliated with Roblox.": "© 2026 NexScript. Didukung oleh ScriptBlox. Tidak berafiliasi dengan Roblox.", "Powered by ScriptBlox": "Didukung oleh ScriptBlox", "Enter Admin Key": "Masukkan Kunci Admin", "Enter": "Masuk", "Checking...": "Memeriksa...", "Wrong key": "Kunci salah"};
+const tr=s=>(LANG==='id'&&ID[s])||s;
+// ---- Owner avatar ----
+const OWNER_IMG='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAMCAggICggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoICAgICgkKCAgLDQoIDQgICQgBAwQEBgUGCgYGCg8OCw4QEA8PEBANDw8NEA8QEBANDQ4QEA0NDQ0NDQ8QDw0QDw0NDw0NDQ0NDQ0PDQ0NDQ0NDf/AABEIAMgAyAMBEQACEQEDEQH/xAAeAAEAAgIDAQEBAAAAAAAAAAAABwgFBgEECQIDCv/EAE8QAAIBAwIDBQQGBAkGDwAAAAECAwAEEQUSBhMhBwgiMUEUMlFhCSNCcYGRJDNSsxVicnOCkqGxwSVTZJSjwiY1Q0RjZXR1g5OyxNLh8P/EABwBAQACAgMBAAAAAAAAAAAAAAAGBwQFAgMIAf/EAEURAAEDAgMFBQQHBQcDBQAAAAEAAgMEEQUGIRIxQVFxYYGRobETIsHRFDJCYnLh8BUjM1KiNDWCkrLC8SZD4hYkJVPS/9oADAMBAAIRAxEAPwD1ToiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIuCaItP7Te2LS9Fh9q1W/trGEkhGnkCtKwBbZDGMyTybQTy4UdiAenSiLNcLcXWt9DFd2dxDdW0y74p4JFlikX4q6Eg48iM5BBBAIIoiywNEXNESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJRFU/6QDto4j0WziuNGjtorR3EV/qckbXM+miQ7EmFtsMQiyQTcutyEYBWgwwccHuLWkgX7FzY0OcATbt5KoHC3YJb3Ui6pq17JxBezoHF3dSNNblGO9RDGXdDCCx2RljFH9iKLyFIY1m2tc90MTfZAH/ABePyV24PlKiaxs0p9qSP8Ph81++n8I6xw3NJqHCdyY1djJdaLcEyWN0TjJSNnQCTAwpEkUoAVUnVByW3GCZzD7Q12h3B/zHxGvVafGsmlt5qEabyy/+n5dNyuJ3Ze/9pWvs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';
+// ---- Chat/username filter (English + Indonesian, slang, leetspeak). The database runs the same check. ----
+const BAD_SUB=new RegExp("(?:f+u+c+k+|b+i+t+c+h+|n+i+g+g+e+r+|n+i+g+g+a+|f+a+g+g+o+t+|w+h+o+r+e+|p+u+s+s+y+|a+s+s+h+o+l+e+|d+i+c+k+h+e+a+d+|c+o+c+k+s+u+c+k+e+r+|s+h+i+t+h+e+a+d+|a+n+j+i+n+g+|b+a+n+g+s+a+t+|k+o+n+t+o+l+|m+e+m+e+k+|n+g+e+n+t+o+t+|j+a+n+c+o+k+|j+a+n+c+u+k+|b+a+j+i+n+g+a+n+|p+u+k+i+m+a+k+|p+e+l+a+c+u+r+|g+o+b+l+o+k+|b+a+n+g+k+e+)");
+const BAD_EXACT=new RegExp("\\b(?:s+h+i+t+|s+h+i+t+t+y+|s+h+i+t+e+|f+u+k+|f+c+k+|f+c+u+k+|f+u+q+|p+h+u+c+k+|c+u+n+t+|c+u+n+t+s+|d+i+c+k+|d+i+c+k+s+|c+o+c+k+|c+o+c+k+s+|s+l+u+t+|s+l+u+t+s+|b+a+s+t+a+r+d+|b+a+s+t+a+r+d+s+|r+e+t+a+r+d+|r+e+t+a+r+d+e+d+|r+e+t+a+r+d+s+|f+a+g+|f+a+g+s+|k+y+s+|t+w+a+t+|w+a+n+k+e+r+|p+r+i+c+k+|p+i+s+s+|p+o+r+n+|p+o+r+n+o+|t+i+t+s+|d+i+l+d+o+|b+l+o+w+j+o+b+|h+a+n+d+j+o+b+|c+u+m+|j+i+z+z+|a+n+j+g+|a+n+j+r+i+t+|a+n+y+i+n+g+|n+j+i+n+g+|a+n+j+i+r+|a+n+j+i+n+k+|b+g+s+t+|b+g+s+d+|b+j+i+n+g+a+n+|k+n+t+l+|k+n+t+o+l+|k+o+n+t+h+o+l+|m+m+k+|p+e+p+e+k+|n+g+e+n+t+o+d+|e+n+t+o+t+|n+g+e+w+e+|c+o+k+|c+u+k+|a+s+u+|t+a+i+|t+a+e+|g+o+b+l+o+g+|g+b+l+k+|t+o+l+o+l+|i+d+i+o+t+|p+a+n+t+e+k+|t+i+t+i+t+|b+o+k+e+p+|c+o+l+m+e+k+|n+g+o+c+o+k+|p+e+r+e+k+|l+o+n+t+e+|j+a+b+l+a+y+|s+u+n+d+a+l+|b+i+s+p+a+k+|k+i+m+a+k+|p+u+k+i+|k+e+p+a+r+a+t+|d+a+n+c+o+k+|d+a+n+c+u+k+|j+a+n+c+i+k+)\\b");
+const LEET={'0':'o','1':'i','3':'e','4':'a','5':'s','7':'t','8':'b','@':'a','$':'s','!':'i','|':'i','+':'t'};
+function normText(t){
+  let s=String(t||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f\u200b-\u200f\u2060\ufeff]/g,'');
+  s=s.replace(/[0134578@$!|+]/g,c=>LEET[c]);
+  return s.replace(/([a-z])[.\-_*]+(?=[a-z])/g,'$1');
+}
+function isProfane(t){
+  const s=normText(t);
+  if(BAD_SUB.test(s)||BAD_EXACT.test(s))return true;
+  const runs=s.match(/\b[a-z](?:[\s.\-_*,]+[a-z]){2,}\b/g)||[];   // "f u c k"
+  for(const r of runs){const j=r.replace(/[^a-z]/g,'');if(BAD_SUB.test(j)||BAD_EXACT.test(j))return true}
+  return false;
+}
+const RESERVED=['admin','administrator','owner','developer','dev','nexscript','scriptfinder','moderator','mod','staff','support','system'];
+const validUsername=n=>/^[A-Za-z0-9_]{3,20}$/.test(n)&&RESERVED.indexOf(n.toLowerCase())<0&&!isProfane(n);
+const backoff=t=>Math.round(800*Math.pow(2,t)+Math.random()*300);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let lastReq=0;
+async function api(path,signal,opt){
+  const wait=1200-(Date.now()-lastReq); if(wait>0&&!(opt&&opt.immediate)) await sleep(wait); lastReq=Date.now();
+  const MAX=3; let kind='network';
+  for(let t=0;t<MAX;t++){
+    if(signal&&signal.aborted) throw new DOMException('Aborted','AbortError');
+    const ac=new AbortController(); const to=setTimeout(()=>ac.abort(),FETCH_TIMEOUT);
+    const onAbort=()=>ac.abort(); signal&&signal.addEventListener('abort',onAbort);
+    let delay=backoff(t);
+    try{
+      log('GET',path,'attempt',t+1);
+      const r=await fetch(API+path,{signal:ac.signal});
+      if(r.status===429){
+        kind='429'; const ra=Number(r.headers.get('Retry-After'));
+        delay=ra>0?Math.min(ra*1000,15000):Math.min(2000*Math.pow(2,t),10000);
+        log('429 rate limited, waiting',delay,'ms');
+      }else if(r.status>=500){kind='network';log('server error',r.status)}
+      else if(!r.ok){throw new Error('HTTP '+r.status)}
+      else return await r.json();
+    }catch(e){
+      if(signal&&signal.aborted) throw e;
+      if(e.message&&e.message.indexOf('HTTP')===0) throw e;
+      kind='network'; log('network/timeout error',e.name,'- retry in',delay,'ms');
+    }finally{clearTimeout(to);signal&&signal.removeEventListener('abort',onAbort)}
+    if(t<MAX-1) await sleep(delay);
+  }
+  throw new Error(kind==='429'?'Rate limited':'Network error');
+}
+const store={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const abs=u=>!u?null:u.startsWith('/')?API+u:u;
+const ago=d=>{const s=(Date.now()-new Date(d))/1e3;for(const[n,l]of[[31536e3,'y'],[2592e3,'mo'],[86400,'d'],[3600,'h'],[60,'m']])if(s>=n)return Math.floor(s/n)+l+' ago';return 'just now'};
+const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':(n||0);
+
+const P={home:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',flame:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 2 4-5z',spark:'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1z',badge:'M5 12l5 5L20 7',unlock:'M7 11V7a5 5 0 0 1 9-3M5 11h14v10H5z',heart:'M12 21s-8-5-8-11a5 5 0 0 1 8-3 5 5 0 0 1 8 3c0 6-8 11-8 11z',info:'M12 8h.01M11 12h1v5h1M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0',coffee:'M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M7 2v3M11 2v3',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5',x:'M6 6l12 12M18 6L6 18',menu:'M3 6h18M3 12h18M3 18h18',copy:'M9 9h11v11H9zM5 15V5h10',back:'M15 6l-6 6 6 6',shield:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z',upload:'M12 16V4M7 9l5-5 5 5M4 20h16',chat:'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',gamepad:'M6 12h4M8 10v4M15 13h.01M18 11h.01M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.5 7A3 3 0 0 0 4.2 19a3 3 0 0 0 2.3-1l1.5-2h8l1.5 2a3 3 0 0 0 2.300 1 3 3 0 0 0 2.900-3.800l-1.500-7A4 4 0 0 0 17.300 5z',book:'M4 19.500A2.500 2.500 0 0 1 6.500 17H20V3H6.500A2.500 2.500 0 0 0 4 5.500zM4 19.500A2.500 2.500 0 0 0 6.500 22H20v-5',file:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8',users:'M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9'};
+const Ic=({n,s=18,fill,className=''})=><svg width={s} height={s} viewBox="0 0 24 24" fill={fill?'currentColor':'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true"><path d={P[n]}/></svg>;
+
+// Adsterra banner units (key per size). Rendered inside iframes (no sandbox, so the ad network can read the site origin).
+const UNITS={'320x50':'bed7dfe003862261a1e107e750f23564','160x600':'eabef3630ed2813d0755eab9d06ef03d','300x250':'a7dfb0ed7c5b0b02159266a25db87269','728x90':'999f7ca5ca75c9a852838968e645f602'};
+const adDoc=(k,w,h)=>`<!DOCTYPE html><html><body style="margin:0;overflow:hidden;background:transparent"><script>atOptions={'key':'${k}','format':'iframe','height':${h},'width':${w},'params':{}};<\/script><script src="https://bicea.org/22/${k}"><\/script></body></html>`;
+const AdSlot=({kind='wide',label,className=''})=>{
+  const ref=useRef();const [w,setW]=useState(0);
+  useIso(()=>{const el=ref.current;if(!el)return;setW(el.getBoundingClientRect().width);const ro=new ResizeObserver(e=>setW(e[0].contentRect.width));ro.observe(el);return()=>ro.disconnect()},[]);
+  const u=kind==='wide'?(w>=728?'728x90':'320x50'):kind;
+  const [W,H]=u.split('x').map(Number);
+  return <div ref={ref} className={'flex justify-center '+className} style={{width:'100%',minHeight:H}} aria-label="Advertisement">
+    {w>0&&<iframe key={u} title={'Ad '+label} srcDoc={adDoc(UNITS[u],W,H)} width={W} height={H} scrolling="no" frameBorder="0" style={{border:0,maxWidth:'100%'}}/>}</div>;
+};
+
+// ---------- Aesthetic art (inline SVG / CSS, no external images) ----------
+const hashHue=n=>[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%360;
+const artBg=name=>{const h=hashHue(name);return {background:`radial-gradient(circle at 18% 22%,hsla(${(h+40)%360},90%,62%,.55),transparent 42%),radial-gradient(circle at 82% 78%,hsla(${(h+300)%360},90%,58%,.5),transparent 46%),linear-gradient(135deg,hsl(${h},60%,20%),hsl(${(h+60)%360},60%,12%))`}};
+const HeroArt=()=><svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="hg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#0a0f2c"/><stop offset=".55" stopColor="#1e1b6b"/><stop offset="1" stopColor="#6d28d9"/></linearGradient>
+    <linearGradient id="hg-sun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#22d3ee"/><stop offset="1" stopColor="#8b5cf6"/></linearGradient>
+    <mask id="hg-mask"><rect width="800" height="260" fill="#fff"/>{[0,1,2,3,4].map(i=><rect key={i} x="500" y={128+i*13} width="200" height={2+i*1.6} fill="#000"/>)}</mask>
+  </defs>
+  <rect width="800" height="260" fill="url(#hg-sky)"/>
+  {Array.from({length:40}).map((_,i)=><circle key={i} cx={(i*97)%800} cy={(i*53)%110} r={(i%4)*.35+.5} fill="#fff" opacity={.25+(i%5)*.12}/>)}
+  <circle cx="600" cy="130" r="72" fill="url(#hg-sun)" mask="url(#hg-mask)"/>
+  <polygon points="0,190 90,120 170,180 260,100 360,190 460,130 560,190 680,110 800,190 800,260 0,260" fill="#0d1240" opacity=".95"/>
+  <polygon points="0,215 120,165 220,210 330,150 450,215 580,160 700,215 800,180 800,260 0,260" fill="#080c2e"/>
+  <g stroke="#22d3ee" strokeOpacity=".32" strokeWidth="1">
+    {Array.from({length:17}).map((_,i)=><line key={'v'+i} x1="400" y1="205" x2={-400+i*100} y2="260"/>)}
+    {[212,222,236,254].map(y=><line key={y} x1="0" y1={y} x2="800" y2={y}/>)}
+  </g>
+</svg>;
+const Banner=({title,sub,hue=220})=><div className="relative overflow-hidden rounded-2xl glass p-6 md:p-8 mb-5" style={{background:`linear-gradient(135deg,hsla(${hue},70%,25%,.55),hsla(${(hue+60)%360},70%,15%,.4))`}}>
+  <svg className="absolute right-0 top-0 h-full w-2/3 opacity-70" viewBox="0 0 400 200" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+    {[0,1,2,3,4].map(i=><circle key={i} cx="320" cy="60" r={30+i*28} fill="none" stroke={`hsl(${(hue+i*18)%360},85%,65%)`} strokeOpacity={.5-i*.08} strokeWidth="1.5"/>)}
+    {Array.from({length:18}).map((_,i)=><circle key={'d'+i} cx={200+(i*37)%190} cy={20+(i*53)%160} r={1.5+(i%3)} fill={`hsl(${(hue+40)%360},90%,75%)`} opacity=".6"/>)}
+    <path d="M0 190 Q100 130 200 170 T400 140 V200 H0z" fill={`hsl(${hue},70%,55%)`} opacity=".18"/>
+  </svg>
+  <div className="relative"><h1 className="hd text-2xl md:text-3xl font-bold text-white">{tr(title)}</h1>{sub&&<p className="text-slate-300 mt-1 max-w-md text-sm md:text-base">{tr(sub)}</p>}</div></div>;
+const LogoMark=()=><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#3b82f6"/><stop offset="1" stopColor="#22d3ee"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)"/><circle cx="14" cy="14" r="6" fill="none" stroke="#fff" strokeWidth="2.5"/><path d="M19 19l6 6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>;
+const BANNERS={community:['Community Scripts','Scripts shared by the community, reviewed before they go live.',200],chat:['Global Chat','Talk with other script hunters in real time.',280],upload:['Upload a Script','Share your script with the community.',160],games:['Popular Games','Pick a game and jump straight to its scripts.',320],guide:['Guide & FAQ','Everything to know before running a script.',190],legal:['Terms & Privacy','How NexScript handles your data.',240]};
+
+const GAMES=['Blox Fruits','Pet Simulator 99','Arsenal','Brookhaven','Doors','Murder Mystery 2','Blade Ball','Da Hood','Adopt Me','Tower of Hell','King Legacy','Fisch'];
+function GamesPage({onPick}){
+  return <div className="page grid grid-cols-2 gap-3 md:gap-4">{GAMES.map(g=>
+    <button key={g} onClick={()=>onPick(g)} aria-label={'Browse '+g+' scripts'} className="card relative overflow-hidden rounded-xl text-left p-4 h-28 border border-white/10" style={artBg(g)}>
+      <span className="hd font-bold text-white text-base leading-tight block pr-2">{g}</span>
+      <span className="absolute bottom-3 left-4 text-xs text-white/80">{tr("Browse scripts →")}</span></button>)}</div>;
+}
+const Faq=({q,a})=><details className="glass rounded-xl p-4"><summary className="cursor-pointer font-semibold text-white">{q}</summary><p className="text-slate-300 text-sm mt-2">{a}</p></details>;
+function GuidePage(){
+  return <div className="page space-y-5">
+    <div className="glass rounded-2xl p-5"><h2 className="hd text-lg text-white mb-3">{tr("How to use a script")}</h2>
+      <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-300"><li>{tr("Open a script and tap")} <b>{tr("Copy Script")}</b>.</li><li>{tr("Join the matching Roblox game.")}</li><li>{tr("Open your executor, paste the script and run it.")}</li><li>{tr("If the script asks for a key, follow the steps shown by the script.")}</li></ol>
+      <p className="text-xs text-slate-500 mt-3">{tr("NexScript does not provide executors or host game files.")}</p></div>
+    <div className="glass rounded-2xl p-5 border-amber-400/30"><h2 className="hd text-lg text-white mb-3">{tr("Stay safe")}</h2>
+      <ul className="list-disc pl-5 space-y-2 text-sm text-slate-300"><li>{tr("Using scripts can break Roblox's Terms of Service and may get an account banned. Use at your own risk, ideally on an alternate account.")}</li><li>{tr("Never run a script that asks for your password, your .ROBLOSECURITY cookie or your Robux.")}</li><li>{tr("Be careful with heavily obfuscated code from unknown authors.")}</li><li>{tr("Community uploads are reviewed, but nobody can guarantee a script is safe.")}</li></ul></div>
+    <div className="space-y-2"><h2 className="hd text-lg text-white">{tr("FAQ")}</h2>
+      <Faq q={tr("What does KEY mean?")} a={tr("The script asks you to get a key (usually from a link) before it works. KEYLESS scripts run without one.")}/>
+      <Faq q={tr("What is VERIFIED?")} a={tr("The script has been checked by the ScriptBlox team or marked as working by its source.")}/>
+      <Faq q={tr("What is PATCHED?")} a={tr("The game or executor changed and the script no longer works. Look for a newer one.")}/>
+      <Faq q={tr("What are UNIVERSAL and HUB?")} a={tr("UNIVERSAL scripts work in many games. A HUB bundles many features or games into one menu.")}/>
+      <Faq q={tr("What is COMMUNITY?")} a={tr("Scripts uploaded by NexScript users. They go live after review.")}/>
+      <Faq q={tr("A script is not working. Why?")} a={tr("It may be patched or outdated, need a key, or your executor may not support it. Try another script or a different executor.")}/>
+      <Faq q={tr("How do I upload my own script?")} a={tr("Create an account, log in, open Upload, fill in the form and submit. It appears in Community after review.")}/></div>
+  </div>;
+}
+function LegalPage(){
+  const H=({children})=><h2 className="hd text-lg text-white mb-2">{children}</h2>;
+  return <div className="page space-y-5 text-sm text-slate-300">
+    <div className="glass rounded-2xl p-5"><H>{tr("Terms of use")}</H><ul className="list-disc pl-5 space-y-2"><li>{tr("NexScript is a free directory. Script data comes from ScriptBlox and from user uploads.")}</li><li>{tr("You use scripts at your own risk. We are not responsible for bans, losses or damage.")}</li><li>{tr("Do not upload malware, stolen content or anything that steals accounts. We may remove content or accounts without notice.")}</li><li>{tr("We are not affiliated with Roblox or ScriptBlox.")}</li></ul></div>
+    <div className="glass rounded-2xl p-5"><H>{tr("Privacy")}</H><ul className="list-disc pl-5 space-y-2"><li>{tr("If you sign up we store your email and password (hashed) with our login provider, Supabase.")}</li><li>{tr("We store your favorites, likes, ratings, uploads and chat messages (chat keeps only the latest 250 messages).")}</li><li>{tr("Your device stores some data locally, such as favorites and your chat nickname.")}</li><li>{tr("Ad networks such as Adsterra may use cookies to show ads.")}</li><li>{tr("To delete your account or data, contact us through the links on the About page.")}</li></ul></div>
+    <p className="text-xs text-slate-500">{tr("This page is a general summary, not legal advice.")}</p></div>;
+}
+
+function Thumb({s,className='',sm=false}){
+  const chain=useMemo(()=>[abs(s.image),abs(s.game&&s.game.imageUrl)].filter(Boolean),[s]);
+  const [i,setI]=useState(0);
+  const name=(s.game&&s.game.name)||s.title;
+  const hue=[...name].reduce((a,c)=>a+c.charCodeAt(0),0)%360;
+  return <div className={'relative overflow-hidden bg-slate-900 '+className} style={{aspectRatio:'16/9'}}>
+    {i<chain.length?<img src={chain[i]} alt={name+' thumbnail'} loading="lazy" onError={()=>setI(i+1)} className="w-full h-full object-cover"/>
+    :<div className={'w-full h-full flex items-center justify-center hd font-bold text-white/90 text-center '+(sm?'text-sm p-2':'text-xl p-4')} style={artBg(name)}>{name}</div>}
+    <div className={'absolute inset-x-0 bottom-0 font-semibold text-white '+(sm?'p-2 pt-6 text-xs line-clamp-1':'p-3 pt-8 text-sm')} style={{background:'linear-gradient(transparent,rgba(5,10,40,.9))'}}>{name}</div>
+    <span className={'absolute rounded-full bg-black/60 flex items-center gap-1 '+(sm?'top-1.5 left-1.5 text-[10px] px-1.5 py-0.5':'top-2 left-2 text-xs px-2 py-1')}><Ic n="eye" s={12}/>{fmt(s.views)}</span>
+    <span className={'absolute flex bg-black/60 rounded-full '+(sm?'top-1.5 right-1.5 gap-1 px-1.5 py-1':'top-2 right-2 gap-1.5 px-2 py-1.5')}>
+      {s.verified&&<i className="w-2 h-2 rounded-full bg-blue-500"/>}{s.key&&<i className="w-2 h-2 rounded-full bg-amber-400"/>}{s.isPatched&&<i className="w-2 h-2 rounded-full bg-red-500"/>}{s.keyless&&<i className="w-2 h-2 rounded-full bg-cyan-400"/>}</span>
+  </div>;
+}
+const Badges=({s})=><div className="flex flex-wrap gap-1.5">{[[s.key,'KEY','amber'],[s.keyless,'KEYLESS','cyan'],[s.isUser,'COMMUNITY','cyan'],[s.isHub,'HUB','purple'],[s.isUniversal,'UNIVERSAL','blue'],[s.verified,'VERIFIED','green']].filter(b=>b[0]).map(b=>
+  <span key={b[1]} className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full border border-${b[2]}-400/40 text-${b[2]}-300 bg-${b[2]}-400/10`}>{b[1]}</span>)}</div>;
+
+function Card({s,fav,onFav,onOpen,i}){
+  return <article className="card glass rounded-xl overflow-hidden cursor-pointer" style={{animationDelay:(i%10)*40+'ms'}} onClick={()=>onOpen(s)} tabIndex={0} onKeyDown={e=>e.key==='Enter'&&onOpen(s)} aria-label={s.title}>
+    <Thumb s={s} sm/>
+    <div className="p-2.5 md:p-3 relative">
+      <button aria-label={fav?'Remove bookmark':'Bookmark script'} onClick={e=>{e.stopPropagation();onFav(s)}} className={'absolute top-0 right-0 p-3 '+(fav?'text-red-400':'text-slate-400 hover:text-red-300')}><Ic n="heart" s={16} fill={fav}/></button>
+      <h3 className="text-sm font-semibold text-white line-clamp-2 pr-8 leading-snug">{s.title}</h3>
+      <p className="text-[11px] text-slate-400 mt-0.5 mb-2 line-clamp-1">{s.game&&s.game.name}</p>
+      <Badges s={s}/>
+      <div className="flex gap-2.5 mt-2 text-[11px] text-slate-400"><span>👍 {fmt(s.likeCount)}</span><span className="hidden sm:inline">👎 {fmt(s.dislikeCount)}</span><span>▶ {fmt(s.executes)}</span><span className="ml-auto">{ago(s.createdAt)}</span></div>
+    </div></article>;
+}
+const Skel=()=><div className="glass rounded-xl overflow-hidden"><div className="sk" style={{aspectRatio:'16/9'}}/><div className="p-2.5 space-y-2"><div className="sk h-4 rounded w-3/4"/><div className="sk h-3 rounded w-1/3"/></div></div>;
+
+function Grid({mode,query,filter,favs,onFav,onOpen,toast}){
+  const [items,setItems]=useState([]);const [more,setMore]=useState(mode!=='fav');const [loading,setLoading]=useState(false);
+  const seen=useRef(new Set());const sent=useRef();const busy=useRef(false);const pageRef=useRef(1);const moreRef=useRef(mode!=='fav');const ac=useRef();
+  const key=[mode,query,filter].join('|');const keyRef=useRef(key);
+  const url=useCallback(p=>{
+    if(mode==='fav')return null;
+    // filters are applied by the API (no client-side filtering)
+    const f={verified:'&verified=1',keyless:'&keyless=1',universal:'&universal=1',nokey:'&key=0',all:''}[filter]||'';
+    if(query)return `/api/search?q=${encodeURIComponent(query)}&page=${p}${f}`;
+    if(mode==='trending'&&p===1)return '/api/trending';
+    const m={trending:'&sortBy=views&order=desc',newest:'&sortBy=createdAt&order=desc',views:'&sortBy=views&order=desc',rated:'&sortBy=likeCount&order=desc',verified:'&verified=1',keyless:'&keyless=1',home:''}[mode]||'';
+    return `/api/fetch?page=${p}&mode=free${m}${f}`;
+  },[mode,query,filter]);
+  useEffect(()=>{
+    keyRef.current=key;if(ac.current)ac.current.abort();
+    seen.current=new Set();pageRef.current=1;moreRef.current=mode!=='fav';busy.current=false;
+    setItems([]);setMore(moreRef.current);setLoading(false);
+    return()=>{if(ac.current)ac.current.abort()};
+  },[key]);
+  const load=useCallback(async()=>{
+    if(busy.current||!moreRef.current)return;
+    const u=url(pageRef.current);if(!u)return;
+    const myKey=keyRef.current;
+    busy.current=true;setLoading(true);ac.current=new AbortController();
+    try{
+      const d=await api(u,ac.current.signal,{immediate:pageRef.current===1});
+      if(myKey!==keyRef.current)return;
+      const r=d.result||d;const list=r.scripts||[];
+      const fresh=list.filter(x=>{const k=x._id||x.slug;if(seen.current.has(k))return false;seen.current.add(k);return true});
+      setItems(p=>[...p,...fresh]);
+      const np=(mode==='trending'&&!query&&pageRef.current===1)?2:r.nextPage;
+      if(np)pageRef.current=np;
+      moreRef.current=!!np&&list.length>0;setMore(moreRef.current);
+      log('loaded',u,list.length,'items, next page:',np||'none');
+    }catch(e){
+      if(e.name!=='AbortError'&&myKey===keyRef.current){toast(e.message==='Rate limited'?tr("Rate limited. Try again shortly."):tr("Failed to load scripts."));moreRef.current=false;setMore(false)}
+    }finally{
+      if(myKey===keyRef.current){busy.current=false;setLoading(false)}
+    }
+  },[url,mode,query,toast]);
+  useEffect(()=>{const el=sent.current;if(!el)return;const o=new IntersectionObserver(e=>e[0].isIntersecting&&load(),{rootMargin:'300px'});o.observe(el);return()=>o.disconnect()},[load]);
+  const list=mode==='fav'?favs:items;
+  if(mode==='fav'&&!list.length)return <Empty t="No favorites yet" d="Tap the heart on any script to save it here."/>;
+  if(!loading&&!more&&!list.length)return <Empty t="No scripts found" d="Try a different keyword like “blox fruits” or “universal”."/>;
+  const out=[];list.forEach((s,i)=>{out.push(<Card key={s._id||s.slug} i={i} s={s} fav={favs.some(f=>(f._id||f.slug)===(s._id||s.slug))} onFav={onFav} onOpen={onOpen}/>);
+    if((i+1)%6===0)out.push(<div key={'ad'+i} className="col-span-full"><AdSlot kind="wide" label="in-grid"/></div>)});
+  return <div><div className="grid grid-cols-2 gap-3 md:gap-4">{out}{loading&&Array.from({length:4}).map((_,i)=><Skel key={'s'+i}/>)}</div>
+    <div ref={sent} className="h-10"/>
+    <p className="text-center text-sm text-slate-400 py-4" role="status">{loading?tr("Loading more scripts..."):(!more&&list.length?tr("You've reached the end"):'')}</p></div>;
+}
+const Empty=({t,d})=><div className="glass rounded-2xl p-12 text-center"><svg className="mx-auto mb-4" width="96" height="96" viewBox="0 0 96 96" fill="none" aria-hidden="true"><circle cx="48" cy="48" r="40" fill="#3b82f6" opacity=".12"/><circle cx="42" cy="42" r="17" stroke="#60a5fa" strokeWidth="4"/><path d="M55 55l17 17" stroke="#22d3ee" strokeWidth="5" strokeLinecap="round"/><circle cx="72" cy="24" r="3" fill="#8b5cf6"/><circle cx="22" cy="70" r="2.5" fill="#22d3ee"/><circle cx="76" cy="62" r="2" fill="#60a5fa"/></svg><h3 className="hd text-xl text-white mb-2">{tr(t)}</h3><p className="text-slate-400">{tr(d)}</p></div>;
+
+function Rating({slug,user,toast}){
+  const [st,setSt]=useState({avg:0,count:0});const [mine,setMine]=useState(0);const [hover,setHover]=useState(0);
+  const uid=user&&user.id;
+  const load=useCallback(async()=>{
+    if(!sb)return;
+    const a=await sb.from('rating_stats').select('avg_rating,rating_count').eq('slug',slug).maybeSingle();
+    setSt(a.data?{avg:Number(a.data.avg_rating),count:a.data.rating_count}:{avg:0,count:0});
+    if(uid){const m=await sb.from('ratings').select('rating').eq('slug',slug).eq('user_id',uid).maybeSingle();setMine(m.data?m.data.rating:0)}else setMine(0);
+  },[slug,uid]);
+  useEffect(()=>{load()},[load]);
+  const rate=async n=>{
+    if(!user){toast(tr("Log in to rate this script."));return}
+    const prev=mine;setMine(n);
+    const {error}=await sb.from('ratings').upsert({user_id:user.id,slug,rating:n});
+    if(error){log('rating error',error);setMine(prev);toast(tr("Could not save rating."))}else load();
+  };
+  const shown=hover||mine;
+  return <div className="flex items-center gap-2 flex-wrap"><div className="flex" onMouseLeave={()=>setHover(0)}>{[1,2,3,4,5].map(n=>
+    <button key={n} type="button" onClick={()=>rate(n)} onMouseEnter={()=>setHover(n)} aria-label={'Rate '+n+' stars'} className={'px-1.5 py-1 text-2xl leading-none '+(n<=shown?'text-amber-400':'text-slate-600')}>★</button>)}</div>
+    <span className="text-sm text-slate-400">{st.count?st.avg.toFixed(1)+' ('+st.count+' rating'+(st.count>1?'s':'')+')':tr("No ratings yet")}</span></div>;
+}
+
+function Detail({s,back,favs,onFav,toast,votes,onVote,user}){
+  const [full,setFull]=useState(s);const [copied,setCopied]=useState(false);const [rel,setRel]=useState([]);
+  useEffect(()=>{
+    if(s.isUser){
+      if(!sb)return;
+      sb.from('user_scripts').select('script,description,author').eq('id',s.uid).maybeSingle().then(({data})=>{if(data)setFull(p=>({...p,script:data.script,description:data.description,author:data.author||'Anonymous'}))});
+      return;
+    }
+    const ac=new AbortController();
+    api('/api/script?slug='+s.slug,ac.signal,{immediate:true}).then(d=>{const x=(d.result&&(d.result.script||d.result))||{};setFull(p=>({...p,...x}))}).catch(()=>{});
+    api('/api/search?q='+encodeURIComponent((s.game&&s.game.name)||s.title)+'&page=1',ac.signal).then(d=>setRel(((d.result||{}).scripts||[]).filter(x=>x.slug!==s.slug).slice(0,4))).catch(()=>{});
+    return()=>ac.abort()},[s.slug]);
+  const code=typeof full.script==='string'?full.script:'-- Loading script...';
+  const copy=async()=>{try{await navigator.clipboard.writeText(code);setCopied(true);setTimeout(()=>setCopied(false),2000)}catch{toast(tr("Copy failed"))}};
+  const vote=(votes&&votes[s.slug])||0;const v=n=>onVote(s.slug,n);
+  const hl=useMemo(()=>code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/(--[^\n]*)|("[^"\n]*"|'[^'\n]*')|\b(local|function|end|if|then|else|elseif|for|while|do|return|true|false|nil|and|or|not|in)\b|\b(\d+)\b/g,(m,c,s2,k,n)=>c?`<span style="color:#64748b">${c}</span>`:s2?`<span style="color:#86efac">${s2}</span>`:k?`<span style="color:#60a5fa">${k}</span>`:`<span style="color:#fbbf24">${n}</span>`),[code]);
+  return <div className="page space-y-5">
+    <button onClick={back} aria-label="Go back" className="flex items-center gap-1 text-blue-300 hover:text-white"><Ic n="back"/>{tr("Back")}</button>
+    <div className="glass rounded-2xl overflow-hidden"><Thumb s={full}/>
+      <div className="p-5 space-y-3"><div className="flex justify-between gap-3"><h1 className="hd text-2xl font-bold text-white">{full.title}</h1>
+        <button aria-label="Bookmark" onClick={()=>onFav(full)} className={favs.some(f=>f.slug===full.slug)?'text-red-400':'text-slate-400'}><Ic n="heart" s={24} fill={favs.some(f=>f.slug===full.slug)}/></button></div>
+        <p className="text-slate-400 text-sm">{full.game&&full.game.name}{full.owner&&full.owner.username?' · by '+full.owner.username:''}{full.isUser&&full.author?' · by '+full.author:''}</p>
+        <Badges s={full}/>
+        {full.isUser&&full.description&&<p className="text-sm text-slate-300 whitespace-pre-wrap break-words">{full.description}</p>}
+        <div className="flex flex-wrap gap-5 text-sm text-slate-300"><span>👁 {fmt(full.views)}</span><span>▶ {fmt(full.executes)}</span><span>{ago(full.createdAt)}</span></div>
+        <Rating slug={s.slug} user={user} toast={toast}/>
+        <div className="flex gap-2"><button aria-label="Like" onClick={()=>v(1)} className={'px-4 py-2 rounded-lg border '+(vote===1?'bg-green-500/20 border-green-400':'border-white/10')}>👍 {fmt((full.likeCount||0)+(vote===1?1:0))}</button>
+          <button aria-label="Dislike" onClick={()=>v(-1)} className={'px-4 py-2 rounded-lg border '+(vote===-1?'bg-red-500/20 border-red-400':'border-white/10')}>👎 {fmt((full.dislikeCount||0)+(vote===-1?1:0))}</button></div>
+      </div></div>
+    <AdSlot kind="wide" label="above code"/>
+    <div className="glass rounded-2xl p-4"><div className="flex justify-between items-center mb-3"><span className="text-sm text-slate-400">{tr("Lua script")}</span>
+      <button onClick={copy} aria-label="Copy script" className="px-4 py-2 rounded-lg text-sm font-semibold text-white flex items-center gap-2" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}><Ic n="copy" s={16}/>{copied?tr("Copied!"):tr("Copy Script")}</button></div>
+      <pre className="overflow-auto max-h-[480px] text-xs leading-relaxed p-4 rounded-xl bg-black/40" dangerouslySetInnerHTML={{__html:hl}}/></div>
+    {rel.length>0&&<div><h2 className="hd text-lg text-white mb-3">{tr("Related scripts")}</h2><div className="grid grid-cols-2 gap-3 md:gap-4">{rel.map((r,i)=><Card key={r._id||r.slug} i={i} s={r} fav={favs.some(f=>f.slug===r.slug)} onFav={onFav} onOpen={x=>{window.scrollTo(0,0);back(x)}}/>)}</div></div>}
+  </div>;
+}
+
+const Social=({href,t})=>href?<a href={href} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg glass hover:border-blue-400 text-sm">{t}</a>:<span aria-disabled="true" className="px-4 py-2 rounded-lg glass text-sm opacity-50">{t} (soon)</span>;
+const About=()=><div className="page space-y-5"><div className="glass rounded-2xl p-8 text-center">
+  <img src={OWNER_IMG} alt="ThisIsBacon" className="w-24 h-24 mx-auto rounded-full object-cover border-2 border-blue-400/60" style={{boxShadow:'0 0 30px rgba(59,130,246,.45)'}}/>
+  <h1 className="hd text-3xl text-white mt-4">ThisIsBacon</h1><p className="text-blue-300 mt-1">{tr("Full-stack developer · Roblox enthusiast · Building tools for the community")}</p>
+  <p className="text-slate-300 max-w-xl mx-auto mt-4">{tr("I build bots, websites, and tools for the Roblox scripting community. NexScript is one of my projects — free, ad-supported, and always improving.")}</p>
+  <div className="flex flex-wrap justify-center gap-3 mt-5"><Social href="https://www.youtube.com/@This-IsBacon" t="YouTube"/><Social href={DISCORD_URL} t="Discord"/><Social href="https://github.com/SCRIPTERcrazy-web" t="GitHub"/><Social href="https://saweria.co/MyMoneyScript" t="Saweria"/></div>
+  <div className="flex flex-wrap justify-center gap-3 mt-5">{['5+ Projects','0 User :)','3 Years Coding'].map(c=><span key={c} className="px-3 py-1 rounded-full text-sm bg-blue-500/15 border border-blue-400/30 text-blue-200">{tr(c)}</span>)}</div></div>
+  <div className="glass rounded-2xl p-8 text-center"><h2 className="hd text-2xl text-white">{tr("Join My Discord For A Cookies")}</h2><p className="text-slate-400 mt-2">{tr("Free Executor")}</p>
+  <a href={DISCORD_URL||undefined} aria-disabled={!DISCORD_URL} target="_blank" rel="noopener noreferrer" className={'inline-block mt-4 px-6 py-3 rounded-xl font-semibold text-white shadow-lg '+(DISCORD_URL?'':'opacity-50 pointer-events-none')} style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)',boxShadow:'0 0 20px rgba(59,130,246,.4)'}}>{DISCORD_URL?tr("Join My Discord"):tr("Invite link coming soon")}</a></div></div>;
+const Donate=()=><div className="page glass rounded-2xl p-12 text-center max-w-xl mx-auto"><h1 className="hd text-3xl text-white">{tr("Buy Me a Coffee")}</h1><p className="text-slate-300 mt-3">{tr("Support the development of NexScript")}</p>
+  <a href="https://saweria.co/MyMoneyScript" target="_blank" rel="noopener noreferrer" className="inline-block mt-6 px-8 py-3 rounded-xl font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#8b5cf6)'}}>{tr("☕ Buy Me a Coffee")}</a></div>;
+
+// Admin auth runs on the server (api/admin-stats.js). No password or Adsterra key lives in this file.
+function Admin(){
+  const [pw,setPw]=useState('');const [ok,setOk]=useState(false);const [pid,setPid]=useState(store.get('pid','3499709'));const [data,setData]=useState(null);const [err,setErr]=useState('');const [upd,setUpd]=useState('');const [busy,setBusy]=useState(false);
+  const load=async()=>{
+    setErr('');
+    if(!ADMIN_API){setErr('Admin API is not configured. Set ADMIN_API at the top of this file (see api/admin-stats.js).');return false}
+    store.set('pid',pid);setBusy(true);
+    try{
+      const r=await fetch(ADMIN_API+'/api/admin-stats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw,publisherId:pid})});
+      if(r.status===401){setErr('Wrong key');return false}
+      if(r.status===403){setErr('403 — API key invalid or expired. Check Adsterra dashboard.');return false}
+      if(r.status===404){setErr('404 — Publisher ID not found. Check your Publisher ID.');return false}
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const d=await r.json();setData(d.items||[]);setUpd(new Date().toLocaleString());return true;
+    }catch(e){log('admin error',e);setErr('Cannot fetch Adsterra stats. Check API key or use dashboard.adsterra.com');return false}
+    finally{setBusy(false)}
+  };
+  if(!ok)return <form onSubmit={async e=>{e.preventDefault();if(await load())setOk(true)}} className="page glass rounded-2xl p-8 max-w-md mx-auto space-y-3"><h1 className="hd text-2xl text-white">{tr("Admin")}</h1>
+    <input type="password" aria-label="Admin key" value={pw} onChange={e=>setPw(e.target.value)} placeholder={tr("Enter Admin Key")} autoComplete="current-password" className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/10 outline-none"/>
+    <button type="submit" disabled={busy} className="px-4 py-2 rounded-lg bg-blue-500 text-white disabled:opacity-60">{busy?tr("Checking..."):tr("Enter")}</button>{err&&<p className="text-red-400 text-sm">{err}</p>}</form>;
+  const sum=f=>(data||[]).reduce((a,x)=>a+(+x[f]||0),0);const imp=sum('impression'),clk=sum('clicks'),rev=sum('revenue');
+  const max=Math.max(1,...(data||[]).map(x=>+x.revenue||0));
+  return <div className="page space-y-5"><h1 className="hd text-2xl text-white">Adsterra Stats</h1>
+    <div className="flex gap-2"><input value={pid} onChange={e=>setPid(e.target.value)} placeholder="Publisher ID" aria-label="Publisher ID" className="px-4 py-2 rounded-lg bg-white/10 border border-white/10 outline-none"/><button onClick={load} disabled={busy} className="px-4 py-2 rounded-lg bg-blue-500 text-white">Load</button></div>
+    <p className="text-xs text-slate-400">Stats may be delayed by up to 24 hours. For real-time, use dashboard.adsterra.com</p>
+    {err&&<p className="text-amber-300 text-sm">{err}</p>}
+    {data&&<><div className="grid grid-cols-2 md:grid-cols-3 gap-4">{[['Impressions',fmt(imp)],['Clicks',fmt(clk)],['Revenue','$'+rev.toFixed(2)],['CTR',(imp?clk/imp*100:0).toFixed(2)+'%'],['CPM','$'+(imp?rev/imp*1000:0).toFixed(2)]].map(([a,b])=><div key={a} className="glass rounded-xl p-4"><p className="text-xs text-slate-400">{a}</p><p className="hd text-2xl text-white">{b}</p></div>)}</div>
+    <div className="glass rounded-xl p-4"><p className="text-sm text-slate-400 mb-3">Daily revenue (last 7 days)</p><div className="flex items-end gap-2 h-40">{data.map((x,i)=><div key={i} className="flex-1 text-center text-[10px]"><div className="rounded-t bg-gradient-to-t from-blue-600 to-cyan-400" style={{height:Math.max(4,(+x.revenue||0)/max*130)}}/>{String(x.date||'').slice(5)}</div>)}</div></div><p className="text-xs text-slate-400">Last updated: {upd}</p></>}</div>;
+}
+
+const slim=s=>({_id:s._id,slug:s.slug,title:s.title,game:s.game?{name:s.game.name,imageUrl:s.game.imageUrl}:undefined,image:s.image,verified:s.verified,key:s.key,keyless:s.keyless,views:s.views,executes:s.executes,isUniversal:s.isUniversal,isHub:s.isHub,isPatched:s.isPatched,likeCount:s.likeCount,dislikeCount:s.dislikeCount,createdAt:s.createdAt,isUser:s.isUser,uid:s.uid,description:s.description,author:s.author});
+
+// Cloudflare Turnstile widget (renders nothing when TURNSTILE_SITEKEY is empty). Bump `nonce` to reset it.
+function Captcha({onToken,nonce}){
+  const ref=useRef();const id=useRef();
+  useEffect(()=>{
+    if(!TURNSTILE_SITEKEY)return;
+    const draw=()=>{if(window.turnstile&&ref.current&&id.current===undefined)id.current=window.turnstile.render(ref.current,{sitekey:TURNSTILE_SITEKEY,theme:'dark',callback:onToken,'expired-callback':()=>onToken('')})};
+    if(window.turnstile)draw();else{
+      let sc=document.getElementById('turnstile-api');
+      if(!sc){sc=document.createElement('script');sc.id='turnstile-api';sc.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';sc.async=true;document.head.appendChild(sc)}
+      sc.addEventListener('load',draw);
+    }
+    return()=>{try{if(window.turnstile&&id.current!==undefined)window.turnstile.remove(id.current)}catch(e){}id.current=undefined};
+  },[]);
+  useEffect(()=>{if(nonce&&window.turnstile&&id.current!==undefined){try{window.turnstile.reset(id.current)}catch(e){}onToken('')}},[nonce]);
+  return TURNSTILE_SITEKEY?<div ref={ref}/>:null;
+}
+
+function AuthPage({user,go,initialTab}){
+  const [tab,setTab]=useState(initialTab||'login');const [email,setEmail]=useState('');const [pw,setPw]=useState('');const [pw2,setPw2]=useState('');const [uname,setUname]=useState('');
+  const [busy,setBusy]=useState(false);const [msg,setMsg]=useState('');const [cap,setCap]=useState('');const [nonce,setNonce]=useState(0);
+  const submit=async e=>{
+    e.preventDefault();setMsg('');
+    if(!sb){setMsg(tr("Auth service failed to load. Refresh the page."));return}
+    if(TURNSTILE_SITEKEY&&!cap){setMsg(tr("Please complete the captcha."));return}
+    if(tab==='signup'){
+      if(!validUsername(uname.trim())){setMsg(tr("Username must be 3-20 letters, numbers or underscores, and cannot be reserved or inappropriate."));return}
+      if(pw.length<8){setMsg(tr("Password must be at least 8 characters."));return}
+      if(pw!==pw2){setMsg(tr("Passwords do not match."));return}
+    }
+    setBusy(true);
+    const captcha=TURNSTILE_SITEKEY?{captchaToken:cap}:{};
+    try{
+      if(tab==='signup'){
+        const {data:free}=await sb.rpc('username_available',{name:uname.trim()});
+        if(free===false){setMsg(tr("That username is taken."));return}
+        const {data,error}=await sb.auth.signUp({email:email.trim(),password:pw,options:{...captcha,data:{username:uname.trim()},emailRedirectTo:location.origin+location.pathname}});
+        if(error)throw error;
+        if(data.session)go('home');else setMsg(tr("Check your email to confirm your account, then log in."));
+      }else{
+        const {error}=await sb.auth.signInWithPassword({email:email.trim(),password:pw,options:captcha});
+        if(error)throw error;
+        go('home');
       }
+    }catch(err){log('auth error',err);setMsg(err.message||tr('Something went wrong.'))}
+    finally{setBusy(false);setNonce(n=>n+1)}
+  };
+  if(user)return <div className="page glass rounded-2xl p-8 max-w-md mx-auto text-center space-y-3"><h1 className="hd text-2xl text-white">{tr("You're logged in")}</h1><p className="text-slate-300 break-all">{user.email}</p>
+    <button onClick={()=>sb.auth.signOut()} className="px-5 py-2 rounded-lg glass hover:border-blue-400">{tr("Log out")}</button></div>;
+  const inp="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500";
+  return <form onSubmit={submit} className="page glass rounded-2xl p-6 md:p-8 max-w-md mx-auto space-y-4">
+    <div className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/5">{[['login','Log in'],['signup','Sign up']].map(([id,l])=>
+      <button type="button" key={id} onClick={()=>{setTab(id);setMsg('')}} className={'py-2 rounded-lg text-sm font-semibold '+(tab===id?'bg-blue-500 text-white':'text-slate-400')}>{tr(l)}</button>)}</div>
+    <h1 className="hd text-2xl text-white">{tab==='login'?tr("Welcome back"):tr("Create your account")}</h1>
+    <input type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder={tr("Email")} aria-label={tr("Email")} autoComplete="email" className={inp}/>
+    {tab==='signup'&&<><input value={uname} onChange={e=>setUname(e.target.value)} maxLength={20} required placeholder={tr("Username")} aria-label={tr("Username")} autoComplete="username" className={inp}/><p className="text-xs text-slate-400 -mt-2">{tr("Your username is permanent and shown in chat.")}</p></>}
+    <input type="password" required value={pw} onChange={e=>setPw(e.target.value)} placeholder={tr("Password")} aria-label={tr("Password")} autoComplete={tab==='login'?'current-password':'new-password'} className={inp}/>
+    {tab==='signup'&&<input type="password" required value={pw2} onChange={e=>setPw2(e.target.value)} placeholder={tr("Confirm password")} aria-label={tr("Confirm password")} autoComplete="new-password" className={inp}/>}
+    <Captcha onToken={setCap} nonce={nonce}/>
+    {msg&&<p className="text-amber-300 text-sm" role="alert">{msg}</p>}
+    <button type="submit" disabled={busy} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?tr("Please wait..."):(tab==='login'?tr("Log in"):tr("Sign up"))}</button>
+  </form>;
+}
 
-      grid.innerHTML = filtered.map(s => {
-        const badgeClass = s.type === 'key' ? 'badge-key' : s.type === 'new' ? 'badge-new' : 'badge-free';
-        const badgeText = s.type === 'key' ? 'KEY' : s.type === 'new' ? 'NEW' : 'FREE';
-        return `
-          <div class="script-card" onclick="showToast('Membuka ${s.name}...')">
-            <div class="card-top">
-              <h3>${s.name}</h3>
-              <span class="card-badge ${badgeClass}">${badgeText}</span>
-            </div>
-            <div class="card-meta">${s.game}</div>
-            <div class="card-footer">
-              <div class="stats">
-                <span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  ${s.views}
-                </span>
-                <span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-                  ${s.likes}
-                </span>
-              </div>
-              <span>${s.date}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
+// Community scripts (uploaded by users, shown after approval)
+const toCard=r=>({_id:'u-'+r.id,slug:'u-'+r.id,uid:r.id,isUser:true,title:r.name,game:{name:r.info},description:r.description,author:r.author||'Anonymous',views:0,executes:0,likeCount:0,dislikeCount:0,createdAt:r.created_at});
+function Community({favs,onFav,onOpen,toast}){
+  const [items,setItems]=useState([]);const [more,setMore]=useState(!!sb);const [loading,setLoading]=useState(false);
+  const pageRef=useRef(0);const busy=useRef(false);const moreRef=useRef(!!sb);const sent=useRef();
+  const load=useCallback(async()=>{
+    if(busy.current||!moreRef.current||!sb)return;
+    busy.current=true;setLoading(true);
+    const from=pageRef.current*20;
+    const {data,error}=await sb.from('user_scripts').select('id,name,info,description,author,created_at').eq('status','approved').order('created_at',{ascending:false}).range(from,from+19);
+    if(error){log('community error',error);toast(tr("Failed to load community scripts."));moreRef.current=false;setMore(false)}
+    else{setItems(p=>[...p,...data.map(toCard)]);pageRef.current++;if(data.length<20){moreRef.current=false;setMore(false)}}
+    busy.current=false;setLoading(false);
+  },[toast]);
+  useEffect(()=>{const el=sent.current;if(!el)return;const o=new IntersectionObserver(e=>e[0].isIntersecting&&load(),{rootMargin:'300px'});o.observe(el);return()=>o.disconnect()},[load]);
+  if(!loading&&!more&&!items.length)return <Empty t="No community scripts yet" d="Be the first: log in and use Upload to share a script."/>;
+  return <div><div className="grid grid-cols-2 gap-3 md:gap-4">{items.map((x,i)=><Card key={x._id} i={i} s={x} fav={favs.some(f=>f.slug===x.slug)} onFav={onFav} onOpen={onOpen}/>)}{loading&&Array.from({length:4}).map((_,i)=><Skel key={'s'+i}/>)}</div>
+    <div ref={sent} className="h-10"/><p className="text-center text-sm text-slate-400 py-4" role="status">{loading?tr("Loading more scripts..."):(!more&&items.length?tr("You've reached the end"):'')}</p></div>;
+}
 
-    // ==================== RENDER CHAT ====================
-    function renderChat() {
-      const container = document.getElementById('chatMessages');
-      container.innerHTML = CHAT_MESSAGES.slice(-50).map(m => `
-        <div class="chat-msg">
-          <span class="name">${escapeHtml(m.name)}</span>
-          <span class="text">${escapeHtml(m.text)}</span>
-          <span class="time">${m.time}</span>
-        </div>
-      `).join('');
-      container.scrollTop = container.scrollHeight;
-    }
+// Upload (logged-in users only). The server checks login + captcha and stores the script as "pending" until approved.
+function UploadPage({user,go,toast}){
+  const [f,setF]=useState({name:'',info:'',description:'',script:'',author:''});
+  const [cap,setCap]=useState('');const [nonce,setNonce]=useState(0);const [busy,setBusy]=useState(false);const [msg,setMsg]=useState('');const [ok,setOk]=useState(false);const [mine,setMine]=useState([]);
+  const set=k=>e=>setF(p=>({...p,[k]:e.target.value}));
+  const uid=user&&user.id;
+  const loadMine=useCallback(async()=>{
+    if(!sb||!uid)return;
+    const {data}=await sb.from('user_scripts').select('id,name,status,created_at').eq('user_id',uid).order('created_at',{ascending:false}).limit(20);
+    setMine(data||[]);
+  },[uid]);
+  useEffect(()=>{loadMine()},[loadMine]);
+  if(!user)return <div className="page glass rounded-2xl p-8 max-w-md mx-auto text-center space-y-3"><h1 className="hd text-2xl text-white">{tr("Log in to upload")}</h1><p className="text-slate-300">{tr("Only logged-in users can upload scripts.")}</p>
+    <button onClick={()=>go('auth')} className="px-5 py-2 rounded-lg font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr("Log in / Sign up")}</button></div>;
+  const submit=async e=>{
+    e.preventDefault();setMsg('');setOk(false);
+    if(!ADMIN_API){setMsg(tr("Upload server is not configured yet."));return}
+    if(TURNSTILE_SITEKEY&&!cap){setMsg(tr("Please complete the captcha."));return}
+    const name=f.name.trim(),info=f.info.trim(),script=f.script.trim();
+    if(name.length<3){setMsg(tr("Script name must be at least 3 characters."));return}
+    if(!info){setMsg(tr("Please fill in the information field."));return}
+    if(!script){setMsg(tr("Please paste your script."));return}
+    setBusy(true);
+    try{
+      const {data:{session}}=await sb.auth.getSession();
+      if(!session){setMsg(tr("Session expired. Please log in again."));return}
+      const r=await fetch(ADMIN_API+'/api/submit-script',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},body:JSON.stringify({name,info,description:f.description.trim(),script,author:f.author.trim(),captchaToken:cap})});
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok){setMsg(d.error||('Upload failed ('+r.status+')'));return}
+      setOk(true);setMsg(tr("Submitted! Your script will appear in Community after it is reviewed."));setF(p=>({name:'',info:'',description:'',script:'',author:p.author}));loadMine();
+    }catch(err){log('upload error',err);setMsg(tr("Could not reach the upload server."))}
+    finally{setBusy(false);setNonce(n=>n+1)}
+  };
+  const del=async id=>{const {error}=await sb.from('user_scripts').delete().eq('id',id);if(error){toast(tr("Could not delete script."))}else loadMine()};
+  const inp="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500";
+  return <div className="page space-y-5">
+    <form onSubmit={submit} className="glass rounded-2xl p-5 md:p-6 space-y-3">
+      <input value={f.name} onChange={set('name')} maxLength={80} placeholder={tr("Script name")} aria-label={tr("Script name")} className={inp}/>
+      <input value={f.info} onChange={set('info')} maxLength={120} placeholder={tr("Information (game, version, keyless...)")} aria-label="Information" className={inp}/>
+      <textarea value={f.description} onChange={set('description')} maxLength={1000} rows={4} placeholder={tr("Description")} aria-label={tr("Description")} className={inp}/>
+      <textarea value={f.script} onChange={set('script')} maxLength={50000} rows={10} spellCheck={false} placeholder={tr("Paste your Lua script here")} aria-label="Script code" className={inp+' font-mono text-xs'}/>
+      <input value={f.author} onChange={set('author')} maxLength={30} placeholder={tr("Display name (optional, shown publicly)")} aria-label="Display name" className={inp}/>
+      <Captcha onToken={setCap} nonce={nonce}/>
+      {msg&&<p className={'text-sm '+(ok?'text-green-300':'text-amber-300')} role="alert">{msg}</p>}
+      <button type="submit" disabled={busy} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?tr("Uploading..."):tr("Upload script")}</button>
+    </form>
+    {mine.length>0&&<div className="glass rounded-2xl p-5"><h2 className="hd text-lg text-white mb-3">{tr("Your uploads")}</h2><ul className="space-y-2">{mine.map(m=>
+      <li key={m.id} className="flex items-center gap-3 text-sm"><span className="flex-1 truncate">{m.name}</span>
+        <span className={'text-[10px] px-2 py-0.5 rounded-full border '+(m.status==='approved'?'border-green-400/40 text-green-300':m.status==='rejected'?'border-red-400/40 text-red-300':'border-amber-400/40 text-amber-300')}>{m.status}</span>
+        <button onClick={()=>del(m.id)} aria-label={'Delete '+m.name} className="px-3 py-2 text-slate-400 hover:text-red-300">{tr("Delete")}</button></li>)}</ul></div>}
+  </div>;
+}
 
-    function sendChat() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
+// ---------- Avatar / role badge ----------
+const Avatar=({name,role,size=32})=>role==='owner'
+  ?<img src={OWNER_IMG} alt="" width={size} height={size} className="rounded-full object-cover shrink-0 border border-amber-300/60" style={{width:size,height:size}}/>
+  :<span className="rounded-full flex items-center justify-center text-white font-bold shrink-0" style={{width:size,height:size,fontSize:size*.42,...artBg(name||'?')}}>{(name||'?')[0].toUpperCase()}</span>;
+const RoleBadge=({role})=>role==='owner'
+  ?<span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-amber-200 border border-amber-300/50 bg-amber-400/15 whitespace-nowrap">👑 DEVELOPER · OWNER</span>
+  :role==='developer'?<span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-cyan-200 border border-cyan-300/50 bg-cyan-400/15">DEV</span>:null;
 
-      const name = userName || 'Anonim';
-      const now = new Date();
-      const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+// ---------- Intro (anime-style looping scene). Set INTRO_VIDEO_URL to use your own mp4 loop instead. ----------
+const INTRO_VIDEO_URL='';
+function IntroScene(){
+  const petals=useMemo(()=>Array.from({length:24}).map((_,i)=>({l:(i*43)%100,d:9+(i*7)%9,dl:-((i*3)%13),sz:7+(i*5)%10,dx:(i%2?1:-1)*(30+(i*13)%90)})),[]);
+  const bl=useMemo(()=>Array.from({length:34}).map((_,i)=>({x:i*47,w:30+(i*13)%34,h:60+(i*37)%150})),[]);
+  return <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+    <div className="absolute inset-0" style={{background:'linear-gradient(120deg,#05071a,#1b1464,#4c1d95,#be185d,#1b1464,#05071a)',backgroundSize:'300% 300%',animation:'skyshift 22s ease infinite'}}/>
+    {Array.from({length:50}).map((_,i)=><i key={i} className="absolute rounded-full bg-white" style={{left:(i*61)%100+'%',top:(i*29)%55+'%',width:1+(i%3),height:1+(i%3),animation:`twinkle ${2+(i%5)}s ease-in-out ${(i%7)*.4}s infinite`}}/>)}
+    <div className="absolute rounded-full" style={{right:'12%',top:'10%',width:150,height:150,background:'radial-gradient(circle at 35% 35%,#fff,#fbcfe8 45%,#f472b6 100%)',boxShadow:'0 0 90px 30px rgba(244,114,182,.55)',animation:'glow 6s ease-in-out infinite'}}/>
+    {[0,1,2].map(i=><span key={i} className="shoot" style={{left:(60+i*17)+'%',top:(4+i*9)+'%',animationDelay:(i*1.7)+'s',animationDuration:(4.5+i)+'s'}}/>)}
+    {[0,1,2,3,4].map(i=><span key={i} className="streak" style={{top:(18+i*14)+'%',animationDuration:(3+i*.9)+'s',animationDelay:(-i*1.1)+'s'}}/>)}
+    <div className="absolute bottom-0 left-0 h-[46%]" style={{width:'200%',animation:'scrollx 70s linear infinite',opacity:.55}}>
+      <svg width="100%" height="100%" viewBox="0 0 3200 300" preserveAspectRatio="none"><g fill="#1e1b4b">{bl.map((b,i)=><rect key={i} x={b.x} y={300-b.h-40} width={b.w} height={b.h+40}/>)}{bl.map((b,i)=><rect key={'c'+i} x={b.x+1600} y={300-b.h-40} width={b.w} height={b.h+40}/>)}</g></svg></div>
+    <div className="absolute bottom-0 left-0 h-[34%]" style={{width:'200%',animation:'scrollx 38s linear infinite'}}>
+      <svg width="100%" height="100%" viewBox="0 0 3200 300" preserveAspectRatio="none"><g fill="#0b0b2b">{bl.map((b,i)=><rect key={i} x={b.x+20} y={300-b.h*.8-30} width={b.w+8} height={b.h*.8+30}/>)}{bl.map((b,i)=><rect key={'c'+i} x={b.x+1620} y={300-b.h*.8-30} width={b.w+8} height={b.h*.8+30}/>)}</g>
+        <g fill="#fde68a">{bl.map((b,i)=>i%3===0&&<rect key={'w'+i} x={b.x+30} y={300-b.h*.8-10+(i%4)*14} width="5" height="7" style={{animation:`twinkle ${3+i%4}s ease-in-out ${i%5*.5}s infinite`}}/>)}</g></svg></div>
+    <div className="absolute inset-x-0 bottom-0 h-1/3" style={{background:'linear-gradient(transparent,rgba(5,7,26,.9))'}}/>
+    {petals.map((q,i)=><span key={i} className="petal" style={{left:q.l+'%',width:q.sz,height:q.sz,animationDuration:q.d+'s',animationDelay:q.dl+'s','--dx':q.dx+'px'}}/>)}
+  </div>;
+}
+function Intro({lang,onLang,onChoice}){
+  const [out,setOut]=useState(false);
+  const pick=c=>{setOut(true);setTimeout(()=>onChoice(c),480)};
+  const word=tr('Welcome to NexScript');
+  const btn='px-7 py-3 rounded-xl font-semibold text-white';
+  return <div className={'fixed inset-0 z-[60] flex items-center justify-center text-center px-6 '+(out?'intro-out':'')} style={{background:'#05071a'}} role="dialog" aria-label="Welcome">
+    {INTRO_VIDEO_URL?<video className="absolute inset-0 w-full h-full object-cover" src={INTRO_VIDEO_URL} autoPlay loop muted playsInline/>:<IntroScene/>}
+    <div className="absolute inset-0" style={{background:'radial-gradient(ellipse at center,rgba(5,7,26,.15),rgba(5,7,26,.65))'}}/>
+    <button onClick={()=>onLang(lang==='en'?'id':'en')} aria-label="Change language" className="absolute top-4 right-4 px-3 py-2 rounded-full glass text-sm font-semibold text-white z-10"><span className={lang==='en'?'text-blue-300':'text-slate-400'}>EN</span> / <span className={lang==='id'?'text-blue-300':'text-slate-400'}>ID</span></button>
+    <div className="relative z-10 max-w-xl">
+      <h1 className="hd font-bold text-white text-4xl md:text-6xl leading-tight" style={{textShadow:'0 0 30px rgba(96,165,250,.8),0 0 70px rgba(168,85,247,.55)'}}>
+        {word.split(' ').map((w,wi)=><span key={wi} className="inline-block mr-3" style={{animation:`rise .8s cubic-bezier(.2,.8,.2,1) ${wi*.18+.2}s both`}}>{w}</span>)}</h1>
+      <p className="text-slate-200 mt-4 text-base md:text-lg" style={{animation:'rise .9s ease .85s both'}}>{tr('Your hub for Roblox scripts')}</p>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3" style={{animation:'rise .9s ease 1.1s both'}}>
+        <button onClick={()=>pick('login')} className={btn} style={{background:'linear-gradient(135deg,#3b82f6,#8b5cf6)',boxShadow:'0 0 30px rgba(99,102,241,.55)'}}>{tr('Log in')}</button>
+        <button onClick={()=>pick('signup')} className={btn+' glass border border-white/30'}>{tr('Sign up')}</button>
+        <button onClick={()=>pick('skip')} className="px-5 py-3 text-slate-300 hover:text-white underline underline-offset-4">{tr('Skip for now')}</button></div>
+      <p className="text-xs text-slate-400 mt-3" style={{animation:'rise .9s ease 1.3s both'}}>{tr('You can use everything without an account. Log in later any time.')}</p>
+    </div></div>;
+}
 
-      CHAT_MESSAGES.push({ name, text, time });
-      input.value = '';
-      renderChat();
-      showToast('Pesan terkirim!');
-    }
+// ---------- Username picker (for accounts that have no username yet) ----------
+function UsernameModal({user,onSaved}){
+  const [name,setName]=useState('');const [msg,setMsg]=useState('');const [busy,setBusy]=useState(false);
+  const save=async e=>{
+    e.preventDefault();setMsg('');const n=name.trim();
+    if(!validUsername(n)){setMsg(tr('Username must be 3-20 letters, numbers or underscores, and cannot be reserved or inappropriate.'));return}
+    setBusy(true);
+    try{
+      const {data:free}=await sb.rpc('username_available',{name:n});
+      if(free===false){setMsg(tr('That username is taken.'));return}
+      const {error}=await sb.from('profiles').insert({user_id:user.id,username:n});
+      if(error){setMsg(error.code==='23505'?tr('That username is taken.'):tr('Could not save username.'));return}
+      onSaved({username:n,role:'user'});
+    }catch(err){log('username error',err);setMsg(tr('Could not save username.'))}
+    finally{setBusy(false)}
+  };
+  return <div className="fixed inset-0 z-[55] bg-black/75 flex items-center justify-center p-4" role="dialog" aria-label="Choose a username">
+    <form onSubmit={save} className="glass rounded-2xl p-6 max-w-sm w-full space-y-3" style={{background:'rgba(10,15,44,.95)'}}>
+      <h2 className="hd text-xl text-white">{tr('Choose your username')}</h2>
+      <p className="text-sm text-slate-300">{tr('This name is shown in chat and cannot be changed later.')}</p>
+      <input value={name} onChange={e=>setName(e.target.value)} maxLength={20} autoFocus placeholder={tr('Username')} aria-label={tr("Username")} className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white"/>
+      {msg&&<p className="text-amber-300 text-sm" role="alert">{msg}</p>}
+      <button type="submit" disabled={busy} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?tr('Please wait...'):tr('Save username')}</button>
+      <button type="button" onClick={()=>sb.auth.signOut()} className="w-full text-sm text-slate-400 hover:text-white">{tr('Log out')}</button>
+    </form></div>;
+}
 
-    // ==================== RENDER RATINGS ====================
-    function renderRatings() {
-      const total = REVIEWS.length;
-      const sum = REVIEWS.reduce((a, r) => a + r.rating, 0);
-      const avg = total > 0 ? (sum / total) : 0;
+const EMOJIS='😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 😉 😍 🥰 😘 😎 🤩 🥳 😏 😌 🤔 🫡 😴 😭 😢 😤 😡 🤯 😱 🥶 🥵 🤗 🙌 👏 🙏 💪 👍 👎 👌 🤞 🤝 👀 🔥 ✨ ⚡ 💥 🌟 💫 💯 ❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💔 🎮 🕹️ 👾 🤖 👑 💎 🚀 🌈 🌸 🍜 🍕 🍔 🍟 🧋 ☕ 🎉 🎊 🏆 🥇 ⭐ 🌙 ☀️ 🐱 🐶 🦊 🐉 😺'.split(' ');
+const fmtSec=n=>Math.floor(n/60)+':'+String(n%60).padStart(2,'0');
 
-      document.getElementById('avgRating').textContent = avg.toFixed(1);
-      document.getElementById('avgStars').textContent = getStars(avg);
-      document.getElementById('ratingCountText').textContent = total + ' ulasan';
-      document.getElementById('ratingCountLabel').textContent = total + ' ulasan';
-
-      // Rating bars
-      const counts = [0, 0, 0, 0, 0];
-      REVIEWS.forEach(r => { if (r.rating >= 1 && r.rating <= 5) counts[r.rating - 1]++; });
-      const barsHtml = [5, 4, 3, 2, 1].map(star => {
-        const count = counts[star - 1];
-        const pct = total > 0 ? (count / total) * 100 : 0;
-        return `
-          <div class="rating-bar-row">
-            <span style="width:12px;text-align:right;">${star}</span>
-            <div class="bar"><div class="bar-fill star${star}" style="width:${pct}%"></div></div>
-            <span style="width:28px;text-align:right;">${count}</span>
-          </div>
-        `;
-      }).join('');
-      document.getElementById('ratingBars').innerHTML = barsHtml;
-
-      // Review list
-      document.getElementById('reviewList').innerHTML = REVIEWS.slice().reverse().map(r => {
-        const initial = r.name ? r.name.charAt(0).toUpperCase() : '?';
-        const stars = r.rating > 0 ? getStars(r.rating) : '';
-        return `
-          <div class="review-item">
-            <div class="review-avatar">${escapeHtml(initial)}</div>
-            <div class="review-content">
-              <div class="review-header">
-                <span class="review-name">${escapeHtml(r.name)}</span>
-                ${stars ? `<span class="review-stars">${stars}</span>` : ''}
-                <span class="review-time">${r.time}</span>
-              </div>
-              ${r.text ? `<div class="review-text">${escapeHtml(r.text)}</div>` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function getStars(rating) {
-      const full = Math.floor(rating);
-      const half = rating - full >= 0.5;
-      let s = '';
-      for (let i = 0; i < 5; i++) {
-        if (i < full) s += '★';
-        else if (i === full && half) s += '★';
-        else s += '☆';
-      }
-      return s;
-    }
-
-    // ==================== NAME MODAL ====================
-    function openNameModal() {
-      document.getElementById('nameModal').classList.add('active');
-      document.getElementById('nameInput').value = userName;
-      document.getElementById('nameInput').focus();
-    }
-
-    function closeNameModal() {
-      document.getElementById('nameModal').classList.remove('active');
-    }
-
-    function saveName() {
-      const val = document.getElementById('nameInput').value.trim();
-      if (val.length < 1) {
-        showToast('Nama tidak boleh kosong!');
-        return;
-      }
-      userName = val;
-      localStorage.setItem('hanzz_name', val);
-      document.getElementById('nameBtn').textContent = val;
-      closeNameModal();
-      showToast('Nama berhasil disimpan: ' + val);
-    }
-
-    // ==================== MUSIC ====================
-    function searchMusic() {
-      const q = document.getElementById('musicInput').value.trim();
-      if (!q) return;
-      // Simulasi pencarian
-      currentTrack = { title: q, artist: 'IzzXd Music API', duration: 180 };
-      document.getElementById('trackTitle').textContent = q;
-      document.getElementById('trackArtist').textContent = 'IzzXd Music API';
-      showToast('Memuat lagu: ' + q);
-    }
-
-    function togglePlay() {
-      if (!currentTrack) {
-        showToast('Cari lagu terlebih dahulu!');
-        return;
-      }
-      isPlaying = !isPlaying;
-      document.getElementById('playIcon').classList.toggle('hidden', isPlaying);
-      document.getElementById('pauseIcon').classList.toggle('hidden', !isPlaying);
-
-      if (isPlaying) {
-        let progress = 0;
-        progressInterval = setInterval(() => {
-          progress += 1;
-          const pct = Math.min((progress / currentTrack.duration) * 100, 100);
-          document.getElementById('progressFill').style.width = pct + '%';
-          const mins = Math.floor(progress / 60);
-          const secs = progress % 60;
-          document.getElementById('trackTime').textContent = mins + ':' + secs.toString().padStart(2, '0');
-          if (progress >= currentTrack.duration) {
-            clearInterval(progressInterval);
-            isPlaying = false;
-            document.getElementById('playIcon').classList.remove('hidden');
-            document.getElementById('pauseIcon').classList.add('hidden');
-          }
-        }, 1000);
-      } else {
-        clearInterval(progressInterval);
-      }
-    }
-
-    // ==================== TOAST ====================
-    function showToast(msg) {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.textContent = msg;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(40px)';
-        toast.style.transition = 'all 0.3s';
-        setTimeout(() => toast.remove(), 300);
-      }, 2500);
-    }
-
-    // ==================== UTILITIES ====================
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
-
-    // ==================== INIT ====================
-    document.addEventListener('DOMContentLoaded', function () {
-      renderScripts();
-      renderChat();
-      renderRatings();
-
-      // Set name button
-      if (userName) {
-        document.getElementById('nameBtn').textContent = userName;
-      }
-
-      // Search
-      document.getElementById('searchInput').addEventListener('input', function () {
-        renderScripts(this.value);
-      });
-
-      // Chat enter key
-      document.getElementById('chatInput').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') sendChat();
-      });
-
-      // Music enter key
-      document.getElementById('musicInput').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') searchMusic();
-      });
-
-      // Close modal on overlay click
-      document.getElementById('nameModal').addEventListener('click', function (e) {
-        if (e.target === this) closeNameModal();
-      });
-
-      // Close modal on Escape
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeNameModal();
-      });
+function ChatPage({user,profile,go,toast}){
+  const [msgs,setMsgs]=useState([]);const [text,setText]=useState('');const [sending,setSending]=useState(false);
+  const [emoji,setEmoji]=useState(false);const [rec,setRec]=useState(null);
+  const listRef=useRef();const stick=useRef(true);const last=useRef(0);const fileRef=useRef();const recRef=useRef(null);const timerRef=useRef(null);
+  const isStaff=!!profile&&(profile.role==='owner'||profile.role==='developer');
+  useEffect(()=>{
+    if(!sb)return;let dead=false;
+    sb.from('chat_messages').select('id,user_id,author,role,kind,media_path,body,created_at').order('id',{ascending:false}).limit(250).then(({data,error})=>{
+      if(dead)return;if(error){log('chat load error',error);toast(tr('Could not load chat.'));return}
+      setMsgs(data.slice().reverse());
     });
-  </script>
-</body>
-</html>
+    const ch=sb.channel('global-chat')
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},p=>{setMsgs(m=>m.some(x=>x.id===p.new.id)?m:[...m,p.new].slice(-250))})
+      .on('postgres_changes',{event:'DELETE',schema:'public',table:'chat_messages'},p=>{if(p.old&&p.old.id!==undefined)setMsgs(m=>m.filter(x=>x.id!==p.old.id))})
+      .subscribe();
+    return()=>{dead=true;sb.removeChannel(ch)};
+  },[toast]);
+  useEffect(()=>{const el=listRef.current;if(el&&stick.current)el.scrollTop=el.scrollHeight},[msgs.length]);
+  useEffect(()=>()=>{clearInterval(timerRef.current);if(recRef.current){recRef.current.cancel=true;try{recRef.current.mr.stop()}catch(e){}}},[]);
+  const mediaUrl=path=>sb.storage.from('chat-media').getPublicUrl(path).data.publicUrl;
+  const guard=()=>{
+    if(!user){go('auth');return false}
+    if(!profile){toast(tr('Choose a username first.'));return false}
+    if(Date.now()-last.current<2000){toast(tr('Slow down a little.'));return false}
+    last.current=Date.now();return true;
+  };
+  const post=async row=>{
+    const {data,error}=await sb.from('chat_messages').insert({user_id:user.id,...row}).select('id,user_id,author,role,kind,media_path,body,created_at').single();
+    if(error){
+      log('chat send error',error);const m=error.message||'';
+      toast(m.indexOf('Inappropriate')>=0?tr('Your message contains inappropriate language.'):m.indexOf('Slow')>=0?tr('Slow down a little.'):m.indexOf('username')>=0?tr('Choose a username first.'):tr('Message not sent.'));
+      return false;
+    }
+    stick.current=true;setMsgs(m=>m.some(x=>x.id===data.id)?m:[...m,data].slice(-250));return true;
+  };
+  const sendText=async e=>{
+    e.preventDefault();
+    const body=text.trim();if(!body)return;
+    if(isProfane(body)){toast(tr('Your message contains inappropriate language.'));return}
+    if(!guard())return;
+    setSending(true);const ok=await post({kind:'text',body});setSending(false);
+    if(ok){setText('');setEmoji(false)}
+  };
+  const upload=async(blob,ext,type)=>{
+    const path=user.id+'/'+Date.now()+'.'+ext;
+    const {error}=await sb.storage.from('chat-media').upload(path,blob,{contentType:type,cacheControl:'31536000'});
+    if(error)throw error;return path;
+  };
+  const compress=file=>new Promise((res,rej)=>{
+    const img=new Image();const url=URL.createObjectURL(file);
+    img.onload=()=>{const k=Math.min(1,1024/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error('compress')),'image/jpeg',.78)};
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('image'))};img.src=url;
+  });
+  const pickImage=async e=>{
+    const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+    if(!/^image\//.test(f.type)){toast(tr('Please choose an image.'));return}
+    if(!guard())return;
+    setSending(true);
+    try{const blob=await compress(f);const path=await upload(blob,'jpg','image/jpeg');await post({kind:'image',media_path:path,body:''})}
+    catch(err){log('image error',err);toast(tr('Could not send image.'))}
+    finally{setSending(false)}
+  };
+  const startRec=async()=>{
+    if(!user){go('auth');return}
+    if(!profile){toast(tr('Choose a username first.'));return}
+    if(!navigator.mediaDevices||!window.MediaRecorder){toast(tr('Voice recording is not supported on this browser.'));return}
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'].find(m=>MediaRecorder.isTypeSupported(m))||'';
+      const mr=new MediaRecorder(stream,mime?{mimeType:mime,audioBitsPerSecond:32000}:{audioBitsPerSecond:32000});
+      const chunks=[];mr.ondataavailable=ev=>{if(ev.data&&ev.data.size)chunks.push(ev.data)};
+      mr.onstop=async()=>{
+        stream.getTracks().forEach(t=>t.stop());clearInterval(timerRef.current);
+        const cancelled=recRef.current&&recRef.current.cancel;recRef.current=null;setRec(null);
+        if(cancelled)return;
+        const type=(mr.mimeType||mime||'audio/webm').split(';')[0];
+        const ext=type.indexOf('mp4')>=0?'m4a':type.indexOf('ogg')>=0?'ogg':'webm';
+        const blob=new Blob(chunks,{type});
+        if(blob.size<1500){toast(tr('Recording too short.'));return}
+        if(!guard())return;
+        setSending(true);
+        try{const path=await upload(blob,ext,type);await post({kind:'voice',media_path:path,body:''})}
+        catch(err){log('voice error',err);toast(tr('Could not send voice message.'))}
+        finally{setSending(false)}
+      };
+      recRef.current={mr,cancel:false};mr.start();setRec({sec:0});
+      timerRef.current=setInterval(()=>setRec(r=>{if(!r)return r;if(r.sec>=59){try{mr.stop()}catch(e){}return r}return {sec:r.sec+1}}),1000);
+    }catch(err){log('mic error',err);toast(tr('Microphone permission denied.'))}
+  };
+  const stopRec=()=>{if(recRef.current)try{recRef.current.mr.stop()}catch(e){}};
+  const cancelRec=()=>{if(recRef.current){recRef.current.cancel=true;try{recRef.current.mr.stop()}catch(e){}}};
+  const del=async id=>{const {error}=await sb.from('chat_messages').delete().eq('id',id);if(error){log('delete error',error);toast(tr('Could not delete message.'))}else setMsgs(m=>m.filter(x=>x.id!==id))};
+  const ib='shrink-0 w-11 h-11 rounded-lg glass hover:border-blue-400 text-xl flex items-center justify-center';
+  return <div className="page glass rounded-2xl p-4 md:p-5 space-y-3">
+    <p className="text-xs text-slate-400 text-right">{tr('Last 250 messages')}</p>
+    <div ref={listRef} onScroll={e=>{const el=e.target;stick.current=el.scrollHeight-el.scrollTop-el.clientHeight<120}} className="h-[55vh] overflow-y-auto overscroll-contain space-y-2 pr-1" aria-live="polite">
+      {msgs.length===0&&<p className="text-center text-slate-500 text-sm pt-10">{tr('No messages yet. Say hi!')}</p>}
+      {msgs.map(m=>{const mine=user&&m.user_id===user.id;return <div key={m.id} className="flex gap-2 items-start">
+        <Avatar name={m.author} role={m.role} size={34}/>
+        <div className={'rounded-xl px-3 py-2 text-sm min-w-0 flex-1 '+(m.role==='owner'?'bg-amber-400/10 border border-amber-300/40':mine?'bg-blue-500/20 border border-blue-400/30':'bg-white/5')}>
+          <div className="flex items-center gap-2 flex-wrap"><span className="font-semibold text-blue-300 truncate">{m.author}</span><RoleBadge role={m.role}/><span className="text-[10px] text-slate-500">{ago(m.created_at)}</span>
+            {(mine||isStaff)&&<button onClick={()=>del(m.id)} aria-label="Delete message" className="ml-auto px-2 py-1 text-xs text-slate-500 hover:text-red-300">✕</button>}</div>
+          {m.kind==='image'&&m.media_path?<img src={mediaUrl(m.media_path)} alt="Chat photo" loading="lazy" className="mt-1 max-h-64 rounded-lg cursor-pointer" onClick={()=>window.open(mediaUrl(m.media_path),'_blank','noopener')}/>
+          :m.kind==='voice'&&m.media_path?<audio className="mt-1 w-full max-w-xs" controls preload="none" src={mediaUrl(m.media_path)}/>
+          :<p className="text-slate-200 break-words whitespace-pre-wrap">{m.body}</p>}
+        </div></div>})}
+    </div>
+    {user&&profile?<div className="space-y-2">
+      {emoji&&<div className="glass rounded-xl p-2 grid grid-cols-8 gap-1 max-h-40 overflow-y-auto">{EMOJIS.map(e=><button type="button" key={e} onClick={()=>setText(t=>(t+e).slice(0,300))} aria-label={'Emoji '+e} className="text-xl p-1 rounded hover:bg-white/10">{e}</button>)}</div>}
+      {rec?<div className="flex items-center gap-3"><span className="text-red-400 animate-pulse font-semibold">● {fmtSec(rec.sec)}</span>
+        <button onClick={cancelRec} className="px-4 py-3 rounded-lg glass text-sm">{tr('Cancel')}</button>
+        <button onClick={stopRec} className="px-4 py-3 rounded-lg font-semibold text-white text-sm" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Send voice')}</button></div>
+      :<form onSubmit={sendText} className="flex gap-2 items-center">
+        <button type="button" onClick={()=>setEmoji(v=>!v)} aria-label="Emoji" className={ib}>😊</button>
+        <button type="button" onClick={()=>fileRef.current&&fileRef.current.click()} disabled={sending} aria-label="Send photo" className={ib}>🖼️</button>
+        <input type="file" accept="image/*" hidden ref={fileRef} onChange={pickImage}/>
+        <input value={text} onChange={e=>setText(e.target.value)} maxLength={300} aria-label="Message" placeholder={tr('Type a message...')} className="min-w-0 flex-1 h-11 px-3 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500"/>
+        <button type="button" onClick={startRec} disabled={sending} aria-label="Record voice message" className={ib}>🎤</button>
+        <button type="submit" disabled={sending} className="shrink-0 h-11 px-4 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Send')}</button></form>}
+      <p className="text-[11px] text-slate-500">{tr('Chatting as')} @{profile.username}</p></div>
+    :<button onClick={()=>go('auth')} className="w-full py-3 rounded-lg font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Log in to chat')}</button>}
+  </div>;
+}
+
+const NAV=[['home','Home','home'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['community','Community','users'],['chat','Global Chat','chat'],['games','Games','gamepad'],['upload','Upload','upload'],['guide','Guide & FAQ','book'],['legal','Terms & Privacy','file'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
+const SORTS=[['trending','Trending'],['newest','Newest'],['views','Most Viewed'],['rated','Top Rated']];
+const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['universal','Universal'],['nokey','No Key']];
+
+function App(){
+  const [view,setView]=useState('home');const [detail,setDetail]=useState(null);const [open,setOpen]=useState(false);const [user,setUser]=useState(null);
+  const [lang,setLang]=useState(LANG);LANG=lang;
+  const [authReady,setAuthReady]=useState(!sb);
+  const [introSeen,setIntroSeen]=useState(()=>{try{return sessionStorage.getItem('nx_intro')==='1'}catch(e){return false}});
+  const [profile,setProfile]=useState(null);const [profileState,setProfileState]=useState('none');
+  const [authTab,setAuthTab]=useState('login');
+  const [q,setQ]=useState('');const [dq,setDq]=useState('');const [filter,setFilter]=useState('all');const [favs,setFavs]=useState(()=>store.get('favs',[]));const [toasts,setToasts]=useState([]);
+  const [votes,setVotes]=useState(()=>{
+    const v=store.get('votes',null);if(v)return v;
+    const m={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('vote:')===0){const n=JSON.parse(localStorage.getItem(k));if(n)m[k.slice(5)]=n}}}catch(e){}
+    return m;});
+  const favsRef=useRef(favs);favsRef.current=favs;
+  const votesRef=useRef(votes);votesRef.current=votes;
+  const userRef=useRef(null);userRef.current=user;
+  useEffect(()=>{const t=setTimeout(()=>setDq(q.trim()),300);return()=>clearTimeout(t)},[q]);
+  useEffect(()=>{const h=e=>e.key==='Escape'&&(setOpen(false),setDetail(null));window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h)},[]);
+  useEffect(()=>{document.body.style.overflow=(open&&window.innerWidth<768)?'hidden':'';return()=>{document.body.style.overflow=''}},[open]);
+  useEffect(()=>{
+    const base='NexScript';
+    document.title=detail?`${detail.title} · ${base}`:dq?`Search: ${dq} · ${base}`:view==='home'?`${base} — Roblox Script Hub`:`${tr(view==='auth'?tr("Log in"):((NAV.find(n=>n[0]===view)||[])[1]||'Home'))} · ${base}`;
+  },[view,detail,dq,lang]);
+  useEffect(()=>{
+    if(!sb)return;
+    sb.auth.getSession().then(({data})=>{setUser(data.session?data.session.user:null);setAuthReady(true)}).catch(()=>setAuthReady(true));
+    const {data:sub}=sb.auth.onAuthStateChange((ev,session)=>{setUser(session?session.user:null);if(ev==='SIGNED_OUT'){favsRef.current=[];setFavs([]);store.set('favs',[]);votesRef.current={};setVotes({});store.set('votes',{})}});
+    return()=>sub.subscription.unsubscribe();
+  },[]);
+  useEffect(()=>{
+    if(!sb||!user){setProfile(null);setProfileState('none');return}
+    let dead=false;setProfileState('loading');
+    sb.from('profiles').select('username,role').eq('user_id',user.id).maybeSingle().then(({data,error})=>{
+      if(dead)return;
+      if(error){log('profile error',error);setProfileState('none');return}
+      if(data){setProfile(data);setProfileState('ready')}else{setProfile(null);setProfileState('missing')}
+    });
+    return()=>{dead=true};
+  },[user&&user.id]);
+  const changeLang=l=>{LANG=l;try{localStorage.setItem('lang',l)}catch(e){}setLang(l)};
+  useEffect(()=>{document.documentElement.lang=lang},[lang]);
+  const toast=useCallback(m=>{const id=Math.random();setToasts(t=>[...t,{id,m}]);setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),4000)},[]);
+  const onFav=useCallback(s=>{
+    const k=s._id||s.slug;const cur=favsRef.current;const has=cur.some(x=>(x._id||x.slug)===k);
+    const n=has?cur.filter(x=>(x._id||x.slug)!==k):[...cur,slim(s)];
+    favsRef.current=n;setFavs(n);store.set('favs',n);
+    const u=userRef.current;
+    if(sb&&u&&s.slug){
+      const q=has?sb.from('favorites').delete().eq('user_id',u.id).eq('slug',s.slug):sb.from('favorites').upsert({user_id:u.id,slug:s.slug,script:slim(s)});
+      q.then(({error})=>{if(error){log('favorite sync error',error);toast(tr("Could not sync favorite."))}});
+    }
+  },[toast]);
+  const onVote=useCallback((slug,n)=>{
+    const cur=votesRef.current;const x=cur[slug]===n?0:n;const nv={...cur};
+    if(x===0)delete nv[slug];else nv[slug]=x;
+    votesRef.current=nv;setVotes(nv);store.set('votes',nv);
+    const u=userRef.current;
+    if(sb&&u){
+      const q=x===0?sb.from('votes').delete().eq('user_id',u.id).eq('slug',slug):sb.from('votes').upsert({user_id:u.id,slug,vote:x});
+      q.then(({error})=>{if(error){log('vote sync error',error);toast(tr("Could not sync vote."))}});
+    }
+  },[toast]);
+  // After login: merge saved favorites/votes from the account with this device, then push anything that was only local.
+  useEffect(()=>{
+    if(!sb||!user)return;let dead=false;
+    (async()=>{
+      const [fv,vt]=await Promise.all([sb.from('favorites').select('slug,script').eq('user_id',user.id),sb.from('votes').select('slug,vote').eq('user_id',user.id)]);
+      if(dead)return;
+      if(fv.error||vt.error){log('sync load error',fv.error||vt.error);toast(tr("Could not load your saved data."));return}
+      const remote=fv.data.map(r=>r.script).filter(Boolean);
+      const have=new Set(remote.map(x=>x.slug));
+      const localOnly=favsRef.current.filter(x=>x.slug&&!have.has(x.slug));
+      const merged=[...remote,...localOnly];
+      favsRef.current=merged;setFavs(merged);store.set('favs',merged);
+      if(localOnly.length)await sb.from('favorites').upsert(localOnly.map(x=>({user_id:user.id,slug:x.slug,script:slim(x)})));
+      const rv={};vt.data.forEach(r=>{rv[r.slug]=r.vote});
+      const push=[];Object.keys(votesRef.current).forEach(k=>{const val=votesRef.current[k];if(val&&rv[k]===undefined){rv[k]=val;push.push({user_id:user.id,slug:k,vote:val})}});
+      votesRef.current=rv;setVotes(rv);store.set('votes',rv);
+      if(push.length)await sb.from('votes').upsert(push);
+      log('synced',merged.length,'favorites,',Object.keys(rv).length,'votes');
+    })().catch(e=>log('sync error',e));
+    return()=>{dead=true};
+  },[user&&user.id]);
+  const go=v=>{setView(v);setDetail(null);setOpen(false);window.scrollTo(0,0)};
+  const introDone=c=>{try{sessionStorage.setItem('nx_intro','1')}catch(e){}setIntroSeen(true);if(c==='login'||c==='signup'){setAuthTab(c);go('auth')}};
+  const grid=['home','trending','newest','views','rated','verified','keyless','fav'].includes(view);
+  const mode=view;
+  return <div className="flex min-h-screen">
+    {open&&<div className="fixed inset-0 bg-black/60 z-30 md:hidden" onClick={()=>setOpen(false)}/>}
+    <aside className={'fixed top-0 left-0 h-[100dvh] w-60 z-40 flex flex-col p-4 gap-1 overflow-y-auto overscroll-contain transition-transform duration-200 '+(open?'translate-x-0':'-translate-x-full md:translate-x-0')} style={{background:'rgba(8,12,40,.92)',borderRight:'1px solid rgba(255,255,255,.08)'}} aria-label="Sidebar">
+      <div className="hd text-xl font-bold text-white flex items-center gap-2 mb-3"><LogoMark/>NexScript</div>
+      {NAV.map(([id,l,ic])=><button key={id} onClick={()=>go(id)} aria-label={tr(l)} className={'flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-left border-l-[3px] '+(view===id?'border-blue-400 text-white bg-gradient-to-r from-blue-500/30 to-transparent':'border-transparent text-slate-400 hover:text-white hover:bg-white/5')}><Ic n={ic} s={16}/>{tr(l)}{id==='fav'&&favs.length>0&&<span className="ml-auto text-xs">{favs.length}</span>}</button>)}
+      <div className="mt-auto pt-3 border-t border-white/10">
+        {user?<div className="text-xs text-slate-300"><div className="flex items-center gap-2 mb-2 min-w-0">{profile&&<Avatar name={profile.username} role={profile.role} size={30}/>}<div className="min-w-0"><p className="truncate font-semibold text-white" title={user.email}>{profile?profile.username:user.email}</p><RoleBadge role={profile&&profile.role}/></div></div><button onClick={()=>sb.auth.signOut()} aria-label={tr("Log out")} className="w-full px-3 py-2 rounded-lg glass hover:border-blue-400 text-sm">{tr("Log out")}</button></div>
+        :<button onClick={()=>{setAuthTab('login');go('auth')}} aria-label="Log in or sign up" className="w-full px-3 py-2 rounded-lg text-sm font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr("Log in / Sign up")}</button>}</div>
+      <div className="mt-3 pt-1 text-xs text-slate-500"><button onClick={()=>go('about')} className="flex items-center gap-2 text-slate-300 mb-2"><img src={OWNER_IMG} alt="" className="w-8 h-8 rounded-full object-cover"/>ThisIsBacon · {tr("View Profile")}</button>{tr("Powered by ScriptBlox")}</div>
+    </aside>
+    <main className="flex-1 min-w-0 md:ml-60">
+      <div className="sticky top-0 z-20 p-4 space-y-3" style={{background:'rgba(10,15,44,.85)',backdropFilter:'blur(12px)'}}>
+        <div className="flex items-center gap-3"><button className="md:hidden text-white p-2 -ml-2" aria-label="Open menu" onClick={()=>setOpen(true)}><Ic n="menu" s={24}/></button>
+          <div className="relative flex-1"><span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"><Ic n="search"/></span>
+            <input value={q} onChange={e=>{setQ(e.target.value);if(!grid)go('home')}} aria-label={tr("Search scripts")} placeholder={tr("Search scripts, games, or creators...")} className="w-full h-12 rounded-full bg-white text-slate-900 pl-12 pr-12 outline-none focus:ring-2 focus:ring-blue-500 focus:shadow-[0_0_20px_rgba(59,130,246,0.3)] placeholder:text-slate-500"/>
+            {q&&<button aria-label="Clear search" onClick={()=>setQ('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 p-2"><Ic n="x"/></button>}</div>
+          <button onClick={()=>changeLang(lang==='en'?'id':'en')} aria-label="Change language" className="shrink-0 h-12 px-3 rounded-full glass text-sm font-semibold text-white"><span className={lang==='en'?'text-blue-300':'text-slate-500'}>EN</span>/<span className={lang==='id'?'text-blue-300':'text-slate-500'}>ID</span></button></div>
+        {grid&&!detail&&<div className="flex flex-wrap gap-2">{SORTS.map(([id,l])=><button key={id} onClick={()=>go(id)} className={'px-4 py-2 rounded-full text-sm '+(view===id?'bg-blue-500 text-white':'glass text-slate-300')}>{tr(l)}</button>)}
+          <span className="w-px bg-white/10 mx-1"/>{FILTERS.map(([id,l])=><button key={id} onClick={()=>setFilter(id)} className={'px-3.5 py-2 rounded-full text-xs '+(filter===id?'bg-cyan-400/20 border border-cyan-400 text-cyan-200':'glass text-slate-400')}>{tr(l)}</button>)}</div>}
+      </div>
+      <div className="flex justify-center gap-6 px-3 md:px-5"><div className="w-full max-w-3xl min-w-0 py-3 md:py-5">
+        {!detail&&BANNERS[view]&&<Banner title={BANNERS[view][0]} sub={BANNERS[view][1]} hue={BANNERS[view][2]}/>}
+        {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} votes={votes} onVote={onVote} user={user} back={x=>x&&x.slug?setDetail(x):setDetail(null)}/>
+        :view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage key={authTab} user={user} go={go} initialTab={authTab}/>:view==='games'?<GamesPage onPick={n=>{setQ(n);go('home')}}/>:view==='guide'?<GuidePage/>:view==='legal'?<LegalPage/>:view==='chat'?<ChatPage user={user} profile={profile} go={go} toast={toast}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='community'?<Community favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/>
+        :<div className="page">{view==='home'&&!dq&&<div className="relative overflow-hidden rounded-2xl mb-6 glass p-8 md:p-10 min-h-[190px]"><HeroArt/><div className="absolute inset-0 bg-gradient-to-r from-[#0a0f2c]/85 via-[#0a0f2c]/40 to-transparent"/><div className="relative"><h1 className="hd text-3xl md:text-4xl font-bold text-white">{tr("Discover")} <span className="text-blue-400">{tr("Roblox scripts")}</span> {tr("instantly")}</h1><p className="text-slate-300 mt-2">{tr("Browse thousands of free scripts. Fast, clean, ad-supported.")}</p></div></div>}
+          <Grid mode={mode} query={dq} filter={filter} favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/></div>}
+        <div className="mt-8 flex justify-center"><AdSlot kind="wide" label="bottom"/></div>
+      </div>
+      <div className="hidden xl:block w-40 shrink-0 sticky top-40 self-start pt-5" aria-label="Advertisement"><AdSlot kind="160x600" label="side rail"/></div>
+      </div>
+      <footer className="border-t border-white/10 p-6 text-sm text-slate-400"><div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div><h4 className="text-white mb-1">{tr("About")}</h4>{tr("NexScript is a free Roblox script discovery tool.")}</div>
+        <div><h4 className="text-white mb-1">{tr("Links")}</h4><a className="block hover:text-white" href="https://www.youtube.com/@This-IsBacon" target="_blank" rel="noopener noreferrer">YouTube</a><a className="block hover:text-white" href="https://github.com/SCRIPTERcrazy-web" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+        <div><h4 className="text-white mb-1">{tr("Donate")}</h4><a className="hover:text-white" href="https://saweria.co/MyMoneyScript" target="_blank" rel="noopener noreferrer">{tr("☕ Buy Me a Coffee")}</a></div></div>
+        <p className="text-center mt-6">{tr("© 2026 NexScript. Powered by ScriptBlox. Not affiliated with Roblox.")}</p></footer>
+    </main>
+    {authReady&&!user&&!introSeen&&<Intro lang={lang} onLang={changeLang} onChoice={introDone}/>}
+    {user&&profileState==='missing'&&<UsernameModal user={user} onSaved={p=>{setProfile(p);setProfileState('ready')}}/>}
+    <div className="fixed top-4 right-4 z-[70] space-y-2" aria-live="polite">{toasts.map(t=><div key={t.id} className="toast glass rounded-lg px-4 py-3 text-sm bg-red-500/20 border-red-400/40">{t.m}</div>)}</div>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script></body></html>
