@@ -358,8 +358,8 @@ ThisIsBacon
 
 · GitHub: @SCRIPTERcrazy-web
 · YouTube: @This-IsBacon
-· Discord: Join
-· Saweria: Donate
+· Discord: https://discord.gg/ET2gVgNdS
+· Saweria: forget
 
 ---
 
@@ -394,5 +394,3 @@ NexScript is a free directory. Script data comes from ScriptBlox and user upload
 Using scripts can break Roblox's Terms of Service and may get an account banned. Use at your own risk, ideally on an alternate account.
 
 Never run a script that asks for your password, your .ROBLOSECURITY cookie, or your Robux.
-
-```
