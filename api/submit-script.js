@@ -1,12 +1,11 @@
 // Vercel serverless function: POST /api/submit-script
-// Accepts a script upload only from a logged-in Supabase user who passed the Turnstile captcha.
+// Accepts a script upload only from a logged-in Supabase user (no captcha).
 // The script is saved as "pending" and appears publicly after you approve it in Supabase.
 //
 // Environment variables (Vercel > Project > Settings > Environment Variables):
 //   SUPABASE_URL                e.g. https://xxxx.supabase.co
 //   SUPABASE_PUBLISHABLE_KEY    your publishable key (sb_publishable_...)
 //   SUPABASE_SERVICE_ROLE_KEY   SECRET. Only ever stored here, never in the website code or in chat.
-//   TURNSTILE_SECRET            (optional) Cloudflare Turnstile secret key. Captcha is only checked when this is set.
 //   ALLOWED_ORIGIN              (optional) https://scriptercrazy-web.github.io
 const MAX_PER_HOUR = 5;
 
@@ -17,7 +16,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY, TURNSTILE_SECRET } = process.env;
+  const { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY } = process.env;
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY || !SUPABASE_SERVICE_ROLE_KEY) {
     return res.status(500).json({ error: 'Server not configured' });
   }
@@ -45,19 +44,6 @@ module.exports = async function handler(req, res) {
   if (info.length < 1 || info.length > 120) return res.status(400).json({ error: 'Information must be 1-120 characters.' });
   if (description.length > 1000) return res.status(400).json({ error: 'Description is too long (max 1000).' });
   if (script.length < 1 || script.length > 50000) return res.status(400).json({ error: 'Script must be 1-50000 characters.' });
-
-  // 3) captcha (only checked when TURNSTILE_SECRET is set)
-  if (TURNSTILE_SECRET) {
-  const captchaToken = str(body.captchaToken);
-  if (!captchaToken) return res.status(400).json({ error: 'Please complete the captcha.' });
-  try {
-    const form = new URLSearchParams({ secret: TURNSTILE_SECRET, response: captchaToken });
-    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim();
-    if (ip) form.set('remoteip', ip);
-    const v = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form })).json();
-    if (!v.success) return res.status(403).json({ error: 'Captcha failed. Please try again.' });
-  } catch { return res.status(502).json({ error: 'Could not verify captcha.' }); }
-  }
 
   const sbHeaders = { apikey: SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`, 'Content-Type': 'application/json' };
 
