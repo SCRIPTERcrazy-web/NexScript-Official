@@ -55,14 +55,22 @@ module.exports = async function handler(req, res) {
     if (rows.length >= MAX_PER_HOUR) return res.status(429).json({ error: 'Too many uploads. Try again in an hour.' });
   } catch { /* if the check fails, continue */ }
 
-  // 5) save as pending
+  // owner and developers are trusted: their uploads go live right away
+  let status = 'pending';
+  try {
+    const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${user.id}&select=role`, { headers: sbHeaders });
+    const prow = pr.ok ? await pr.json() : [];
+    if (prow[0] && (prow[0].role === 'owner' || prow[0].role === 'developer')) status = 'approved';
+  } catch { /* keep pending */ }
+
+  // 5) save
   try {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/user_scripts`, {
       method: 'POST', headers: { ...sbHeaders, Prefer: 'return=minimal' },
-      body: JSON.stringify({ user_id: user.id, name, info, description, script, author, status: 'pending' }),
+      body: JSON.stringify({ user_id: user.id, name, info, description, script, author, status }),
     });
     if (!r.ok) return res.status(502).json({ error: 'Could not save the script.' });
   } catch { return res.status(502).json({ error: 'Could not save the script.' }); }
 
-  return res.status(201).json({ ok: true });
+  return res.status(201).json({ ok: true, status });
 };
