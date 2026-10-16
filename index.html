@@ -11,11 +11,11 @@
 <meta name="twitter:title" content="NexScript - Roblox Script Hub">
 <meta name="twitter:description" content="Search, browse and copy free Roblox scripts.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script defer src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <style>
 body{margin:0;font-family:Inter,sans-serif;color:#e2e8f0;background:#0a0f2c}
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(135deg,#0a0f2c,#0d1a4d 50%,#0a0f2c)}
@@ -115,8 +115,33 @@ html.anim-reduced .gradtext,html.anim-reduced .xpbar::after{animation:none!impor
 .t-legend{background:linear-gradient(90deg,#fde68a,#f59e0b,#fde68a);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700}
 .t-mythic{background:linear-gradient(90deg,#f43f5e,#f59e0b,#22c55e,#06b6d4,#8b5cf6,#f43f5e);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:700;animation:gradMove 3s linear infinite}
 html.anim-reduced .ring-rainbow,html.anim-reduced .t-mythic{animation:none!important}
+#boot{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;background:radial-gradient(ellipse at 50% 38%,#18237a 0%,#0a0f2c 58%,#05071a 100%);transition:opacity .6s ease,transform .6s ease}
+#boot.boot-out{opacity:0;transform:scale(1.05);pointer-events:none}
+.boot-logo{position:relative;width:96px;height:96px;margin:30px}
+.boot-mark{width:96px;height:96px;animation:bootPulse 1.8s ease-in-out infinite;filter:drop-shadow(0 0 22px rgba(96,165,250,.75))}
+.boot-ring{position:absolute;inset:-16px;border-radius:50%;border:2px solid transparent;border-top-color:#60a5fa;border-right-color:#a78bfa;animation:bootSpin 1.2s linear infinite}
+.boot-ring.r2{inset:-32px;border-top-color:transparent;border-right-color:transparent;border-bottom-color:#22d3ee;border-left-color:#f472b6;animation-duration:2.2s;animation-direction:reverse}
+.boot-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:32px;letter-spacing:.05em;background:linear-gradient(90deg,#60a5fa,#a78bfa,#22d3ee,#60a5fa);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:gradMove 3s linear infinite}
+.boot-sub{font-size:13px;color:#94a3b8;margin-top:-14px}
+.boot-bar{width:190px;height:4px;border-radius:4px;background:rgba(255,255,255,.12);overflow:hidden}
+.boot-bar i{display:block;height:100%;width:40%;border-radius:4px;background:linear-gradient(90deg,#3b82f6,#22d3ee);animation:bootBar 1.4s ease-in-out infinite}
+.boot-star{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;animation:twinkle 2.4s ease-in-out infinite}
+.boot-slow{position:absolute;bottom:34px;opacity:0;font-size:12px;color:#94a3b8;text-align:center;padding:0 20px;animation:bootShow .6s ease 14s forwards}
+.boot-slow a{color:#60a5fa;text-decoration:underline}
+@keyframes bootSpin{to{transform:rotate(360deg)}}
+@keyframes bootPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes bootBar{0%{transform:translateX(-110%)}100%{transform:translateX(290%)}}
+@keyframes bootShow{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.boot-ring,.boot-mark,.boot-bar i,.boot-title,.boot-star{animation:none!important}}
 </style></head>
-<body><div class="grid-bg"></div>
+<body><div id="boot" role="status" aria-label="Loading">
+<i class="boot-star" style="left:11%;top:7%;animation-delay:0.0s"></i><i class="boot-star" style="left:48%;top:60%;animation-delay:0.4s"></i><i class="boot-star" style="left:85%;top:13%;animation-delay:0.8s"></i><i class="boot-star" style="left:22%;top:66%;animation-delay:1.2s"></i><i class="boot-star" style="left:59%;top:19%;animation-delay:1.6s"></i><i class="boot-star" style="left:96%;top:72%;animation-delay:2.0s"></i><i class="boot-star" style="left:33%;top:25%;animation-delay:2.4s"></i><i class="boot-star" style="left:70%;top:78%;animation-delay:0.0s"></i><i class="boot-star" style="left:7%;top:31%;animation-delay:0.4s"></i><i class="boot-star" style="left:44%;top:84%;animation-delay:0.8s"></i><i class="boot-star" style="left:81%;top:37%;animation-delay:1.2s"></i><i class="boot-star" style="left:18%;top:90%;animation-delay:1.6s"></i><i class="boot-star" style="left:55%;top:43%;animation-delay:2.0s"></i><i class="boot-star" style="left:92%;top:96%;animation-delay:2.4s"></i><i class="boot-star" style="left:29%;top:49%;animation-delay:0.0s"></i><i class="boot-star" style="left:66%;top:2%;animation-delay:0.4s"></i><i class="boot-star" style="left:3%;top:55%;animation-delay:0.8s"></i><i class="boot-star" style="left:40%;top:8%;animation-delay:1.2s"></i><i class="boot-star" style="left:77%;top:61%;animation-delay:1.6s"></i><i class="boot-star" style="left:14%;top:14%;animation-delay:2.0s"></i><i class="boot-star" style="left:51%;top:67%;animation-delay:2.4s"></i><i class="boot-star" style="left:88%;top:20%;animation-delay:0.0s"></i><i class="boot-star" style="left:25%;top:73%;animation-delay:0.4s"></i><i class="boot-star" style="left:62%;top:26%;animation-delay:0.8s"></i>
+<div class="boot-logo"><span class="boot-ring"></span><span class="boot-ring r2"></span>
+<svg class="boot-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#bg1)"/><circle cx="14" cy="14" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M19 19l6 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+<div class="boot-title">NexScript</div><div class="boot-sub">Loading your script hub...</div><div class="boot-bar"><i></i></div>
+<p class="boot-slow">Taking longer than usual. Check your connection or <a href="javascript:location.reload()">reload</a>.</p></div>
+<script>window.__bootT=Date.now()</script>
+<div class="grid-bg"></div>
 <div class="orb" style="width:380px;height:380px;--c:#3b82f6;top:-80px;left:20%"></div>
 <div class="orb" style="width:320px;height:320px;--c:#8b5cf6;bottom:0;right:10%;animation-delay:-8s"></div>
 <div class="orb" style="width:260px;height:260px;--c:#22d3ee;top:40%;left:50%;animation-delay:-14s"></div>
@@ -1575,9 +1600,9 @@ function App(){
   const [introSeen,setIntroSeen]=useState(()=>{try{return sessionStorage.getItem('nx_intro')==='1'}catch(e){return false}});
   const [profile,setProfile]=useState(null);const [profileState,setProfileState]=useState('none');
   UNLOCK_ALL=!!(profile&&profile.role==='owner');
-  NO_ADS=acct.tier==='premium';
   const [burst,setBurst]=useState(0);const lvRef=useRef(levelOf(readStats().xp));
   const [acct,setAcct]=useState(FREE_ACCT);
+  NO_ADS=!!(acct&&acct.tier==='premium');
   const [authTab,setAuthTab]=useState('login');const [showAvatar,setShowAvatar]=useState(false);
   const [musicKick,setMusicKick]=useState(0);const [online,setOnline]=useState(1);
   const [recent,setRecent]=useState(()=>store.get('recent',[]));
@@ -1631,6 +1656,12 @@ function App(){
   },[user&&user.id]);
   useEffect(()=>{if(profileState==='ready'&&profile&&!profile.avatar_url&&!store.get('nx_avatar_asked',false))setShowAvatar(true)},[profileState]);
   const changeLang=l=>{LANG=l;try{localStorage.setItem('lang',l)}catch(e){}setLang(l)};
+  useEffect(()=>{
+    const b=document.getElementById('boot');if(!b)return;
+    const wait=Math.max(0,1200-(Date.now()-(window.__bootT||0)));
+    const t=setTimeout(()=>{b.classList.add('boot-out');setTimeout(()=>{if(b.parentNode)b.parentNode.removeChild(b)},700)},wait);
+    return()=>clearTimeout(t);
+  },[]);
   useEffect(()=>{document.documentElement.lang=lang},[lang]);
   const toast=useCallback((m,k)=>{const id=Math.random();setToasts(t=>[...t,{id,m,k}]);setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),4000)},[]);
   useEffect(()=>{const h=()=>{const lv=levelOf(readStats().xp);if(lv>lvRef.current){lvRef.current=lv;setBurst(b=>b+1);toast(tr('Level up!')+' '+tr('Level')+' '+lv,'ok')}else lvRef.current=lv};window.addEventListener('nx-xp',h);return()=>window.removeEventListener('nx-xp',h)},[toast]);
@@ -1642,7 +1673,7 @@ function App(){
   const refreshAcct=useCallback(async()=>{
     if(!sb||!userRef.current){setAcct(FREE_ACCT);return}
     const {data,error}=await sb.rpc('my_status');
-    if(!error&&data)setAcct(data);
+    if(!error&&data&&typeof data==='object'&&data.tier)setAcct(data);
   },[]);
   useEffect(()=>{refreshAcct()},[user&&user.id,refreshAcct]);
   const onFav=useCallback(s=>{
