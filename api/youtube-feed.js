@@ -86,12 +86,21 @@ module.exports = async function handler(req, res) {
   const wib = new Date(Date.now() + 7 * 3600e3);
   const resetAt = Date.UTC(wib.getUTCFullYear(), wib.getUTCMonth(), wib.getUTCDate() + 1) - 7 * 3600e3;
 
+  // The page reports each Short the person really watched (about 2.5 seconds on screen). Only that counts.
+  if (body.action === 'view') {
+    try {
+      const took = await rpc('take_shorts', { p_subject: subject, p_limit: limit, p_want: 1 });
+      return res.status(200).json({ counted: took.allowed > 0, tier, limit, remaining: Math.max(0, limit - took.used), resetAt });
+    } catch { return res.status(502).json({ error: 'Could not count the view' }); }
+  }
+
   try {
     const status = await rpc('take_shorts', { p_subject: subject, p_limit: limit, p_want: 0 });
     if (status.used >= limit) return res.status(429).json({ error: 'Daily limit reached', tier, limit, remaining: 0, resetAt });
+    const nWant = Math.min(n, limit - status.used); // never hand out more than what is left
 
-    let items = await rpc('pick_shorts', { p_topics: topics, p_exclude: exclude, p_n: n });
-    if (items.length < n && YOUTUBE_API_KEY) {
+    let items = await rpc('pick_shorts', { p_topics: topics, p_exclude: exclude, p_n: nWant });
+    if (items.length < nWant && YOUTUBE_API_KEY) {
       // pool is short: fetch more from YouTube (inside the daily budget), then pick again
       const topic = pickRandom(topics);
       const ok = await rpc('take_yt_budget', { p_cost: 100, p_cap: YT_DAILY_CAP });
@@ -106,16 +115,18 @@ module.exports = async function handler(req, res) {
           const rows = (d.items || []).filter((it) => it.id && it.id.videoId && !BAD.test(it.snippet.title || '')).map((it) => ({ id: it.id.videoId, topic, title: it.snippet.title, channel: it.snippet.channelTitle }));
           if (rows.length) {
             await fetch(`${SUPABASE_URL}/rest/v1/shorts_pool`, { method: 'POST', headers: { ...sbH, Prefer: 'resolution=ignore-duplicates,return=minimal' }, body: JSON.stringify(rows) });
-            items = await rpc('pick_shorts', { p_topics: topics, p_exclude: exclude, p_n: n });
+            items = await rpc('pick_shorts', { p_topics: topics, p_exclude: exclude, p_n: nWant });
           }
         }
       }
     }
     items = items.filter((it) => !BAD.test(it.title || ''));
     if (!items.length) return res.status(200).json({ items: [], tier, limit, remaining: Math.max(0, limit - status.used), resetAt });
-    const took = await rpc('take_shorts', { p_subject: subject, p_limit: limit, p_want: items.length });
-    items = items.slice(0, took.allowed);
-    return res.status(200).json({ items, tier, limit, remaining: Math.max(0, limit - took.used), resetAt });
+    // anti-cheat ceiling on how much can be handed out per day (about twice the limit)
+    const okCount = await rpc('take_delivered', { p_subject: subject, p_cap: limit * 2 + 20, p_want: items.length });
+    if (!okCount) return res.status(429).json({ error: 'Daily limit reached', tier, limit, remaining: Math.max(0, limit - status.used), resetAt });
+    items = items.slice(0, okCount);
+    return res.status(200).json({ items, tier, limit, remaining: Math.max(0, limit - status.used), resetAt });
   } catch (e) {
     return res.status(502).json({ error: 'Could not load Shorts' });
   }
