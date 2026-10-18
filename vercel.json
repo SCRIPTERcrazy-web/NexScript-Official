@@ -1,9 +1,5 @@
 {
-  "redirects": [
-    {
-      "source": "/script/:game",
-      "destination": "/?q=:game",
-      "permanent": true
-    }
+  "rewrites": [
+    { "source": "/s/:game", "destination": "/s/index.html" }
   ]
 }
