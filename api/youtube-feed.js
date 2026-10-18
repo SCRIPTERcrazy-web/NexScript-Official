@@ -37,11 +37,50 @@ const BAD = /(fuck|shit|bitch|nigg|porn|sex|nude|nsfw|xxx|18\+|anjing|kontol|mem
 const pickRandom = (a) => a[Math.floor(Math.random() * a.length)];
 const shuffle = (a) => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
 
+// Open /api/youtube-feed in a browser to see what is missing (no secrets are shown).
+async function health(res) {
+  const env = process.env;
+  const out = {
+    env: {
+      YOUTUBE_API_KEY: !!env.YOUTUBE_API_KEY, SUPABASE_URL: !!env.SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY: !!env.SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY: !!env.SUPABASE_SERVICE_ROLE_KEY,
+    },
+    supabase: {}, pool: null, youtube: null,
+  };
+  if (env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY) {
+    const h = { apikey: env.SUPABASE_SERVICE_ROLE_KEY, Authorization: 'Bearer ' + env.SUPABASE_SERVICE_ROLE_KEY, 'Content-Type': 'application/json' };
+    const call = async (name, args) => {
+      try {
+        const r = await fetch(`${env.SUPABASE_URL}/rest/v1/rpc/${name}`, { method: 'POST', headers: h, body: JSON.stringify(args) });
+        out.supabase[name] = r.ok ? 'ok' : 'missing or failed (HTTP ' + r.status + ') - run the SQL files';
+      } catch { out.supabase[name] = 'unreachable'; }
+    };
+    await call('pick_shorts', { p_topics: ['health'], p_exclude: [], p_n: 1 });
+    await call('take_shorts', { p_subject: 'health', p_limit: 1, p_want: 0 });
+    await call('take_delivered', { p_subject: 'health', p_cap: 1, p_want: 0 });
+    await call('take_yt_budget', { p_cost: 0, p_cap: 9000 });
+    try {
+      const r = await fetch(`${env.SUPABASE_URL}/rest/v1/shorts_pool?select=id&limit=1`, { headers: { ...h, Prefer: 'count=exact', Range: '0-0' } });
+      const cr = r.headers.get('content-range') || '';
+      out.pool = r.ok ? Number(cr.split('/')[1]) : 'table missing (HTTP ' + r.status + ')';
+    } catch { out.pool = 'unreachable'; }
+  }
+  if (env.YOUTUBE_API_KEY) {
+    try {
+      const r = await fetch('https://www.googleapis.com/youtube/v3/videos?part=id&id=jNQXAC9IVRw&key=' + env.YOUTUBE_API_KEY);
+      const d = await r.json().catch(() => ({}));
+      out.youtube = { ok: r.ok, status: r.status, reason: r.ok ? null : ((d.error && d.error.errors && d.error.errors[0] && d.error.errors[0].reason) || (d.error && d.error.message) || 'unknown') };
+    } catch { out.youtube = { ok: false, reason: 'unreachable' }; }
+  }
+  return res.status(200).json(out);
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method === 'GET') return health(res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { YOUTUBE_API_KEY, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY, GUEST_SALT } = process.env;
@@ -94,22 +133,29 @@ module.exports = async function handler(req, res) {
     } catch { return res.status(502).json({ error: 'Could not count the view' }); }
   }
 
+  let step = 'usage';
+  let ytReason = null;
   try {
     const status = await rpc('take_shorts', { p_subject: subject, p_limit: limit, p_want: 0 });
     if (status.used >= limit) return res.status(429).json({ error: 'Daily limit reached', tier, limit, remaining: 0, resetAt });
     const nWant = Math.min(n, limit - status.used); // never hand out more than what is left
 
+    step = 'pool';
     let items = await rpc('pick_shorts', { p_topics: topics, p_exclude: exclude, p_n: nWant });
     if (items.length < nWant && YOUTUBE_API_KEY) {
       // pool is short: fetch more from YouTube (inside the daily budget), then pick again
+      step = 'youtube';
       const topic = pickRandom(topics);
-      const ok = await rpc('take_yt_budget', { p_cost: 100, p_cap: YT_DAILY_CAP });
+      let ok = true;
+      try { ok = await rpc('take_yt_budget', { p_cost: 100, p_cap: YT_DAILY_CAP }); } catch { ok = true; }
+      if (!ok) ytReason = 'daily-budget';
       if (ok) {
         const params = new URLSearchParams({
           part: 'snippet', type: 'video', videoEmbeddable: 'true', videoDuration: 'short', safeSearch: 'strict', maxResults: '50',
           order: pickRandom(['relevance', 'date', 'viewCount', 'rating']), q: pickRandom(TOPICS[topic]) + ' #shorts', key: YOUTUBE_API_KEY,
         });
         const yr = await fetch('https://www.googleapis.com/youtube/v3/search?' + params);
+        if (!yr.ok) { const ed = await yr.json().catch(() => ({})); ytReason = (ed.error && ed.error.errors && ed.error.errors[0] && ed.error.errors[0].reason) || ('http-' + yr.status); }
         if (yr.ok) {
           const d = await yr.json();
           const rows = (d.items || []).filter((it) => it.id && it.id.videoId && !BAD.test(it.snippet.title || '')).map((it) => ({ id: it.id.videoId, topic, title: it.snippet.title, channel: it.snippet.channelTitle }));
@@ -121,13 +167,14 @@ module.exports = async function handler(req, res) {
       }
     }
     items = items.filter((it) => !BAD.test(it.title || ''));
-    if (!items.length) return res.status(200).json({ items: [], tier, limit, remaining: Math.max(0, limit - status.used), resetAt });
+    if (!items.length) return res.status(200).json({ items: [], reason: ytReason || (YOUTUBE_API_KEY ? 'pool-empty' : 'no-youtube-key'), tier, limit, remaining: Math.max(0, limit - status.used), resetAt });
     // anti-cheat ceiling on how much can be handed out per day (about twice the limit)
-    const okCount = await rpc('take_delivered', { p_subject: subject, p_cap: limit * 2 + 20, p_want: items.length });
+    let okCount = items.length;
+    try { okCount = await rpc('take_delivered', { p_subject: subject, p_cap: limit * 2 + 20, p_want: items.length }); } catch { okCount = items.length; }
     if (!okCount) return res.status(429).json({ error: 'Daily limit reached', tier, limit, remaining: Math.max(0, limit - status.used), resetAt });
     items = items.slice(0, okCount);
     return res.status(200).json({ items, tier, limit, remaining: Math.max(0, limit - status.used), resetAt });
   } catch (e) {
-    return res.status(502).json({ error: 'Could not load Shorts' });
+    return res.status(502).json({ error: 'Could not load Shorts', step, detail: String((e && e.message) || e).slice(0, 120) });
   }
 };
