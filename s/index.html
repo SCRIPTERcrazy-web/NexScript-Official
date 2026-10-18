@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ID ini bakal diubah otomatis sama JS di bawah -->
+    <title id="dynamic-title">Loading...</title>
+    <meta id="dynamic-desc" name="description" content="Loading...">
+
+    <script>
+        // 1. Cek bahasa dari URL (misal: /s/id/steal-an-egg atau /s/en/steal-an-egg)
+        // Kalau nggak ada /id/ atau /en/, default-nya bahasa Inggris
+        const pathParts = window.location.pathname.split('/');
+        let lang = 'en'; 
+        let gameRaw = '';
+
+        // Cek apakah URL-nya ada /id/ atau /en/
+        if (pathParts[2] === 'id' || pathParts[2] === 'en') {
+            lang = pathParts[2];
+            gameRaw = pathParts[3]; // Ambil nama game setelah bahasa
+        } else {
+            gameRaw = pathParts[2]; // Kalau nggak ada bahasa, ambil langsung game-nya
+        }
+
+        // 2. Ubah format nama game (steal-an-egg -> Steal An Egg)
+        let gameName = gameRaw ? gameRaw.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Roblox';
+
+        // 3. Kamus Bahasa (Bisa lu tambahin sendiri)
+        const dict = {
+            'en': {
+                title: `New Script ${gameName} - NexScript`,
+                desc: `Get the latest ${gameName} script here. Auto win, auto farm, and many more features. Fast and clean.`,
+                loading: `Redirecting to ${gameName} script...`
+            },
+            'id': {
+                title: `Script Baru ${gameName} - NexScript`,
+                desc: `Dapatkan script ${gameName} terbaru di sini. Auto win, auto farm, dan banyak fitur lainnya. Cepat dan bersih.`,
+                loading: `Mengalihkan ke script ${gameName}...`
+            }
+        };
+
+        // 4. Terapkan Judul & Deskripsi sesuai bahasa
+        const t = dict[lang] || dict['en'];
+        document.title = t.title;
+        document.getElementById('dynamic-desc').setAttribute('content', t.desc);
+
+        // 5. Lempar ke website utama (bawa parameter game & bahasa)
+        setTimeout(() => {
+            // Kita lempar ke website utama dengan format: /?q=steal%20an%20egg&lang=id
+            window.location.replace(`/?q=${gameRaw.replace(/-/g, ' ')}&lang=${lang}`);
+        }, 200); 
+    </script>
+</head>
+<body>
+    <p id="loading-text">Loading...</p>
+    <script>
+        // Nampilin teks loading sesuai bahasa sebelum redirect
+        const langForText = (window.location.pathname.split('/')[2] === 'id') ? 'id' : 'en';
+        const gameForText = (window.location.pathname.split('/')[2] === 'id') ? window.location.pathname.split('/')[3] : window.location.pathname.split('/')[2];
+        const nameForText = gameForText ? gameForText.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Roblox';
+        
+        const texts = {
+            en: `Redirecting to ${nameForText} script...`,
+            id: `Mengalihkan ke script ${nameForText}...`
+        };
+        document.getElementById('loading-text').innerText = texts[langForText];
+    </script>
+</body>
+  </html>
