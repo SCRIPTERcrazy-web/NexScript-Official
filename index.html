@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NexScript - Roblox Script Hub</title>
+<script>
+  // Nangkep URL ?q= dari file sakti SEO
+  const params = new URLSearchParams(window.location.search);
+  const autoSearch = params.get('q');
+  
+  if (autoSearch) {
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      // Cari kotak search (input text)
+      const searchInput = document.querySelector('input[type="text"], input[type="search"]');
+      
+      if (searchInput) {
+        // Isi kotak search-nya
+        const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        setter.call(searchInput, autoSearch);
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        clearInterval(interval);
+      } else if (attempts >= 10) {
+        clearInterval(interval);
+      }
+    }, 500);
+  }
+</script>
 <meta name="google-site-verification" content="MpzSQmXNCS5rRMqKEdikvXLPBDfljYlVod6qqxnwXtY" />
 <meta name="description" content="NexScript is a free Roblox script discovery tool. Search, browse and copy scripts for your favorite games.">
 <meta name="theme-color" content="#0a0f2c">
