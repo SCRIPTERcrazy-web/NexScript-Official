@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://nexscript-official.vercel.app/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://nexscript-official.vercel.app/</loc></url>
+  <url><loc>https://nexscript-official.vercel.app/s/blox-fruits</loc></url>
+  <url><loc>https://nexscript-official.vercel.app/s/id/blox-fruits</loc></url>
+  <url><loc>https://nexscript-official.vercel.app/s/arsenal</loc></url>
+  <url><loc>https://nexscript-official.vercel.app/s/id/arsenal</loc></url>
+  <!-- ... dan ratusan game lainnya ... -->
 </urlset>
