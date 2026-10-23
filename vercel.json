@@ -1,23 +1,15 @@
 {
   "rewrites": [
     {
-      "source": "/sb/:path*",
-      "destination": "/api/scriptblox?path=:path*"
+      "source": "/sb/(.*)",
+      "destination": "/api/scriptblox?path=$1"
     },
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
     },
     {
-      "source": "/s/id/:game",
-      "destination": "/s/index.html"
-    },
-    {
-      "source": "/s/en/:game",
-      "destination": "/s/index.html"
-    },
-    {
-      "source": "/s/:game",
+      "source": "/s/(.*)",
       "destination": "/s/index.html"
     }
   ]
