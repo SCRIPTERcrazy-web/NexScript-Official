@@ -1,18 +1,24 @@
 {
   "rewrites": [
-    { "source": "/sb/:path*", "destination": "/api/scriptblox?path=:path*" },
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/s/id/:game", "destination": "/s/index.html" },
-    { "source": "/s/en/:game", "destination": "/s/index.html" },
-    { "source": "/s/:game", "destination": "/s/index.html" }
-  ],
-  "headers": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" }
-      ]
+      "source": "/sb/:path*",
+      "destination": "/api/scriptblox?path=:path*"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/s/id/:game",
+      "destination": "/s/index.html"
+    },
+    {
+      "source": "/s/en/:game",
+      "destination": "/s/index.html"
+    },
+    {
+      "source": "/s/:game",
+      "destination": "/s/index.html"
     }
   ]
 }
