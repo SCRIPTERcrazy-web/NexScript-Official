@@ -15,6 +15,10 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  // when ALLOWED_ORIGIN is set, only our own website may call this
+  const allowed = process.env.ALLOWED_ORIGIN;
+  if (allowed && req.headers.origin && req.headers.origin !== allowed) return res.status(403).json({ error: 'Forbidden' });
+  if (Number(req.headers['content-length'] || 0) > 200000) return res.status(413).json({ error: 'Request too large' });
 
   const { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SERVICE_ROLE_KEY } = process.env;
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY || !SUPABASE_SERVICE_ROLE_KEY) {
@@ -55,19 +59,24 @@ module.exports = async function handler(req, res) {
     if (rows.length >= MAX_PER_HOUR) return res.status(429).json({ error: 'Too many uploads. Try again in an hour.' });
   } catch { /* if the check fails, continue */ }
 
+  // scan for things that steal Roblox accounts or leak data (a human still decides)
+  const flags = [];
+  if (/ROBLOSECURITY|GetAuthTicket|CookiesService/i.test(script)) flags.push('cookie');
+  if (/discord(app)?\.com\/api\/webhooks|webhook\.site|grabify|iplogger|requestbin/i.test(script)) flags.push('webhook');
+
   // owner and developers are trusted: their uploads go live right away
   let status = 'pending';
   try {
     const pr = await fetch(`${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${user.id}&select=role`, { headers: sbHeaders });
     const prow = pr.ok ? await pr.json() : [];
-    if (prow[0] && (prow[0].role === 'owner' || prow[0].role === 'developer')) status = 'approved';
+    if (prow[0] && (prow[0].role === 'owner' || prow[0].role === 'developer') && !flags.length) status = 'approved';
   } catch { /* keep pending */ }
 
   // 5) save
   try {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/user_scripts`, {
       method: 'POST', headers: { ...sbHeaders, Prefer: 'return=minimal' },
-      body: JSON.stringify({ user_id: user.id, name, info, description, script, author, status }),
+      body: JSON.stringify({ user_id: user.id, name, info, description, script, author, status, flags: flags.join(',') || null }),
     });
     if (!r.ok) return res.status(502).json({ error: 'Could not save the script.' });
   } catch { return res.status(502).json({ error: 'Could not save the script.' }); }
