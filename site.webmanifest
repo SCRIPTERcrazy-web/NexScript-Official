@@ -2,19 +2,46 @@
     "name": "NexScript - Roblox Script Hub",
     "short_name": "NexScript",
     "description": "Free Roblox script discovery tool.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0a0f2c",
+    "theme_color": "#0a0f2c",
+    "lang": "id",
+    "categories": ["games", "utilities"],
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/android-chrome-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
-    "theme_color": "#0a0f2c",
-    "background_color": "#0a0f2c",
-    "display": "standalone"
+    "screenshots": [
+        {
+            "src": "/screenshot1.png",
+            "sizes": "1080x1920",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot2.png",
+            "sizes": "1080x1920",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot3.png",
+            "sizes": "1080x1920",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ]
 }
