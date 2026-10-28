@@ -1,8 +1,8 @@
 [{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "com.nexscript.twa",
-    "sha256_cert_fingerprints": ["AB:CD:EF:12:34:..."]
-  }
-}]
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.nexscript_official.twa",
+        "sha256_cert_fingerprints": ["BF:A3:9D:6E:33:F2:00:83:0E:44:71:22:33:E0:F4:56:03:9C:8D:9C:6D:27:4F:42:37:FC:63:C1:54:CF:0D:52"]
+      }
+    }]
