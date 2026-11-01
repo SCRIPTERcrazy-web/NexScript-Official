@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/script/(.*)",
-      "destination": "/index.html"
+      "destination": "/api/script/[slug]?slug=$1"
     },
     {
       "source": "/sitemap.xml",
