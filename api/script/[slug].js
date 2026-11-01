@@ -7,37 +7,42 @@ module.exports = async function handler(req, res) {
     if (!slug) return res.status(400).send('Missing slug');
 
     try {
-        // 1. Tembak Proxy ScriptBlox lu (Bebas CORS dari server)
-        // Format search di proxy lu kan: /api/search?q=...
-        const apiUrl = `https://scriptblox-proxy-pzq8.vercel.app/api/search?q=${encodeURIComponent(slug)}&max=1`;
+        // 1. Ubah slug jadi judul pencarian (misal: run-for-brainrots -> run for brainrots)
+        const query = slug.replace(/-/g, ' ');
+
+        // 2. Tembak proxy search lu (PASTI JALAN)
+        const apiUrl = `https://scriptblox-proxy-pzq8.vercel.app/api/search?q=${encodeURIComponent(query)}&max=1`;
         const apiRes = await fetch(apiUrl);
         
         if (!apiRes.ok) throw new Error(`Proxy returned ${apiRes.status}`);
         
         const json = await apiRes.json();
         
-        // 2. Ambil script pertama dari hasil search proxy
+        // 3. Ambil script pertama dari hasil search
         const scripts = json.result?.scripts || json.scripts || [];
         const script = scripts.length > 0 ? scripts[0] : null;
 
-        // 3. Tentukan Judul, Deskripsi, dan Gambar (pakai data dari proxy)
-        const title = script ? script.title : slug.replace(/-/g, ' ');
-        const game = script ? (script.game?.name || 'Roblox') : 'Roblox';
-        
-        const desc = script && script.description 
-            ? script.description.replace(/"/g, '&quot;') 
-            : `Download working ${title} script for ${game}. Copy-paste ready code on NexScript!`;
-            
-        // Gambar asli dari proxy lu
-        const image = (script && script.image) 
-            ? (script.image.startsWith('http') ? script.image : `https://scriptblox.com${script.image}`) 
-            : 'https://nexscript-official.vercel.app/android-chrome-512x512.png';
+        if (!script) throw new Error('Script not found in search results');
 
-        // 4. Baca index.html asli lu
+        // 4. Ambil data asli dari hasil search
+        const title = script.title || slug;
+        const game = script.game?.name || 'Roblox';
+        
+        // Gambar asli
+        let image = script.image;
+        if (image && !image.startsWith('http')) {
+            image = `https://scriptblox.com${image}`;
+        }
+        if (!image) {
+            image = 'https://nexscript-official.vercel.app/android-chrome-512x512.png';
+        }
+
+        const desc = `Download free ${title} for ${game}. Verified and working script on NexScript!`;
+
+        // 5. Sunting HTML lu
         const htmlPath = path.join(process.cwd(), 'index.html');
         let html = fs.readFileSync(htmlPath, 'utf8');
 
-        // 5. Suntik data ke HTML
         html = html.replace(/<title>.*?<\/title>/, `<title>${title} - NexScript</title>`);
         html = html.replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${desc}">`);
 
@@ -51,13 +56,11 @@ module.exports = async function handler(req, res) {
         
         html = html.replace('</head>', `${ogTags}</head>`);
 
-        // 6. Kirim ke Google/User
         res.setHeader('Content-Type', 'text/html');
         res.status(200).send(html);
 
     } catch (e) {
         console.error('Dynamic Meta Error:', e.message);
-        // Fallback: kalau error, kirim HTML biasa
         const html = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf8');
         res.status(200).send(html);
     }
