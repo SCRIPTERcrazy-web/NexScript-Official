@@ -1716,7 +1716,12 @@ const SORTS=[['trending','Trending'],['newest','Newest'],['views','Most Viewed']
 const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['universal','Universal'],['nokey','No Key'],['hub','Hub'],['unpatched','Unpatched']];
 
 function App(){
-  const [view,setView]=useState(()=>{const m=/^#\/(\w+)$/.exec(location.hash||'');return(m&&NAV.concat([['settings'],['auth'],['updated']]).some(n=>n[0]===m[1]))?m[1]:'home'});
+  const [view,setView]=useState(()=>{
+    // Kalau URL-nya /script/..., set view ke 'home' (biar detail yang muncul)
+    if (window.location.pathname.match(/^\/script\/(.+)$/)) return 'home';
+    const m=/^#\/(\w+)$/.exec(location.hash||'');
+    return(m&&NAV.concat([['settings'],['auth'],['updated']]).some(n=>n[0]===m[1]))?m[1]:'home'
+});
   const [detail,setDetail]=useState(()=>{
     const pathMatch = location.pathname.match(/^\/script\/(.+)$/);
     if (pathMatch) {
