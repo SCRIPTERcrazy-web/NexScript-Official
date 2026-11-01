@@ -721,22 +721,28 @@ function AvatarModal({user,profile,onSaved,onClose}){
     if(error){log('avatar save error',error);setMsg(tr('Could not save your picture.'));return false}
     onSaved({...profile,avatar_url:val});return true;
   };
-  const square=file=>new Promise((res,rej)=>{
-    const img=new Image();const u=URL.createObjectURL(file);
-    img.onload=()=>{const S=256,m=Math.min(img.width,img.height),sx=(img.width-m)/2,sy=(img.height-m)/2;const c=document.createElement('canvas');c.width=S;c.height=S;c.getContext('2d').drawImage(img,sx,sy,m,m,0,0,S,S);URL.revokeObjectURL(u);c.toBlob(b=>b?res(b):rej(new Error('blob')),'image/jpeg',.85)};
-    img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('img'))};img.src=u;
-  });
+  const square=async file=>{
+    let bmp=null;
+    try{if(window.createImageBitmap)bmp=await createImageBitmap(file)}catch(e){bmp=null}
+    if(!bmp)bmp=await new Promise((res,rej)=>{const img=new Image();const u=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(u);res(img)};img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('Unsupported image format. Please use a JPG or PNG photo.'))};img.src=u});
+    const S=256,w=bmp.width,h=bmp.height,m=Math.min(w,h),sx=(w-m)/2,sy=(h-m)/2;
+    const c=document.createElement('canvas');c.width=S;c.height=S;c.getContext('2d').drawImage(bmp,sx,sy,m,m,0,0,S,S);
+    return await new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('Could not convert the image')),'image/jpeg',.85));
+  };
   const pickFile=async e=>{
     const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
-    if(!/^image\//.test(f.type)){setMsg(tr('Please choose an image.'));return}
+    if(!/^image\//.test(f.type)&&!/\.(jpe?g|png|webp|heic|heif)$/i.test(f.name||'')){setMsg(tr('Please choose an image.'));return}
     setBusy(true);setMsg('');
     try{
-      const blob=await square(f);const path=user.id+'/avatar.jpg';
-      const {error}=await sb.storage.from('avatars').upload(path,blob,{upsert:true,contentType:'image/jpeg',cacheControl:'3600'});
+      const blob=await square(f);
+      const path=user.id+'/avatar-'+Date.now()+'.jpg';   // a new file name every time, so no overwrite permission is needed
+      const {error}=await sb.storage.from('avatars').upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000'});
       if(error)throw error;
-      const url=sb.storage.from('avatars').getPublicUrl(path).data.publicUrl+'?v='+Date.now();
-      setBusy(false);if(await save(url))finish();
-    }catch(err){log('avatar upload error',err);setBusy(false);setMsg(tr('Could not upload your picture.'))}
+      const url=sb.storage.from('avatars').getPublicUrl(path).data.publicUrl;
+      const old=(profile&&profile.avatar_url&&profile.avatar_url.indexOf('/avatars/')>0)?profile.avatar_url.split('/avatars/')[1].split('?')[0]:'';
+      setBusy(false);
+      if(await save(url)){if(old&&old.indexOf(user.id+'/')===0&&old!==path)sb.storage.from('avatars').remove([old]).then(()=>{},()=>{});finish()}
+    }catch(err){log('avatar upload error',err);setBusy(false);setMsg(tr('Could not upload your picture.')+' ('+String((err&&err.message)||err).slice(0,90)+')')}
   };
   const bt='w-full px-4 py-3 rounded-xl glass hover:border-blue-400 text-left text-sm font-semibold text-white flex items-center gap-3 disabled:opacity-60';
   return <div className="fixed inset-0 z-[56] bg-black/75 flex items-center justify-center p-4" role="dialog" aria-label="Profile picture">
@@ -1711,7 +1717,19 @@ const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['uni
 
 function App(){
   const [view,setView]=useState(()=>{const m=/^#\/(\w+)$/.exec(location.hash||'');return(m&&NAV.concat([['settings'],['auth'],['updated']]).some(n=>n[0]===m[1]))?m[1]:'home'});
-  const [detail,setDetail]=useState(()=>{const m=/^#\/script\/(.+)$/.exec(location.hash||'');if(!m)return null;try{const slug=decodeURIComponent(m[1]);return{slug,_id:slug,title:slug.replace(/-/g,' '),game:{name:''}}}catch(e){return null}});
+  const [detail,setDetail]=useState(()=>{
+    const pathMatch = location.pathname.match(/^\/script\/(.+)$/);
+    if (pathMatch) {
+        const slug = decodeURIComponent(pathMatch[1]);
+        return { slug: slug, _id: slug, title: slug.replace(/-/g, ' '), game: { name: '' } };
+    }
+    const m=/^#\/script\/(.+)$/.exec(location.hash||'');
+    if(!m) return null;
+    try{
+        const slug=decodeURIComponent(m[1]);
+        return{slug,_id:slug,title:slug.replace(/-/g,' '),game:{name:''}}
+    }catch(e){return null}
+});
   const [open,setOpen]=useState(false);const [user,setUser]=useState(null);
   const [cfg,setCfgState]=useState(()=>({...DEFAULT_CFG,...store.get('nx_cfg',{})}));
   const setCfg=patch=>setCfgState(c=>{const n={...c,...patch};store.set('nx_cfg',n);return n});
@@ -1746,7 +1764,17 @@ function App(){
     window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h)
   },[]);
   useEffect(()=>{const h=document.documentElement;h.classList.remove('anim-off','anim-reduced');if(cfg.anim==='off')h.classList.add('anim-off');if(cfg.anim==='reduced')h.classList.add('anim-reduced')},[cfg.anim]);
-  useEffect(()=>{try{history.replaceState(null,'',(detail&&detail.slug&&!detail.isUser)?'#/script/'+encodeURIComponent(detail.slug):'#/'+view)}catch(e){}},[view,detail&&detail.slug]);
+  useEffect(()=>{
+    try {
+        if (detail && detail.slug && !detail.isUser) return;
+        if (dq) {
+            const s = dq.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            history.replaceState(null, '', '/s/' + s);
+            return;
+        }
+        history.replaceState(null, '', '#/' + view);
+    } catch(e) {}
+}, [view, detail && detail.slug, dq]);
   useEffect(()=>{document.body.style.overflow=(open&&window.innerWidth<768)?'hidden':'';return()=>{document.body.style.overflow=''}},[open]);
   useEffect(()=>{
     const base='NexScript';
@@ -1942,12 +1970,4 @@ class ErrorBoundary extends React.Component{
   }
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<ErrorBoundary><App/></ErrorBoundary>);
-</script><script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('SW registered!', reg))
-        .catch(err => console.log('SW registration failed!', err));
-    });
-  }
 </script></body></html>
