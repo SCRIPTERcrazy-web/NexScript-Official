@@ -479,9 +479,15 @@ function Detail({s,back,favs,onFav,toast,votes,onVote,user}){
       return;
     }
     const ac=new AbortController();
-    const one=d=>{const r=(d&&d.result)||d||{};let x=Array.isArray(r.scripts)?r.scripts.find(y=>y&&y.slug===s.slug):(r.script&&typeof r.script==='object'?r.script:r);return(x&&typeof x==='object'&&x.slug===s.slug)?x:null};
-    api('/api/script?slug='+encodeURIComponent(s.slug),ac.signal,{immediate:true}).then(d=>{const x=one(d);if(x&&typeof x.script==='string')setFull(p=>({...p,...x}));else throw new Error('no script')})
-      .catch(()=>api('/api/fetch?slug='+encodeURIComponent(s.slug),ac.signal,{immediate:true}).then(d=>{const x=one(d);if(x)setFull(p=>({...p,...x}))}).catch(()=>{}));
+   const searchQuery = s.slug.replace(/-/g, ' ');
+api('/api/search?q='+encodeURIComponent(searchQuery)+'&max=1',ac.signal,{immediate:true}).then(d=>{
+    const r=(d&&d.result)||d||{};
+    const scripts = Array.isArray(r.scripts) ? r.scripts : [];
+    let found = scripts.find(y => y.slug === s.slug) || scripts[0];
+    if (found) {
+        setFull(p => ({...p, ...found}));
+    }
+}).catch(()=>{});
     api('/api/search?q='+encodeURIComponent((s.game&&s.game.name)||s.title)+'&page=1',ac.signal).then(d=>setRel(pick(d).list.filter(x=>x.slug!==s.slug).slice(0,4))).catch(()=>{});
     return()=>ac.abort()},[s.slug]);
   const code=typeof full.script==='string'?full.script:'-- Loading script...';
