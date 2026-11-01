@@ -493,7 +493,7 @@ api('/api/search?q='+encodeURIComponent(searchQuery)+'&max=1',ac.signal,{immedia
   const code=typeof full.script==='string'?full.script:'-- Loading script...';
   const copy=async()=>{try{await navigator.clipboard.writeText(code);bumpXp(2,'copy');setCopied(true);setTimeout(()=>setCopied(false),2000)}catch{toast(tr("Copy failed"))}};
   const vote=(votes&&votes[s.slug])||0;const v=n=>onVote(s.slug,n);
-  const share=async()=>{const link=location.origin+location.pathname+'#/script/'+encodeURIComponent(s.slug);try{if(navigator.share){await navigator.share({title:full.title||'NexScript',url:link})}else{await navigator.clipboard.writeText(link);setShared(true);setTimeout(()=>setShared(false),2000)}}catch(e){}};
+  const share=async()=>{const link=location.origin+'/script/'+encodeURIComponent(s.slug);try{if(navigator.share){await navigator.share({title:full.title||'NexScript',url:link})}else{await navigator.clipboard.writeText(link);setShared(true);setTimeout(()=>setShared(false),2000)}}catch(e){}};
   const hl=useMemo(()=>code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/(--[^\n]*)|("[^"\n]*"|'[^'\n]*')|\b(local|function|end|if|then|else|elseif|for|while|do|return|true|false|nil|and|or|not|in)\b|\b(\d+)\b/g,(m,c,s2,k,n)=>c?`<span style="color:#64748b">${c}</span>`:s2?`<span style="color:#86efac">${s2}</span>`:k?`<span style="color:#60a5fa">${k}</span>`:`<span style="color:#fbbf24">${n}</span>`),[code]);
   return <div className="page space-y-5">
     <div className="flex items-center justify-between"><button onClick={back} aria-label="Go back" className="flex items-center gap-1 text-blue-300 hover:text-white py-2"><Ic n="back"/>{tr("Back")}</button>
