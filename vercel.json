@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/script/(.*)",
-      "destination": "/api/script/[slug]?slug=$1"
+      "source": "/s/:game/script/:slug",
+      "destination": "/api/script/[slug]?slug=:slug&game=:game"
+    },
+    {
+      "source": "/script/:slug",
+      "destination": "/api/script/[slug]?slug=:slug"
     },
     {
       "source": "/sitemap.xml",
