@@ -1723,17 +1723,20 @@ const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['uni
 
 function App(){
   const [view,setView]=useState(()=>{
-    // Kalau URL-nya /script/..., set view ke 'home' (biar detail yang muncul)
-    if (window.location.pathname.match(/^\/script\/(.+)$/)) return 'home';
+    // Kalau URL-nya detail script (2 format), set view ke 'home'
+    if (window.location.pathname.match(/^(?:\/script\/|\/s\/[^/]+\/script\/)(.+)$/)) return 'home';
     const m=/^#\/(\w+)$/.exec(location.hash||'');
     return(m&&NAV.concat([['settings'],['auth'],['updated']]).some(n=>n[0]===m[1]))?m[1]:'home'
 });
   const [detail,setDetail]=useState(()=>{
-    const pathMatch = location.pathname.match(/^\/script\/(.+)$/);
+    // Format 1: /script/:slug
+    // Format 2: /s/:game/script/:slug
+    const pathMatch = location.pathname.match(/^(?:\/script\/|\/s\/[^/]+\/script\/)(.+)$/);
     if (pathMatch) {
         const slug = decodeURIComponent(pathMatch[1]);
         return { slug: slug, _id: slug, title: slug.replace(/-/g, ' '), game: { name: '' } };
     }
+    // Format 3: #/script/:slug
     const m=/^#\/script\/(.+)$/.exec(location.hash||'');
     if(!m) return null;
     try{
@@ -1777,8 +1780,8 @@ function App(){
   useEffect(()=>{const h=document.documentElement;h.classList.remove('anim-off','anim-reduced');if(cfg.anim==='off')h.classList.add('anim-off');if(cfg.anim==='reduced')h.classList.add('anim-reduced')},[cfg.anim]);
   useEffect(()=>{
     try {
-        // 1. KUNCI UTAMA: Kalau URL udah /script/, JANGAN UBAH!
-        if (window.location.pathname.match(/^\/script\/(.+)$/)) return;
+        // 1. KUNCI UTAMA: Kalau URL detail script (2 format), JANGAN UBAH!
+if (window.location.pathname.match(/^(?:\/script\/|\/s\/[^/]+\/script\/)(.+)$/)) return;
 
         // 1b. Kalau detail apapun kepilih (termasuk script komunitas), tahan URL
         if (detail && detail.slug) return;
