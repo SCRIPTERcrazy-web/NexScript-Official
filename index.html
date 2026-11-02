@@ -1794,24 +1794,43 @@ function App(){
   useEffect(()=>{const h=document.documentElement;h.classList.remove('anim-off','anim-reduced');if(cfg.anim==='off')h.classList.add('anim-off');if(cfg.anim==='reduced')h.classList.add('anim-reduced')},[cfg.anim]);
   useEffect(()=>{
     try {
-        // 1. KUNCI UTAMA: Kalau URL detail script (2 format), JANGAN UBAH!
-if (window.location.pathname.match(/^(?:\/script\/|\/s\/[^/]+\/script\/)(.+)$/)) return;
-
-        // 1b. Kalau detail apapun kepilih (termasuk script komunitas), tahan URL
+        // 1. Di detail (baik dari klik atau SSR): JANGAN sentuh URL
         if (detail && detail.slug) return;
 
-        // 2. Kalau detail kepilih, biarin URL-nya (jangan balik ke /s/)
-        if (detail && detail.slug && !detail.isUser) return;
-
-        // 3. Kalau lagi search, ubah jadi /s/
+        // 2. Di search: tulis /s/[query]
         if (dq) {
             const s = dq.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            history.replaceState(null, '', '/s/' + s);
+            if (!location.pathname.includes('/s/' + s)) {
+                history.replaceState(null, '', '/s/' + s);
+            }
             return;
         }
-        history.replaceState(null, '', '#/' + view);
+
+        // 3. Di home: kalau URL bukan root, reset ke root
+        if (view === 'home') {
+            if (location.pathname !== '/') history.replaceState(null, '', '/');
+            return;
+        }
+
+        // 4. View lain (chat, wallet, settings, dll): pakai hash
+        if (view !== 'home') {
+            history.replaceState(null, '', '#/' + view);
+        }
     } catch(e) {}
 }, [view, detail && detail.slug, dq]);
+useEffect(()=>{
+    const onPop = () => {
+        const m = location.pathname.match(/^(?:\/script\/|\/s\/[^/]+\/script\/)(.+)$/);
+        if (m) {
+            const slug = decodeURIComponent(m[1]);
+            setDetail(p => p && p.slug === slug ? p : { slug, _id: slug, title: slug.replace(/-/g, ' '), game: { name: '' } });
+        } else {
+            setDetail(null);
+        }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+}, []);
   useEffect(()=>{document.body.style.overflow=(open&&window.innerWidth<768)?'hidden':'';return()=>{document.body.style.overflow=''}},[open]);
   useEffect(()=>{
     const base='NexScript';
