@@ -51,9 +51,10 @@ module.exports = async function handler(req, res) {
                 desc = `Download free ${title}${gameName ? ' for ' + gameName : ''}. Verified and working script on NexScript!`;
 
                 let img = script.image;
-                if (img && !img.startsWith('http')) img = `https://scriptblox.com${img}`;
-                if (img) image = img;
-
+if (img && !img.startsWith('http')) {
+    img = `https://scriptblox.com${img}`;
+}
+if (img) image = img;
                 console.log(`[api/script] OK: ${slug} (${gameName})`);
             } else {
                 console.warn(`[api/script] Script not found or slug mismatch: ${slug}`);
