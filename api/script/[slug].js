@@ -52,7 +52,7 @@ module.exports = async function handler(req, res) {
 
                 let img = script.image;
 if (img && !img.startsWith('http')) {
-    img = `https://scriptblox.com${img}`;
+    img = `https://scriptblox-proxy-pzq8.vercel.app/api/image?url=${encodeURIComponent(img)}`;
 }
 if (img) image = img;
                 console.log(`[api/script] OK: ${slug} (${gameName})`);
