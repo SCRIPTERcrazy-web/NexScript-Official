@@ -1,18 +1,20 @@
 // api/script/[slug].js
 module.exports = async function handler(req, res) {
-    // 1. Parse URL & ambil slug (support 3 format URL)
-    const urlObj = new URL(req.url, `http://${req.headers.host}`);
-    let rawSlug = null;
-    
-    const detailMatch = urlObj.pathname.match(/^(?:\/api\/script\/|\/script\/|\/s\/[^/]+\/script\/)([^/]+)/);
-    if (detailMatch) {
-        rawSlug = detailMatch[1];
+    let rawSlug = req.query.slug;
+    let rawGame = req.query.game || null;
+
+    if (!rawSlug) {
+        const urlObj = new URL(req.url, `http://${req.headers.host}`);
+        const match = urlObj.pathname.match(/^(?:\/api\/script\/|\/script\/|\/s\/[^/]+\/script\/)([^/]+)/);
+        if (match) rawSlug = match[1];
+        const gm = urlObj.pathname.match(/^\/s\/([^/]+)\/script\//);
+        if (!rawGame && gm) rawGame = gm[1];
     }
 
     if (!rawSlug) return res.status(400).send('Missing slug');
-    const slug = decodeURIComponent(rawSlug);
+    const slug = decodeURIComponent(Array.isArray(rawSlug) ? rawSlug[0] : rawSlug);
+    const gameSlugFromQuery = rawGame ? (Array.isArray(rawGame) ? rawGame[0] : rawGame) : null;
 
-    // 2. Fungsi escape HTML
     const esc = s => String(s || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -27,7 +29,6 @@ module.exports = async function handler(req, res) {
     let desc = 'Free Roblox script on NexScript. Copy and run it with your favorite executor.';
     let image = fallbackImage;
 
-    // 3. Fetch data script dari ScriptBlox Proxy
     try {
         const apiUrl = `https://scriptblox-proxy-pzq8.vercel.app/api/search?q=${encodeURIComponent(slug.replace(/-/g, ' '))}&max=1`;
         const apiRes = await fetch(apiUrl, { headers: { 'User-Agent': 'NexScriptBot/1.0' } });
@@ -51,7 +52,6 @@ module.exports = async function handler(req, res) {
         console.error('[api/script] proxy error:', e.message);
     }
 
-    // 4. Baca index.html pake fs (ANTI DEADLOCK)
     let html;
     try {
         const fs = require('fs');
@@ -62,7 +62,6 @@ module.exports = async function handler(req, res) {
         return res.status(500).send('Failed to load page');
     }
 
-    // 5. Hapus OG tags lama
     html = html
         .replace(/<title>[\s\S]*?<\/title>/i, '')
         .replace(/<meta\s+name=["']description["'][^>]*>/gi, '')
@@ -76,12 +75,9 @@ module.exports = async function handler(req, res) {
         .replace(/<meta\s+name=["']twitter:card["'][^>]*>/gi, '')
         .replace(/<link\s+rel=["']canonical["'][^>]*>/gi, '');
 
-    // 6. Bikin URL Canonical & OG:URL baru
-    const gameMatch = urlObj.pathname.match(/^\/s\/([^/]+)\/script\//);
-    const gameSlug = gameMatch ? gameMatch[1] : 'universal';
+    const gameSlug = gameSlugFromQuery || 'universal';
     const canonicalUrl = `${origin}/s/${gameSlug}/script/${encodeURIComponent(slug)}`;
 
-    // 7. Inject meta tags baru
     const meta = `
 <title>${esc(title)} - NexScript</title>
 <meta name="description" content="${esc(desc)}">
@@ -99,7 +95,6 @@ module.exports = async function handler(req, res) {
 `;
     html = html.replace('</head>', meta + '</head>');
 
-    // 8. Return response + Cache
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=7200, stale-while-revalidate=86400');
     return res.status(200).send(html);
