@@ -1777,7 +1777,16 @@ function App(){
   useEffect(()=>{const h=document.documentElement;h.classList.remove('anim-off','anim-reduced');if(cfg.anim==='off')h.classList.add('anim-off');if(cfg.anim==='reduced')h.classList.add('anim-reduced')},[cfg.anim]);
   useEffect(()=>{
     try {
+        // 1. KUNCI UTAMA: Kalau URL udah /script/, JANGAN UBAH!
+        if (window.location.pathname.match(/^\/script\/(.+)$/)) return;
+
+        // 1b. Kalau detail apapun kepilih (termasuk script komunitas), tahan URL
+        if (detail && detail.slug) return;
+
+        // 2. Kalau detail kepilih, biarin URL-nya (jangan balik ke /s/)
         if (detail && detail.slug && !detail.isUser) return;
+
+        // 3. Kalau lagi search, ubah jadi /s/
         if (dq) {
             const s = dq.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
             history.replaceState(null, '', '/s/' + s);
@@ -1943,11 +1952,40 @@ function App(){
       <div className="flex justify-center gap-6 px-3 md:px-5"><div className="w-full max-w-3xl min-w-0 py-3 md:py-5">
         {!detail&&BANNERS[view]&&<Banner title={BANNERS[view][0]} sub={BANNERS[view][1]} hue={BANNERS[view][2]}/>}
         {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} votes={votes} onVote={onVote} user={user} back={x=>x&&x.slug?setDetail(x):setDetail(null)}/>
-        :view==='quiz'?<QuizPage toast={toast}/>:view==='wallet'?<WalletPage user={user} profile={profile} acct={acct} refresh={refreshAcct} go={go} toast={toast}/>:view==='review'?((profile&&(profile.role==='owner'||profile.role==='developer'))?<ReviewPage toast={toast}/>:<Empty t="Not allowed" d="Only the owner and developers can open this page."/>):view==='rewards'?<RewardsPage toast={toast} profile={profile}/>:view==='settings'?<SettingsPage cfg={cfg} setCfg={setCfg} resetCfg={resetCfg} lang={lang} changeLang={changeLang} user={user} profile={profile} onProfile={setProfile} onAvatar={()=>setShowAvatar(true)} onLogout={()=>sb&&sb.auth.signOut()} favs={favs} onClearFavs={clearFavs} onClearRecent={clearRecent} onImport={importFavs} toast={toast}/>:view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage key={authTab} user={user} go={go} initialTab={authTab}/>:view==='videos'?<ShortsFeed toast={toast} go={go}/>:view==='feed'?<FeedPage favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} votes={votes} onVote={onVote} toast={toast}/>:view==='games'?<GamesPage onPick={n=>{setQ(n);go('home')}}/>:view==='guide'?<GuidePage/>:view==='legal'?<LegalPage/>:view==='chat'?<ChatPage user={user} profile={profile} go={go} toast={toast}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='community'?<Community favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/>
+        :view==='quiz'?<QuizPage toast={toast}/>:view==='wallet'?<WalletPage user={user} profile={profile} acct={acct} refresh={refreshAcct} go={go} toast={toast}/>:view==='review'?((profile&&(profile.role==='owner'||profile.role==='developer'))?<ReviewPage toast={toast}/>:<Empty t="Not allowed" d="Only the owner and developers can open this page."/>):view==='rewards'?<RewardsPage toast={toast} profile={profile}/>:view==='settings'?<SettingsPage cfg={cfg} setCfg={setCfg} resetCfg={resetCfg} lang={lang} changeLang={changeLang} user={user} profile={profile} onProfile={setProfile} onAvatar={()=>setShowAvatar(true)} onLogout={()=>sb&&sb.auth.signOut()} favs={favs} onClearFavs={clearFavs} onClearRecent={clearRecent} onImport={importFavs} toast={toast}/>:view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage key={authTab} user={user} go={go} initialTab={authTab}/>:view==='videos'?<ShortsFeed toast={toast} go={go}/>:view==='feed'?<FeedPage favs={favs} onFav={onFav} onOpen={s=>{
+  setDetail(s);
+  const gameSlug = (s.game && s.game.name) ? s.game.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') : 'universal';
+  history.replaceState(null, '', '/s/' + gameSlug + '/script/' + encodeURIComponent(s.slug));
+  window.scrollTo(0,0);
+}} votes={votes} onVote={onVote} toast={toast}/>:view==='games'?<GamesPage onPick={n=>{setQ(n);go('home')}}/>:view==='guide'?<GuidePage/>:view==='legal'?<LegalPage/>:view==='chat'?<ChatPage user={user} profile={profile} go={go} toast={toast}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='community'?<Community favs={favs} onFav={onFav} onOpen={s=>{
+  setDetail(s);
+  if (!s.isUser) {
+    const gameSlug = (s.game && s.game.name) ? s.game.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') : 'universal';
+    history.replaceState(null, '', '/s/' + gameSlug + '/script/' + encodeURIComponent(s.slug));
+  } else {
+    history.replaceState(null, '', '/script/' + encodeURIComponent(s.slug));
+  }
+  window.scrollTo(0,0);
+}} toast={toast}/>
         :<div className="page">{view==='home'&&!dq&&<div className="sheen relative overflow-hidden rounded-2xl mb-6 glass p-8 md:p-10 min-h-[190px]"><HeroArt/><div className="absolute inset-0 bg-gradient-to-r from-[#0a0f2c]/85 via-[#0a0f2c]/40 to-transparent"/><div className="relative"><h1 className="hd text-3xl md:text-4xl font-bold text-white">{tr("Discover")} <span className="gradtext">{tr("Roblox scripts")}</span> {tr("instantly")}</h1><p className="text-slate-300 mt-2">{tr("Browse thousands of free scripts. Fast, clean, ad-supported.")}</p></div></div>}
-          {view==='home'&&!dq&&<DailyPick cfg={cfg} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}}/>}
-          {view==='home'&&!dq&&recent.length>0&&<RecentStrip items={recent} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}}/>}
-          <Grid cfg={cfg} mode={mode} query={dq} filter={filter} favs={favs} onFav={onFav} onOpen={s=>{setDetail(s);window.scrollTo(0,0)}} toast={toast}/></div>}
+          {view==='home'&&!dq&&<DailyPick cfg={cfg} onOpen={s=>{
+  setDetail(s);
+  const gameSlug = (s.game && s.game.name) ? s.game.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') : 'universal';
+  history.replaceState(null, '', '/s/' + gameSlug + '/script/' + encodeURIComponent(s.slug));
+  window.scrollTo(0,0);
+}}/>}
+          {view==='home'&&!dq&&recent.length>0&&<RecentStrip items={recent} onOpen={s=>{
+  setDetail(s);
+  const gameSlug = (s.game && s.game.name) ? s.game.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') : 'universal';
+  history.replaceState(null, '', '/s/' + gameSlug + '/script/' + encodeURIComponent(s.slug));
+  window.scrollTo(0,0);
+}}/>}
+          <Grid cfg={cfg} mode={mode} query={dq} filter={filter} favs={favs} onFav={onFav} onOpen={s=>{
+  setDetail(s);
+  const gameSlug = (s.game && s.game.name) ? s.game.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') : 'universal';
+  history.replaceState(null, '', '/s/' + gameSlug + '/script/' + encodeURIComponent(s.slug));
+  window.scrollTo(0,0);
+}} toast={toast}/></div>}
         <div className="mt-8 flex justify-center"><AdSlot kind="wide" label="bottom"/></div>
       </div>
       <div className="hidden xl:block w-40 shrink-0 sticky top-40 self-start pt-5" aria-label="Advertisement"><AdSlot kind="160x600" label="side rail"/></div>
