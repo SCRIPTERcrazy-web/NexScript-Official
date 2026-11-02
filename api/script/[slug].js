@@ -1,19 +1,8 @@
 // api/script/[slug].js
 module.exports = async function handler(req, res) {
-    let rawSlug = req.query.slug;
-    let rawGame = req.query.game || null;
-
-    if (!rawSlug) {
-        const urlObj = new URL(req.url, `http://${req.headers.host}`);
-        const match = urlObj.pathname.match(/^(?:\/api\/script\/|\/script\/|\/s\/[^/]+\/script\/)([^/]+)/);
-        if (match) rawSlug = match[1];
-        const gm = urlObj.pathname.match(/^\/s\/([^/]+)\/script\//);
-        if (!rawGame && gm) rawGame = gm[1];
-    }
-
+    const rawSlug = req.query.slug;
     if (!rawSlug) return res.status(400).send('Missing slug');
     const slug = decodeURIComponent(Array.isArray(rawSlug) ? rawSlug[0] : rawSlug);
-    const gameSlugFromQuery = rawGame ? (Array.isArray(rawGame) ? rawGame[0] : rawGame) : null;
 
     const esc = s => String(s || '')
         .replace(/&/g, '&amp;')
@@ -28,6 +17,8 @@ module.exports = async function handler(req, res) {
     let title = slug.replace(/-/g, ' ');
     let desc = 'Free Roblox script on NexScript. Copy and run it with your favorite executor.';
     let image = fallbackImage;
+    let gameName = '';
+    let scriptCode = '';
 
     try {
         const apiUrl = `https://scriptblox-proxy-pzq8.vercel.app/api/search?q=${encodeURIComponent(slug.replace(/-/g, ' '))}&max=1`;
@@ -40,8 +31,9 @@ module.exports = async function handler(req, res) {
 
             if (script) {
                 title = script.title || title;
-                const game = script.game?.name || 'Roblox';
-                desc = `Download free ${title} for ${game}. Verified and working script on NexScript!`;
+                gameName = script.game?.name || '';
+                scriptCode = script.script || '';
+                desc = `Download free ${title}${gameName ? ' for ' + gameName : ''}. Verified and working script on NexScript!`;
 
                 let img = script.image;
                 if (img && !img.startsWith('http')) img = `https://scriptblox.com${img}`;
@@ -52,32 +44,31 @@ module.exports = async function handler(req, res) {
         console.error('[api/script] proxy error:', e.message);
     }
 
+    // Baca index.html
     let html;
     try {
+        const htmlRes = await fetch(origin + '/index.html', { headers: { 'User-Agent': 'NexScriptBot/1.0' } });
+        if (!htmlRes.ok) throw new Error('HTTP ' + htmlRes.status);
+        html = await htmlRes.text();
+    } catch (e) {
         const fs = require('fs');
         const path = require('path');
         html = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf8');
-    } catch (e) {
-        console.error('[api/script] read index.html failed:', e.message);
-        return res.status(500).send('Failed to load page');
     }
 
+    // Hapus meta lama
     html = html
         .replace(/<title>[\s\S]*?<\/title>/i, '')
         .replace(/<meta\s+name=["']description["'][^>]*>/gi, '')
         .replace(/<meta\s+property=["']og:title["'][^>]*>/gi, '')
         .replace(/<meta\s+property=["']og:description["'][^>]*>/gi, '')
         .replace(/<meta\s+property=["']og:image["'][^>]*>/gi, '')
-        .replace(/<meta\s+property=["']og:url["'][^>]*>/gi, '')
         .replace(/<meta\s+name=["']twitter:title["'][^>]*>/gi, '')
         .replace(/<meta\s+name=["']twitter:description["'][^>]*>/gi, '')
         .replace(/<meta\s+name=["']twitter:image["'][^>]*>/gi, '')
-        .replace(/<meta\s+name=["']twitter:card["'][^>]*>/gi, '')
-        .replace(/<link\s+rel=["']canonical["'][^>]*>/gi, '');
+        .replace(/<meta\s+name=["']twitter:card["'][^>]*>/gi, '');
 
-    const gameSlug = gameSlugFromQuery || 'universal';
-    const canonicalUrl = `${origin}/s/${gameSlug}/script/${encodeURIComponent(slug)}`;
-
+    // INJECT: meta tags + window.NEXSCRIPT_INITIAL_DATA
     const meta = `
 <title>${esc(title)} - NexScript</title>
 <meta name="description" content="${esc(desc)}">
@@ -86,16 +77,17 @@ module.exports = async function handler(req, res) {
 <meta property="og:title" content="${esc(title)} - NexScript">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:image" content="${esc(image)}">
-<meta property="og:url" content="${canonicalUrl}">
+<meta property="og:url" content="${origin}/s/${encodeURIComponent(gameName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'universal')}/script/${encodeURIComponent(slug)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)} - NexScript">
 <meta name="twitter:description" content="${esc(desc)}">
 <meta name="twitter:image" content="${esc(image)}">
-<link rel="canonical" href="${canonicalUrl}">
+<link rel="canonical" href="${origin}/s/${encodeURIComponent(gameName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'universal')}/script/${encodeURIComponent(slug)}">
+<script>window.NEXSCRIPT_INITIAL_DATA=${JSON.stringify({slug,title,gameName,scriptCode,image})};</script>
 `;
     html = html.replace('</head>', meta + '</head>');
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=7200, stale-while-revalidate=86400');
+    res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600, stale-while-revalidate=3600');
     return res.status(200).send(html);
 };
