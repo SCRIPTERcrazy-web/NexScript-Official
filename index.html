@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- NEXSCRIPT_SEO_INJECTION -->
 <title>NexScript - Roblox Script Hub</title>
 <meta name="description" content="NexScript is a free Roblox script discovery tool. Search, browse and copy scripts for your favorite games.">
 <link rel="canonical" href="https://nexscript-official.vercel.app/">
@@ -1729,6 +1730,19 @@ function App(){
     return(m&&NAV.concat([['settings'],['auth'],['updated']]).some(n=>n[0]===m[1]))?m[1]:'home'
 });
   const [detail,setDetail]=useState(()=>{
+    // 1. CEK DATA DARI SERVER (SEO INJECTION)
+    if (window.NEXSCRIPT_INITIAL_DATA && window.NEXSCRIPT_INITIAL_DATA.slug) {
+        const d = window.NEXSCRIPT_INITIAL_DATA;
+        return {
+            slug: d.slug,
+            _id: d.slug,
+            title: d.title || d.slug.replace(/-/g, ' '),
+            game: { name: d.gameName || '' },
+            script: d.scriptCode,
+            isUser: false
+        };
+    }
+
     // Format 1: /script/:slug
     // Format 2: /s/:game/script/:slug
     const pathMatch = location.pathname.match(/^(?:\/script\/|\/s\/[^/]+\/script\/)(.+)$/);
