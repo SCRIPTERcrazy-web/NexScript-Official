@@ -1,29 +1,13 @@
 {
+  "functions": {
+    "api/script/[slug].js": { "includeFiles": "index.html" },
+    "api/game.js": { "includeFiles": "index.html" }
+  },
   "rewrites": [
-    {
-      "source": "/s/:game/script/:slug",
-      "destination": "/api/script/[slug]?slug=:slug&game=:game"
-    },
-    {
-      "source": "/script/:slug",
-      "destination": "/api/script/[slug]?slug=:slug"
-    },
-    {
-      "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
-    },
-    {
-      "source": "/s/id/(.*)",
-      "destination": "/s/index.html"
-    },
-    {
-      "source": "/s/en/(.*)",
-      "destination": "/s/index.html"
-    },
-    {
-      "source": "/s/(.*)",
-      "destination": "/s/index.html"
-    }
+    { "source": "/s/:game/script/:slug", "destination": "/api/script/:slug?game=:game" },
+    { "source": "/script/:slug", "destination": "/api/script/:slug" },
+    { "source": "/s/:game", "destination": "/api/game?game=:game" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" }
   ],
   "headers": [
     {
