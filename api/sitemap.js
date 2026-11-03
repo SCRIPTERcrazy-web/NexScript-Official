@@ -1,46 +1,31 @@
-export default async function handler(req, res) {
-  // Ambil data dari API ScriptBlox (samain kayak yang lu pake di React)
-  try {
-    // Kita ambil banyak script biar dapet nama game-nya
-    const response = await fetch('https://scriptblox-proxy-pzq8.vercel.app/api/fetch?page=1&mode=free&max=100');
-    const data = await response.json();
-    
-    // Kumpulin nama game unik
-    const games = new Set();
-    
-    // (Asumsi data.result.scripts itu array script)
-    const scripts = data.result?.scripts || data.scripts || [];
-    
-    scripts.forEach(script => {
-      if (script.game && script.game.name) {
-        // Ubah nama game jadi format URL (Blox Fruits -> blox-fruits)
-        const slug = script.game.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        games.add(slug);
-      }
-    });
+// /sitemap.xml  (see vercel.json). Built from the most viewed scripts, so it stays fresh without editing a file.
+const S = require('../lib/seo.js');
 
-    // Bikin format XML untuk Sitemap
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-    
-    // 1. Masukin Halaman Utama
-    xml += `  <url><loc>https://nexscript-official.vercel.app/</loc></url>\n`;
+const x = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-    // 2. Looping semua game yang udah dikumpulin
-    games.forEach(game => {
-      // Daftarin versi English
-      xml += `  <url><loc>https://nexscript-official.vercel.app/s/${game}</loc></url>\n`;
-      // Daftarin versi Indonesia
-      xml += `  <url><loc>https://nexscript-official.vercel.app/s/id/${game}</loc></url>\n`;
-    });
+module.exports = async function handler(req, res) {
+  const pages = [1, 2, 3, 4]; // 4 pages per category so the ScriptBlox API is not overloaded
+  const urlsViews = pages.map(p => S.PROXY + '/api/fetch?page=' + p + '&mode=free&sortBy=views&order=desc&max=20');
+  const urlsNewest = pages.map(p => S.PROXY + '/api/fetch?page=' + p + '&mode=free&sortBy=createdAt&order=desc&max=20');
+  const results = await Promise.all([...urlsViews, ...urlsNewest].map(u => S.getJson(u, 8000)));
+  const scripts = [], games = new Map(), seen = new Set();
+  results.forEach(d => S.pickList(d).forEach(s => {
+    if (!s || !s.slug || !s.title || seen.has(s.slug)) return;
+    seen.add(s.slug);
+    scripts.push(s);
+    const g = S.gameSlugOf(s);
+    if (g !== 'universal' && !games.has(g)) games.set(g, s.updatedAt || s.createdAt);
+  }));
 
-    xml += `</urlset>`;
+  const today = new Date().toISOString().slice(0, 10);
+  const day = d => { try { return new Date(d).toISOString().slice(0, 10); } catch (e) { return today; } };
+  const urls = [{ loc: S.ORIGIN + '/', lastmod: today, pr: '1.0' }];
+  games.forEach((d, g) => urls.push({ loc: S.ORIGIN + '/s/' + g, lastmod: d ? day(d) : today, pr: '0.8' }));
+  scripts.forEach(s => urls.push({ loc: S.ORIGIN + S.scriptPath(s), lastmod: day(s.updatedAt || s.createdAt), pr: '0.6' }));
 
-    // Kasih tau browser/Google kalau ini file XML
-    res.setHeader('Content-Type', 'text/xml');
-    res.status(200).send(xml);
-    
-  } catch (error) {
-    res.status(500).send('Error generating sitemap');
-  }
-}
+  const xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.map(u => '  <url><loc>' + x(u.loc) + '</loc><lastmod>' + u.lastmod + '</lastmod><priority>' + u.pr + '</priority></url>').join('\n') + '\n</urlset>\n';
+  res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+  res.setHeader('Cache-Control', 'public, s-maxage=21600, stale-while-revalidate=86400');
+  return res.status(200).send(xml);
+};
