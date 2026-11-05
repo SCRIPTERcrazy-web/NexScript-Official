@@ -1,0 +1,9 @@
+{
+  "name": "nexscript",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NexScript - Roblox script hub",
+  "dependencies": {
+    "web-push": "^3.6.7"
+  }
+}
