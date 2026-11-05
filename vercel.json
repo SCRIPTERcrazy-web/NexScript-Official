@@ -19,5 +19,11 @@
         { "key": "Permissions-Policy", "value": "camera=(), geolocation=(), microphone=(self)" }
       ]
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/guard",
+      "schedule": "0 */6 * * *"
+    }
   ]
 }
