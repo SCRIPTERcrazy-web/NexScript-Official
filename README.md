@@ -2,7 +2,7 @@
 
 A free, modern Roblox script discovery tool. Search, browse, and copy scripts for your favorite games.
 
-[**Live Demo**](https://nexscript-official.vercel.app) · [**Discord**](https://discord.gg/nnaHS7xmJU)
+[**Website**](https://nexscript-official.vercel.app) · [**Discord**](https://discord.gg/nnaHS7xmJU)
 
 ---
 
