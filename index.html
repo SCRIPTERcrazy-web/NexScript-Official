@@ -144,9 +144,6 @@ html.anim-reduced .ring-rainbow,html.anim-reduced .t-mythic{animation:none!impor
 @keyframes bootBar{0%{transform:translateX(-110%)}100%{transform:translateX(290%)}}
 @keyframes bootShow{to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.boot-ring,.boot-mark,.boot-bar i,.boot-title,.boot-star{animation:none!important}}
-@keyframes termBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
-.term-cursor{display:inline-block;width:.6em;height:1.15em;margin-left:2px;background:#4ade80;vertical-align:text-bottom;box-shadow:0 0 8px #4ade80;animation:termBlink 1s steps(1) infinite}
-@media (prefers-reduced-motion:reduce){.term-cursor{animation:none}}
 </style></head>
 <body><div id="boot" role="status" aria-label="Loading">
 <i class="boot-star" style="left:11%;top:7%;animation-delay:0.0s"></i><i class="boot-star" style="left:48%;top:60%;animation-delay:0.4s"></i><i class="boot-star" style="left:85%;top:13%;animation-delay:0.8s"></i><i class="boot-star" style="left:22%;top:66%;animation-delay:1.2s"></i><i class="boot-star" style="left:59%;top:19%;animation-delay:1.6s"></i><i class="boot-star" style="left:96%;top:72%;animation-delay:2.0s"></i><i class="boot-star" style="left:33%;top:25%;animation-delay:2.4s"></i><i class="boot-star" style="left:70%;top:78%;animation-delay:0.0s"></i><i class="boot-star" style="left:7%;top:31%;animation-delay:0.4s"></i><i class="boot-star" style="left:44%;top:84%;animation-delay:0.8s"></i><i class="boot-star" style="left:81%;top:37%;animation-delay:1.2s"></i><i class="boot-star" style="left:18%;top:90%;animation-delay:1.6s"></i><i class="boot-star" style="left:55%;top:43%;animation-delay:2.0s"></i><i class="boot-star" style="left:92%;top:96%;animation-delay:2.4s"></i><i class="boot-star" style="left:29%;top:49%;animation-delay:0.0s"></i><i class="boot-star" style="left:66%;top:2%;animation-delay:0.4s"></i><i class="boot-star" style="left:3%;top:55%;animation-delay:0.8s"></i><i class="boot-star" style="left:40%;top:8%;animation-delay:1.2s"></i><i class="boot-star" style="left:77%;top:61%;animation-delay:1.6s"></i><i class="boot-star" style="left:14%;top:14%;animation-delay:2.0s"></i><i class="boot-star" style="left:51%;top:67%;animation-delay:2.4s"></i><i class="boot-star" style="left:88%;top:20%;animation-delay:0.0s"></i><i class="boot-star" style="left:25%;top:73%;animation-delay:0.4s"></i><i class="boot-star" style="left:62%;top:26%;animation-delay:0.8s"></i>
@@ -206,7 +203,7 @@ function parseLoc(){
   return{detail:null,q:'',view:m?m[1]:'home'};
 }
 const URL_Q=(()=>{try{const qp=((URL_PARAMS&&URL_PARAMS.get('q'))||'').replace(/\s+/g,' ').trim().slice(0,100);return qp||parseLoc().q}catch(e){return''}})();
-const ID={"Home": "Beranda", "Trending": "Trending", "Newest": "Terbaru", "Most Viewed": "Paling Banyak Dilihat", "Top Rated": "Rating Tertinggi", "Verified": "Terverifikasi", "Keyless": "Tanpa Key", "Favorites": "Favorit", "Community": "Komunitas", "Global Chat": "Chat Global", "Games": "Game", "Upload": "Unggah", "Guide & FAQ": "Panduan & FAQ", "Terms & Privacy": "Syarat & Privasi", "About": "Tentang", "Donate": "Donasi", "Admin": "Admin", "All": "Semua", "Universal": "Universal", "No Key": "Tanpa Key", "View Profile": "Lihat Profil", "Search scripts, games, or creators...": "Cari script, game, atau kreator...", "Search scripts": "Cari script", "Discover": "Temukan", "Roblox scripts": "script Roblox", "instantly": "dalam sekejap", "Browse thousands of free scripts. Fast, clean, ad-supported.": "Jelajahi ribuan script gratis. Cepat, bersih, didukung iklan.", "Loading more scripts...": "Memuat script lainnya...", "You've reached the end": "Kamu sudah sampai di akhir", "No scripts found": "Script tidak ditemukan", "Try a different keyword like 'blox fruits' or 'universal'.": "Coba kata kunci lain seperti 'blox fruits' atau 'universal'.", "No favorites yet": "Belum ada favorit", "Tap the heart on any script to save it here.": "Ketuk hati pada script untuk menyimpannya di sini.", "No community scripts yet": "Belum ada script komunitas", "Be the first: log in and use Upload to share a script.": "Jadilah yang pertama: login lalu gunakan Unggah untuk membagikan script.", "Failed to load scripts.": "Gagal memuat script.", "Rate limited. Try again shortly.": "Terlalu banyak permintaan. Coba lagi sebentar.", "Failed to load community scripts.": "Gagal memuat script komunitas.", "Back": "Kembali", "Copy Script": "Salin Script", "Copied!": "Tersalin!", "Lua script": "Script Lua", "Related scripts": "Script terkait", "Copy failed": "Gagal menyalin", "No ratings yet": "Belum ada rating", "Log in to rate this script.": "Login untuk memberi rating.", "Could not save rating.": "Gagal menyimpan rating.", "Could not sync favorite.": "Gagal menyinkronkan favorit.", "Could not sync vote.": "Gagal menyinkronkan vote.", "Could not load your saved data.": "Gagal memuat data tersimpanmu.", "Log in": "Masuk", "Sign up": "Daftar", "Welcome back": "Selamat datang kembali", "Create your account": "Buat akunmu", "Email": "Email", "Password": "Kata sandi", "Confirm password": "Konfirmasi kata sandi", "Username": "Username", "Please wait...": "Mohon tunggu...", "You're logged in": "Kamu sudah masuk", "Log out": "Keluar", "Log in / Sign up": "Masuk / Daftar", "Your username is permanent and shown in chat.": "Username bersifat permanen dan tampil di chat.", "Username must be 3-20 letters, numbers or underscores, and cannot be reserved or inappropriate.": "Username harus 3-20 huruf, angka, atau garis bawah, dan tidak boleh nama yang dicadangkan atau tidak pantas.", "That username is taken.": "Username itu sudah dipakai.", "Could not save username.": "Gagal menyimpan username.", "Choose your username": "Pilih username-mu", "This name is shown in chat and cannot be changed later.": "Nama ini tampil di chat dan tidak bisa diganti nanti.", "Save username": "Simpan username", "Auth service failed to load. Refresh the page.": "Layanan login gagal dimuat. Muat ulang halaman.", "Password must be at least 8 characters.": "Kata sandi minimal 8 karakter.", "Passwords do not match.": "Kata sandi tidak cocok.", "Check your email to confirm your account, then log in.": "Cek emailmu untuk konfirmasi akun, lalu login.", "Something went wrong.": "Terjadi kesalahan.", "Please complete the captcha.": "Selesaikan captcha dulu.", "Welcome to NexScript": "Selamat datang di NexScript", "Your hub for Roblox scripts": "Pusat script Roblox kamu", "Skip for now": "Lewati dulu", "You can use everything without an account. Log in later any time.": "Semua fitur bisa dipakai tanpa akun. Kamu bisa login kapan saja.", "Log in to upload": "Login untuk mengunggah", "Only logged-in users can upload scripts.": "Hanya pengguna yang sudah login yang bisa mengunggah script.", "Script name": "Nama script", "Information (game, version, keyless...)": "Informasi (game, versi, keyless...)", "Description": "Deskripsi", "Paste your Lua script here": "Tempel script Lua kamu di sini", "Display name (optional, shown publicly)": "Nama tampilan (opsional, tampil publik)", "Upload script": "Unggah script", "Uploading...": "Mengunggah...", "Your uploads": "Unggahanmu", "Delete": "Hapus", "Could not delete script.": "Gagal menghapus script.", "Upload server is not configured yet.": "Server unggah belum dikonfigurasi.", "Script name must be at least 3 characters.": "Nama script minimal 3 karakter.", "Please fill in the information field.": "Isi kolom informasi.", "Please paste your script.": "Tempel script-mu.", "Session expired. Please log in again.": "Sesi habis. Silakan login lagi.", "Could not reach the upload server.": "Tidak bisa terhubung ke server unggah.", "Submitted! Your script will appear in Community after it is reviewed.": "Terkirim! Script-mu akan tampil di Komunitas setelah direview.", "Last 250 messages": "250 pesan terakhir", "Type a message...": "Ketik pesan...", "Send": "Kirim", "Log in to chat": "Login untuk chat", "No messages yet. Say hi!": "Belum ada pesan. Sapa duluan!", "Chatting as": "Chat sebagai", "Cancel": "Batal", "Send voice": "Kirim suara", "Could not load chat.": "Gagal memuat chat.", "Choose a username first.": "Pilih username dulu.", "Slow down a little.": "Pelan-pelan sedikit.", "Your message contains inappropriate language.": "Pesanmu mengandung kata yang tidak pantas.", "Message not sent.": "Pesan tidak terkirim.", "Please choose an image.": "Pilih gambar.", "Could not send image.": "Gagal mengirim gambar.", "Voice recording is not supported on this browser.": "Rekam suara tidak didukung di browser ini.", "Recording too short.": "Rekaman terlalu pendek.", "Could not send voice message.": "Gagal mengirim pesan suara.", "Microphone permission denied.": "Izin mikrofon ditolak.", "Could not delete message.": "Gagal menghapus pesan.", "Community Scripts": "Script Komunitas", "Scripts shared by the community, reviewed before they go live.": "Script dari komunitas, direview sebelum tayang.", "Talk with other script hunters in real time.": "Ngobrol real-time dengan pemburu script lain.", "Upload a Script": "Unggah Script", "Share your script with the community.": "Bagikan script-mu ke komunitas.", "Popular Games": "Game Populer", "Pick a game and jump straight to its scripts.": "Pilih game dan langsung lihat script-nya.", "Everything to know before running a script.": "Semua yang perlu diketahui sebelum menjalankan script.", "How NexScript handles your data.": "Cara NexScript mengelola datamu.", "Browse scripts ->": "Lihat script ->", "How to use a script": "Cara memakai script", "Open a script and tap": "Buka script lalu ketuk", "Join the matching Roblox game.": "Masuk ke game Roblox yang sesuai.", "Open your executor, paste the script and run it.": "Buka executor-mu, tempel script, lalu jalankan.", "If the script asks for a key, follow the steps shown by the script.": "Jika script meminta key, ikuti langkah yang ditampilkan script.", "NexScript does not provide executors or host game files.": "NexScript tidak menyediakan executor atau menyimpan file game.", "Stay safe": "Tetap aman", "Using scripts can break Roblox's Terms of Service and may get an account banned. Use at your own risk, ideally on an alternate account.": "Memakai script bisa melanggar Ketentuan Layanan Roblox dan berisiko membuat akun diblokir. Gunakan dengan risiko sendiri, sebaiknya di akun cadangan.", "Never run a script that asks for your password, your .ROBLOSECURITY cookie or your Robux.": "Jangan pernah menjalankan script yang meminta password, cookie .ROBLOSECURITY, atau Robux-mu.", "Be careful with heavily obfuscated code from unknown authors.": "Hati-hati dengan kode yang sangat di-obfuscate dari pembuat yang tidak dikenal.", "Community uploads are reviewed, but nobody can guarantee a script is safe.": "Unggahan komunitas direview, tapi tidak ada yang bisa menjamin script itu aman.", "FAQ": "FAQ", "What does KEY mean?": "Apa arti KEY?", "The script asks you to get a key (usually from a link) before it works. KEYLESS scripts run without one.": "Script meminta kamu mengambil key (biasanya lewat tautan) sebelum bisa jalan. Script KEYLESS jalan tanpa key.", "What is VERIFIED?": "Apa itu VERIFIED?", "The script has been checked by the ScriptBlox team or marked as working by its source.": "Script sudah dicek tim ScriptBlox atau ditandai berfungsi oleh sumbernya.", "What is PATCHED?": "Apa itu PATCHED?", "The game or executor changed and the script no longer works. Look for a newer one.": "Game atau executor berubah dan script tidak lagi berfungsi. Cari yang lebih baru.", "What are UNIVERSAL and HUB?": "Apa itu UNIVERSAL dan HUB?", "UNIVERSAL scripts work in many games. A HUB bundles many features or games into one menu.": "Script UNIVERSAL jalan di banyak game. HUB menggabungkan banyak fitur atau game dalam satu menu.", "What is COMMUNITY?": "Apa itu COMMUNITY?", "Scripts uploaded by NexScript users. They go live after review.": "Script yang diunggah pengguna NexScript. Tayang setelah direview.", "A script is not working. Why?": "Script tidak jalan. Kenapa?", "It may be patched or outdated, need a key, or your executor may not support it. Try another script or a different executor.": "Mungkin sudah patched atau kedaluwarsa, butuh key, atau executor-mu tidak mendukungnya. Coba script lain atau executor berbeda.", "How do I upload my own script?": "Bagaimana cara mengunggah script sendiri?", "Create an account, log in, open Upload, fill in the form and submit. It appears in Community after review.": "Buat akun, login, buka Unggah, isi formulir lalu kirim. Script tampil di Komunitas setelah direview.", "Terms of use": "Syarat penggunaan", "NexScript is a free directory. Script data comes from ScriptBlox and from user uploads.": "NexScript adalah direktori gratis. Data script berasal dari ScriptBlox dan unggahan pengguna.", "You use scripts at your own risk. We are not responsible for bans, losses or damage.": "Kamu memakai script dengan risiko sendiri. Kami tidak bertanggung jawab atas pemblokiran, kerugian, atau kerusakan.", "Do not upload malware, stolen content or anything that steals accounts. We may remove content or accounts without notice.": "Jangan mengunggah malware, konten curian, atau apa pun yang mencuri akun. Kami dapat menghapus konten atau akun tanpa pemberitahuan.", "We are not affiliated with Roblox or ScriptBlox.": "Kami tidak berafiliasi dengan Roblox atau ScriptBlox.", "Privacy": "Privasi", "If you sign up we store your email and password (hashed) with our login provider, Supabase.": "Jika kamu mendaftar, email dan kata sandi (ter-hash) disimpan di penyedia login kami, Supabase.", "We store your favorites, likes, ratings, uploads and chat messages (chat keeps only the latest 250 messages).": "Kami menyimpan favorit, like, rating, unggahan, dan pesan chat-mu (chat hanya menyimpan 250 pesan terakhir).", "Your device stores some data locally, such as favorites and your chat nickname.": "Perangkatmu menyimpan sebagian data secara lokal, seperti favorit dan pengaturan bahasa.", "Ad networks such as Adsterra may use cookies to show ads.": "Jaringan iklan seperti Adsterra dapat memakai cookie untuk menampilkan iklan.", "To delete your account or data, contact us through the links on the About page.": "Untuk menghapus akun atau datamu, hubungi kami lewat tautan di halaman Tentang.", "This page is a general summary, not legal advice.": "Halaman ini hanya ringkasan umum, bukan nasihat hukum.", "Full-stack developer - Roblox enthusiast - Building tools for the community": "Developer full-stack - Penggemar Roblox - Membuat alat untuk komunitas", "I build bots, websites, and tools for the Roblox scripting community. NexScript is one of my projects - free, ad-supported, and always improving.": "Aku membuat bot, website, dan alat untuk komunitas scripting Roblox. NexScript adalah salah satu proyekku - gratis, didukung iklan, dan terus berkembang.", "5+ Projects": "5+ Proyek", "0 User :)": "0 Pengguna :)", "3 Years Coding": "3 Tahun Ngoding", "Join My Discord For A Cookies": "Gabung Discord-ku untuk Dapat Cookies", "Free Executor": "Executor Gratis", "Join My Discord": "Gabung Discord-ku", "Invite link coming soon": "Link undangan segera hadir", "Buy Me a Coffee": "Traktir Aku Kopi", "Support the development of NexScript": "Dukung pengembangan NexScript", "Buy Me a Coffee": "Traktir Aku Kopi", "Links": "Tautan", "NexScript is a free Roblox script discovery tool.": "NexScript adalah alat penemu script Roblox gratis.", "(c) 2026 NexScript. Powered by ScriptBlox. Not affiliated with Roblox.": "(c) 2026 NexScript. Didukung oleh ScriptBlox. Tidak berafiliasi dengan Roblox.", "Powered by ScriptBlox": "Didukung oleh ScriptBlox", "Enter Admin Key": "Masukkan Kunci Admin", "Enter": "Masuk", "Checking...": "Memeriksa...", "Wrong key": "Kunci salah", "Delete this message?": "Hapus pesan ini?", "Could not edit message.": "Gagal mengubah pesan.", "edited": "diedit", "Save": "Simpan", "Feed": "Feed", "Swipe up for more": "Geser ke atas untuk lainnya", "Copy": "Salin", "Open": "Buka", "Music": "Musik", "Volume": "Volume", "Now playing": "Sedang diputar", "Paste a YouTube link": "Tempel link YouTube", "Add": "Tambah", "Custom": "Pilihanmu", "Invalid YouTube link.": "Link YouTube tidak valid.", "This video can't be played here. Try another.": "Video ini tidak bisa diputar di sini. Coba yang lain.", "day streak": "hari beruntun", "Level": "Level", "online": "online", "Continue where you left off": "Lanjutkan yang tadi", "Could not load script.": "Gagal memuat script.", "Videos": "Video", "Script showcase videos": "Video showcase script", "Share a video": "Bagikan video", "YouTube link (Shorts work too)": "Link YouTube (Shorts juga bisa)", "Video title": "Judul video", "Related script link (optional)": "Link script terkait (opsional)", "Send for review": "Kirim untuk direview", "Submitted! It will appear after review.": "Terkirim! Akan tampil setelah direview.", "Could not load videos.": "Gagal memuat video.", "No videos yet": "Belum ada video", "Share a YouTube showcase and it will show up here after review.": "Bagikan video showcase YouTube dan akan tampil di sini setelah direview.", "Approve": "Setujui", "Reject": "Tolak", "Waiting for review": "Menunggu review", "This video was already submitted.": "Video ini sudah pernah dikirim.", "Too many submissions today.": "Terlalu banyak kiriman hari ini.", "Could not send the video.": "Gagal mengirim video.", "Invalid script link.": "Link script tidak valid.", "Video title must be at least 3 characters.": "Judul video minimal 3 karakter.", "Open script": "Buka script", "Shorts": "Shorts", "Funny moments": "Momen lucu", "Tutorials": "Tutorial", "Open on YouTube": "Buka di YouTube", "Shorts are not available right now": "Shorts belum bisa dimuat sekarang", "Please try again later.": "Coba lagi nanti.", "Choose your profile picture": "Pilih foto profilmu", "Upload from gallery": "Unggah dari galeri", "Pick from NexScript": "Pilih dari NexScript", "Skip - use my name": "Lewati - pakai namaku", "Could not save your picture.": "Gagal menyimpan fotomu.", "Could not upload your picture.": "Gagal mengunggah fotomu.", "Sound on": "Suara nyala", "Sound off": "Suara mati", "Close": "Tutup", "Play": "Putar", "Pause": "Jeda", "Settings": "Pengaturan", "Content": "Konten", "Appearance": "Tampilan", "Data": "Data", "Account": "Akun", "Language": "Bahasa", "Script type": "Jenis script", "Free scripts or paid (key) scripts.": "Script gratis atau berbayar (pakai key).", "Free": "Gratis", "Paid": "Berbayar", "Results per page": "Hasil per halaman", "How many scripts load at once.": "Jumlah script yang dimuat sekaligus.", "Hide patched scripts": "Sembunyikan script patched", "Skip scripts that no longer work.": "Lewati script yang sudah tidak berfungsi.", "On": "Nyala", "Off": "Mati", "Grid size": "Ukuran grid", "1 column": "1 kolom", "2 columns": "2 kolom", "3 columns": "3 kolom", "Animations": "Animasi", "Full": "Penuh", "Reduced": "Dikurangi", "Turn down motion if your phone feels slow.": "Kurangi gerakan kalau HP terasa berat.", "Export favorites": "Ekspor favorit", "Import favorites": "Impor favorit", "Clear favorites": "Hapus semua favorit", "Clear recently viewed": "Hapus riwayat dilihat", "Reset settings": "Reset pengaturan", "Delete all your favorites?": "Hapus semua favoritmu?", "Export failed.": "Ekspor gagal.", "That file is not a valid favorites export.": "File itu bukan ekspor favorit yang valid.", "Imported": "Diimpor", "favorites": "favorit", "Share": "Bagikan", "Link copied!": "Link tersalin!", "Surprise me": "Acak", "Could not find a script. Try again.": "Tidak menemukan script. Coba lagi.", "Hub": "Hub", "Unpatched": "Belum patched", "Recently Updated": "Baru Diperbarui", "Change profile picture": "Ganti foto profil", "Not logged in": "Belum login", "Cleared.": "Sudah dihapus.", "Settings saved automatically.": "Pengaturan tersimpan otomatis.", "English": "English", "Indonesia": "Indonesia", "Rewards": "Hadiah", "Level up!": "Naik level!", "Quest complete!": "Misi selesai!", "Daily quests": "Misi harian", "Daily spin": "Putar harian", "Spin": "Putar", "Come back tomorrow": "Kembali besok", "You won": "Kamu dapat", "Frames": "Bingkai", "Titles": "Gelar", "Claimed": "Diklaim", "Achievements": "Pencapaian", "Script of the day": "Script hari ini", "Level": "Level", "Next perk": "Hadiah berikutnya", "View 5 scripts": "Lihat 5 script", "Copy 2 scripts": "Salin 2 script", "Favorite 2 scripts": "Favoritkan 2 script", "Rate a script": "Beri rating 1 script", "Send 2 chat messages": "Kirim 2 pesan chat", "No frame": "Tanpa bingkai", "Cyan ring": "Cincin cyan", "Violet glow": "Cahaya ungu", "Gold ring": "Cincin emas", "Rainbow": "Pelangi", "Newcomer": "Pendatang", "Explorer": "Penjelajah", "Script Hunter": "Pemburu Script", "Legend": "Legenda", "Mythic": "Mitos", "First favorite": "Favorit pertama", "Collector": "Kolektor", "Copy master": "Master salin", "Critic": "Kritikus", "Chatterbox": "Si Cerewet", "Browse 50 scripts": "Jelajahi 50 script", "7 day streak": "Beruntun 7 hari", "Reach level 5": "Capai level 5", "XP unlocks frames and titles. Earn XP by copying, favoriting, rating, chatting and daily quests.": "XP membuka bingkai dan gelar. Dapatkan XP dengan menyalin, memfavoritkan, memberi rating, chat, dan misi harian.", "Spin the wheel once a day for bonus XP.": "Putar roda sekali sehari untuk bonus XP.", "Chat": "Chat", "Menu": "Menu", "Owner tools": "Alat owner", "Set XP to 999": "Set XP ke 999", "XP set to 999.": "XP diset ke 999.", "All perks unlocked for the owner.": "Semua hadiah terbuka untuk owner.", "The server may be slow. Please try again.": "Server mungkin lambat. Coba lagi.", "Retry": "Coba lagi", "Published! Your script is live in Community.": "Terbit! Script-mu sudah tampil di Komunitas.", "API check": "Cek API", "Testing...": "Menguji...", "Run test": "Jalankan tes", "For You": "Untukmu", "Roblox": "Roblox", "Memes": "Meme", "Comedy": "Komedi", "Dance": "Dance", "History 3D": "Sejarah 3D", "Gaming": "Gaming", "Anime": "Anime", "Satisfying": "Satisfying", "Animals": "Hewan", "Sports": "Olahraga", "Cars": "Mobil", "Science": "Sains", "Food": "Makanan", "Music": "Musik", "Art": "Seni", "Magic": "Sulap", "Tech": "Teknologi", "Shorts left today": "Sisa Shorts hari ini", "Guest": "Tamu", "Free": "Gratis", "Pro": "Pro", "Premium": "Premium", "Upgrade": "Upgrade", "Daily limit reached": "Batas harian tercapai", "Resets in": "Reset dalam", "Log in to use your wallet": "Login untuk memakai dompetmu", "Enter the name on your payment.": "Isi nama di pembayaranmu.", "You have too many pending top-ups. Wait for them to be confirmed.": "Top up yang menunggu terlalu banyak. Tunggu sampai dikonfirmasi.", "Could not create the order.": "Gagal membuat tagihan.", "Could not send. Try again.": "Gagal mengirim. Coba lagi.", "Thanks! We will check your payment soon.": "Terima kasih! Pembayaranmu segera kami cek.", "Not enough Monux. Top up first.": "Monux tidak cukup. Top up dulu.", "Please confirm your email first.": "Konfirmasi emailmu dulu.", "You already used your free trial.": "Free trial sudah kamu pakai.", "You already have a membership.": "Kamu sudah punya membership.", "month(s)": "bulan", "Membership activated!": "Membership aktif!", "Premium trial started: 5 days!": "Trial Premium dimulai: 5 hari!", "Your balance": "Saldomu", "Free plan": "Paket Gratis", "until": "sampai", "Top up Monux": "Top up Monux", "Pay with DANA QR or Saweria, then we confirm it by hand.": "Bayar dengan QR DANA atau Saweria, lalu kami konfirmasi manual.", "Name on your payment": "Nama di pembayaranmu", "Note (optional): time of payment, last digits of your number": "Catatan (opsional): jam bayar, beberapa angka terakhir nomormu", "Create order": "Buat tagihan", "Order code": "Kode tagihan", "Scan with DANA or any QRIS app and pay exactly": "Scan dengan DANA atau aplikasi QRIS lain dan bayar tepat", "Donate": "Donasi", "and write this code in the message": "dan tulis kode ini di pesan", "I have paid": "Saya sudah bayar", "Your Monux arrive after the owner confirms the payment. Orders expire after 24 hours.": "Monux masuk setelah owner mengonfirmasi pembayaran. Tagihan hangus setelah 24 jam.", "Membership": "Membership", "day": "hari", "With ads": "Ada iklan", "No ads": "Tanpa iklan", "Buy": "Beli", "Try Premium free for 5 days": "Coba Premium gratis 5 hari", "Your top-ups": "Top up kamu", "History": "Riwayat", "pending": "menunggu", "approved": "disetujui", "rejected": "ditolak", "Wallet": "Dompet", "Review": "Review", "Did the money arrive? Approve this top-up?": "Uangnya sudah masuk? Setujui top up ini?", "Approved.": "Disetujui.", "Rejected.": "Ditolak.", "Delete this script?": "Hapus script ini?", "says paid": "bilang sudah bayar", "code": "kode", "expired": "kedaluwarsa", "Name on payment": "Nama di pembayaran", "Hide code": "Sembunyikan kode", "Show code": "Lihat kode", "Nothing to review": "Tidak ada yang perlu direview", "New top-ups and scripts show up here.": "Top up dan script baru muncul di sini.", "Not allowed": "Tidak diizinkan", "Only the owner and developers can open this page.": "Hanya owner dan developer yang bisa membuka halaman ini.", "Quiz": "Kuis", "Script Quiz": "Kuis Script", "Test your Roblox knowledge and earn XP.": "Uji pengetahuan Roblox-mu dan dapatkan XP.", "Legendary!": "Luar biasa!", "Great job!": "Kerja bagus!", "Not bad!": "Lumayan!", "Keep practicing!": "Terus berlatih!", "Daily quiz XP limit reached. Come back tomorrow!": "Batas XP kuis hari ini tercapai. Kembali besok!", "Play again": "Main lagi", "Question": "Soal", "Score": "Skor", "10 XP per correct answer, up to 60 XP a day.": "10 XP per jawaban benar, maksimal 60 XP per hari.", "Refresh": "Muat ulang", "Name must be 2-24 characters": "Nama harus 2-24 karakter", "Only letters, numbers, spaces and _ . -": "Hanya huruf, angka, spasi, dan _ . -", "Name not allowed": "Nama tidak diizinkan", "You can change your display name once every 7 days.": "Display name hanya bisa diganti sekali tiap 7 hari.", "Could not save the name.": "Gagal menyimpan nama.", "Display name saved.": "Display name tersimpan.", "Display name": "Display name", "Your username": "Username-mu", "permanent": "permanen", "Too many attempts. Try again in": "Terlalu banyak percobaan. Coba lagi dalam", "Password needs letters and numbers.": "Kata sandi harus berisi huruf dan angka.", "Warning": "Peringatan", "may steal accounts or data": "mungkin mencuri akun atau data", "Bypasser": "Bypasser", "AI Assistant": "Asisten AI", "Copy Link": "Salin Link", "Download": "Unduh", "Paste": "Tempel", "Run": "Jalankan", "Paste with your keyboard instead.": "Tempel pakai keyboard saja.", "Links are sent to a third-party bypass service. Results can fail or be wrong.": "Link dikirim ke layanan bypass pihak ketiga. Hasil bisa gagal atau salah.", "Please log in to chat with Nexa.": "Login dulu untuk ngobrol dengan Nexa.", "AI is not configured yet.": "AI belum dikonfigurasi.", "Nexa took too long. Try again.": "Nexa kelamaan. Coba lagi.", "Could not reach the server.": "Tidak bisa terhubung ke server.", "Clear this chat?": "Hapus chat ini?", "Clear": "Bersihkan", "Ask Nexa anything about Roblox Luau...": "Tanya Nexa soal Roblox Luau...", "Replies are AI-generated and can be wrong. Test code before using it.": "Balasan dibuat AI dan bisa salah. Tes kodenya dulu sebelum dipakai.", "Nexa is typing...": "Nexa lagi ngetik...", "Try asking": "Coba tanya", "Log in to chat with Nexa": "Login untuk chat dengan Nexa", "AI chat messages and bypass links are sent to third-party services to produce results. Do not share passwords or personal information.": "Pesan chat AI dan link bypass dikirim ke layanan pihak ketiga untuk menghasilkan jawaban. Jangan membagikan kata sandi atau data pribadi.", "Continue": "Lanjutkan", "The reply was cut off because it was long.": "Balasan terpotong karena terlalu panjang."};
+const ID={"Home": "Beranda", "Trending": "Trending", "Newest": "Terbaru", "Most Viewed": "Paling Banyak Dilihat", "Top Rated": "Rating Tertinggi", "Verified": "Terverifikasi", "Keyless": "Tanpa Key", "Favorites": "Favorit", "Community": "Komunitas", "Global Chat": "Chat Global", "Games": "Game", "Upload": "Unggah", "Guide & FAQ": "Panduan & FAQ", "Terms & Privacy": "Syarat & Privasi", "About": "Tentang", "Donate": "Donasi", "Admin": "Admin", "All": "Semua", "Universal": "Universal", "No Key": "Tanpa Key", "View Profile": "Lihat Profil", "Search scripts, games, or creators...": "Cari script, game, atau kreator...", "Search scripts": "Cari script", "Discover": "Temukan", "Roblox scripts": "script Roblox", "instantly": "dalam sekejap", "Browse thousands of free scripts. Fast, clean, ad-supported.": "Jelajahi ribuan script gratis. Cepat, bersih, didukung iklan.", "Loading more scripts...": "Memuat script lainnya...", "You've reached the end": "Kamu sudah sampai di akhir", "No scripts found": "Script tidak ditemukan", "Try a different keyword like 'blox fruits' or 'universal'.": "Coba kata kunci lain seperti 'blox fruits' atau 'universal'.", "No favorites yet": "Belum ada favorit", "Tap the heart on any script to save it here.": "Ketuk hati pada script untuk menyimpannya di sini.", "No community scripts yet": "Belum ada script komunitas", "Be the first: log in and use Upload to share a script.": "Jadilah yang pertama: login lalu gunakan Unggah untuk membagikan script.", "Failed to load scripts.": "Gagal memuat script.", "Rate limited. Try again shortly.": "Terlalu banyak permintaan. Coba lagi sebentar.", "Failed to load community scripts.": "Gagal memuat script komunitas.", "Back": "Kembali", "Copy Script": "Salin Script", "Copied!": "Tersalin!", "Lua script": "Script Lua", "Related scripts": "Script terkait", "Copy failed": "Gagal menyalin", "No ratings yet": "Belum ada rating", "Log in to rate this script.": "Login untuk memberi rating.", "Could not save rating.": "Gagal menyimpan rating.", "Could not sync favorite.": "Gagal menyinkronkan favorit.", "Could not sync vote.": "Gagal menyinkronkan vote.", "Could not load your saved data.": "Gagal memuat data tersimpanmu.", "Log in": "Masuk", "Sign up": "Daftar", "Welcome back": "Selamat datang kembali", "Create your account": "Buat akunmu", "Email": "Email", "Password": "Kata sandi", "Confirm password": "Konfirmasi kata sandi", "Username": "Username", "Please wait...": "Mohon tunggu...", "You're logged in": "Kamu sudah masuk", "Log out": "Keluar", "Log in / Sign up": "Masuk / Daftar", "Your username is permanent and shown in chat.": "Username bersifat permanen dan tampil di chat.", "Username must be 3-20 letters, numbers or underscores, and cannot be reserved or inappropriate.": "Username harus 3-20 huruf, angka, atau garis bawah, dan tidak boleh nama yang dicadangkan atau tidak pantas.", "That username is taken.": "Username itu sudah dipakai.", "Could not save username.": "Gagal menyimpan username.", "Choose your username": "Pilih username-mu", "This name is shown in chat and cannot be changed later.": "Nama ini tampil di chat dan tidak bisa diganti nanti.", "Save username": "Simpan username", "Auth service failed to load. Refresh the page.": "Layanan login gagal dimuat. Muat ulang halaman.", "Password must be at least 8 characters.": "Kata sandi minimal 8 karakter.", "Passwords do not match.": "Kata sandi tidak cocok.", "Check your email to confirm your account, then log in.": "Cek emailmu untuk konfirmasi akun, lalu login.", "Something went wrong.": "Terjadi kesalahan.", "Please complete the captcha.": "Selesaikan captcha dulu.", "Welcome to NexScript": "Selamat datang di NexScript", "Your hub for Roblox scripts": "Pusat script Roblox kamu", "Skip for now": "Lewati dulu", "You can use everything without an account. Log in later any time.": "Semua fitur bisa dipakai tanpa akun. Kamu bisa login kapan saja.", "Log in to upload": "Login untuk mengunggah", "Only logged-in users can upload scripts.": "Hanya pengguna yang sudah login yang bisa mengunggah script.", "Script name": "Nama script", "Information (game, version, keyless...)": "Informasi (game, versi, keyless...)", "Description": "Deskripsi", "Paste your Lua script here": "Tempel script Lua kamu di sini", "Display name (optional, shown publicly)": "Nama tampilan (opsional, tampil publik)", "Upload script": "Unggah script", "Uploading...": "Mengunggah...", "Your uploads": "Unggahanmu", "Delete": "Hapus", "Could not delete script.": "Gagal menghapus script.", "Upload server is not configured yet.": "Server unggah belum dikonfigurasi.", "Script name must be at least 3 characters.": "Nama script minimal 3 karakter.", "Please fill in the information field.": "Isi kolom informasi.", "Please paste your script.": "Tempel script-mu.", "Session expired. Please log in again.": "Sesi habis. Silakan login lagi.", "Could not reach the upload server.": "Tidak bisa terhubung ke server unggah.", "Submitted! Your script will appear in Community Scripts after it is reviewed.": "Terkirim! Script-mu akan tampil di Script Komunitas setelah direview.", "Last 250 messages": "250 pesan terakhir", "Type a message...": "Ketik pesan...", "Send": "Kirim", "Log in to chat": "Login untuk chat", "No messages yet. Say hi!": "Belum ada pesan. Sapa duluan!", "Chatting as": "Chat sebagai", "Cancel": "Batal", "Send voice": "Kirim suara", "Could not load chat.": "Gagal memuat chat.", "Choose a username first.": "Pilih username dulu.", "Slow down a little.": "Pelan-pelan sedikit.", "Your message contains inappropriate language.": "Pesanmu mengandung kata yang tidak pantas.", "Message not sent.": "Pesan tidak terkirim.", "Please choose an image.": "Pilih gambar.", "Could not send image.": "Gagal mengirim gambar.", "Voice recording is not supported on this browser.": "Rekam suara tidak didukung di browser ini.", "Recording too short.": "Rekaman terlalu pendek.", "Could not send voice message.": "Gagal mengirim pesan suara.", "Microphone permission denied.": "Izin mikrofon ditolak.", "Could not delete message.": "Gagal menghapus pesan.", "Community Scripts": "Script Komunitas", "Scripts shared by the community, reviewed before they go live.": "Script dari komunitas, direview sebelum tayang.", "Talk with other script hunters in real time.": "Ngobrol real-time dengan pemburu script lain.", "Upload a Script": "Unggah Script", "Share your script with the community.": "Bagikan script-mu ke komunitas.", "Popular Games": "Game Populer", "Pick a game and jump straight to its scripts.": "Pilih game dan langsung lihat script-nya.", "Everything to know before running a script.": "Semua yang perlu diketahui sebelum menjalankan script.", "How NexScript handles your data.": "Cara NexScript mengelola datamu.", "Browse scripts ->": "Lihat script ->", "How to use a script": "Cara memakai script", "Open a script and tap": "Buka script lalu ketuk", "Join the matching Roblox game.": "Masuk ke game Roblox yang sesuai.", "Open your executor, paste the script and run it.": "Buka executor-mu, tempel script, lalu jalankan.", "If the script asks for a key, follow the steps shown by the script.": "Jika script meminta key, ikuti langkah yang ditampilkan script.", "NexScript does not provide executors or host game files.": "NexScript tidak menyediakan executor atau menyimpan file game.", "Stay safe": "Tetap aman", "Using scripts can break Roblox's Terms of Service and may get an account banned. Use at your own risk, ideally on an alternate account.": "Memakai script bisa melanggar Ketentuan Layanan Roblox dan berisiko membuat akun diblokir. Gunakan dengan risiko sendiri, sebaiknya di akun cadangan.", "Never run a script that asks for your password, your .ROBLOSECURITY cookie or your Robux.": "Jangan pernah menjalankan script yang meminta password, cookie .ROBLOSECURITY, atau Robux-mu.", "Be careful with heavily obfuscated code from unknown authors.": "Hati-hati dengan kode yang sangat di-obfuscate dari pembuat yang tidak dikenal.", "Community uploads are reviewed, but nobody can guarantee a script is safe.": "Unggahan komunitas direview, tapi tidak ada yang bisa menjamin script itu aman.", "FAQ": "FAQ", "What does KEY mean?": "Apa arti KEY?", "The script asks you to get a key (usually from a link) before it works. KEYLESS scripts run without one.": "Script meminta kamu mengambil key (biasanya lewat tautan) sebelum bisa jalan. Script KEYLESS jalan tanpa key.", "What is VERIFIED?": "Apa itu VERIFIED?", "The script has been checked by the ScriptBlox team or marked as working by its source.": "Script sudah dicek tim ScriptBlox atau ditandai berfungsi oleh sumbernya.", "What is PATCHED?": "Apa itu PATCHED?", "The game or executor changed and the script no longer works. Look for a newer one.": "Game atau executor berubah dan script tidak lagi berfungsi. Cari yang lebih baru.", "What are UNIVERSAL and HUB?": "Apa itu UNIVERSAL dan HUB?", "UNIVERSAL scripts work in many games. A HUB bundles many features or games into one menu.": "Script UNIVERSAL jalan di banyak game. HUB menggabungkan banyak fitur atau game dalam satu menu.", "What is COMMUNITY?": "Apa itu COMMUNITY?", "Scripts uploaded by NexScript users. They go live after review.": "Script yang diunggah pengguna NexScript. Tayang setelah direview.", "A script is not working. Why?": "Script tidak jalan. Kenapa?", "It may be patched or outdated, need a key, or your executor may not support it. Try another script or a different executor.": "Mungkin sudah patched atau kedaluwarsa, butuh key, atau executor-mu tidak mendukungnya. Coba script lain atau executor berbeda.", "How do I upload my own script?": "Bagaimana cara mengunggah script sendiri?", "Create an account, log in, open Upload, fill in the form and submit. It appears in Community Scripts after review.": "Buat akun, login, buka Unggah, isi formulir lalu kirim. Script tampil di Script Komunitas setelah direview.", "Terms of use": "Syarat penggunaan", "NexScript is a free directory. Script data comes from ScriptBlox and from user uploads.": "NexScript adalah direktori gratis. Data script berasal dari ScriptBlox dan unggahan pengguna.", "You use scripts at your own risk. We are not responsible for bans, losses or damage.": "Kamu memakai script dengan risiko sendiri. Kami tidak bertanggung jawab atas pemblokiran, kerugian, atau kerusakan.", "Do not upload malware, stolen content or anything that steals accounts. We may remove content or accounts without notice.": "Jangan mengunggah malware, konten curian, atau apa pun yang mencuri akun. Kami dapat menghapus konten atau akun tanpa pemberitahuan.", "We are not affiliated with Roblox or ScriptBlox.": "Kami tidak berafiliasi dengan Roblox atau ScriptBlox.", "Privacy": "Privasi", "If you sign up we store your email and password (hashed) with our login provider, Supabase.": "Jika kamu mendaftar, email dan kata sandi (ter-hash) disimpan di penyedia login kami, Supabase.", "We store your favorites, likes, ratings, uploads and chat messages (chat keeps only the latest 250 messages).": "Kami menyimpan favorit, like, rating, unggahan, dan pesan chat-mu (chat hanya menyimpan 250 pesan terakhir).", "Your device stores some data locally, such as favorites and your chat nickname.": "Perangkatmu menyimpan sebagian data secara lokal, seperti favorit dan pengaturan bahasa.", "Ad networks such as Adsterra may use cookies to show ads.": "Jaringan iklan seperti Adsterra dapat memakai cookie untuk menampilkan iklan.", "To delete your account or data, contact us through the links on the About page.": "Untuk menghapus akun atau datamu, hubungi kami lewat tautan di halaman Tentang.", "This page is a general summary, not legal advice.": "Halaman ini hanya ringkasan umum, bukan nasihat hukum.", "Full-stack developer - Roblox enthusiast - Building tools for the community": "Developer full-stack - Penggemar Roblox - Membuat alat untuk komunitas", "I build bots, websites, and tools for the Roblox scripting community. NexScript is one of my projects - free, ad-supported, and always improving.": "Aku membuat bot, website, dan alat untuk komunitas scripting Roblox. NexScript adalah salah satu proyekku - gratis, didukung iklan, dan terus berkembang.", "5+ Projects": "5+ Proyek", "0 User :)": "0 Pengguna :)", "3 Years Coding": "3 Tahun Ngoding", "Join My Discord For A Cookies": "Gabung Discord-ku untuk Dapat Cookies", "Free Executor": "Executor Gratis", "Join My Discord": "Gabung Discord-ku", "Invite link coming soon": "Link undangan segera hadir", "Buy Me a Coffee": "Traktir Aku Kopi", "Support the development of NexScript": "Dukung pengembangan NexScript", "Buy Me a Coffee": "Traktir Aku Kopi", "Links": "Tautan", "NexScript is a free Roblox script discovery tool.": "NexScript adalah alat penemu script Roblox gratis.", "(c) 2026 NexScript. Powered by ScriptBlox. Not affiliated with Roblox.": "(c) 2026 NexScript. Didukung oleh ScriptBlox. Tidak berafiliasi dengan Roblox.", "Powered by ScriptBlox": "Didukung oleh ScriptBlox", "Enter Admin Key": "Masukkan Kunci Admin", "Enter": "Masuk", "Checking...": "Memeriksa...", "Wrong key": "Kunci salah", "Delete this message?": "Hapus pesan ini?", "Could not edit message.": "Gagal mengubah pesan.", "edited": "diedit", "Save": "Simpan", "Feed": "Feed", "Swipe up for more": "Geser ke atas untuk lainnya", "Copy": "Salin", "Open": "Buka", "Music": "Musik", "Volume": "Volume", "Now playing": "Sedang diputar", "Paste a YouTube link": "Tempel link YouTube", "Add": "Tambah", "Custom": "Pilihanmu", "Invalid YouTube link.": "Link YouTube tidak valid.", "This video can't be played here. Try another.": "Video ini tidak bisa diputar di sini. Coba yang lain.", "day streak": "hari beruntun", "Level": "Level", "online": "online", "Continue where you left off": "Lanjutkan yang tadi", "Could not load script.": "Gagal memuat script.", "Videos": "Video", "Script showcase videos": "Video showcase script", "Share a video": "Bagikan video", "YouTube link (Shorts work too)": "Link YouTube (Shorts juga bisa)", "Video title": "Judul video", "Related script link (optional)": "Link script terkait (opsional)", "Send for review": "Kirim untuk direview", "Submitted! It will appear after review.": "Terkirim! Akan tampil setelah direview.", "Could not load videos.": "Gagal memuat video.", "No videos yet": "Belum ada video", "Share a YouTube showcase and it will show up here after review.": "Bagikan video showcase YouTube dan akan tampil di sini setelah direview.", "Approve": "Setujui", "Reject": "Tolak", "Waiting for review": "Menunggu review", "This video was already submitted.": "Video ini sudah pernah dikirim.", "Too many submissions today.": "Terlalu banyak kiriman hari ini.", "Could not send the video.": "Gagal mengirim video.", "Invalid script link.": "Link script tidak valid.", "Video title must be at least 3 characters.": "Judul video minimal 3 karakter.", "Open script": "Buka script", "Shorts": "Shorts", "Funny moments": "Momen lucu", "Tutorials": "Tutorial", "Open on YouTube": "Buka di YouTube", "Shorts are not available right now": "Shorts belum bisa dimuat sekarang", "Please try again later.": "Coba lagi nanti.", "Choose your profile picture": "Pilih foto profilmu", "Upload from gallery": "Unggah dari galeri", "Pick from NexScript": "Pilih dari NexScript", "Skip - use my name": "Lewati - pakai namaku", "Could not save your picture.": "Gagal menyimpan fotomu.", "Could not upload your picture.": "Gagal mengunggah fotomu.", "Sound on": "Suara nyala", "Sound off": "Suara mati", "Close": "Tutup", "Play": "Putar", "Pause": "Jeda", "Settings": "Pengaturan", "Content": "Konten", "Appearance": "Tampilan", "Data": "Data", "Account": "Akun", "Language": "Bahasa", "Script type": "Jenis script", "Free scripts or paid (key) scripts.": "Script gratis atau berbayar (pakai key).", "Free": "Gratis", "Paid": "Berbayar", "Results per page": "Hasil per halaman", "How many scripts load at once.": "Jumlah script yang dimuat sekaligus.", "Hide patched scripts": "Sembunyikan script patched", "Skip scripts that no longer work.": "Lewati script yang sudah tidak berfungsi.", "On": "Nyala", "Off": "Mati", "Grid size": "Ukuran grid", "1 column": "1 kolom", "2 columns": "2 kolom", "3 columns": "3 kolom", "Animations": "Animasi", "Full": "Penuh", "Reduced": "Dikurangi", "Turn down motion if your phone feels slow.": "Kurangi gerakan kalau HP terasa berat.", "Export favorites": "Ekspor favorit", "Import favorites": "Impor favorit", "Clear favorites": "Hapus semua favorit", "Clear recently viewed": "Hapus riwayat dilihat", "Reset settings": "Reset pengaturan", "Delete all your favorites?": "Hapus semua favoritmu?", "Export failed.": "Ekspor gagal.", "That file is not a valid favorites export.": "File itu bukan ekspor favorit yang valid.", "Imported": "Diimpor", "favorites": "favorit", "Share": "Bagikan", "Link copied!": "Link tersalin!", "Surprise me": "Acak", "Could not find a script. Try again.": "Tidak menemukan script. Coba lagi.", "Hub": "Hub", "Unpatched": "Belum patched", "Recently Updated": "Baru Diperbarui", "Change profile picture": "Ganti foto profil", "Not logged in": "Belum login", "Cleared.": "Sudah dihapus.", "Settings saved automatically.": "Pengaturan tersimpan otomatis.", "English": "English", "Indonesia": "Indonesia", "Rewards": "Hadiah", "Level up!": "Naik level!", "Quest complete!": "Misi selesai!", "Daily quests": "Misi harian", "Daily spin": "Putar harian", "Spin": "Putar", "Come back tomorrow": "Kembali besok", "You won": "Kamu dapat", "Frames": "Bingkai", "Titles": "Gelar", "Claimed": "Diklaim", "Achievements": "Pencapaian", "Script of the day": "Script hari ini", "Level": "Level", "Next perk": "Hadiah berikutnya", "View 5 scripts": "Lihat 5 script", "Copy 2 scripts": "Salin 2 script", "Favorite 2 scripts": "Favoritkan 2 script", "Rate a script": "Beri rating 1 script", "Send 2 chat messages": "Kirim 2 pesan chat", "No frame": "Tanpa bingkai", "Cyan ring": "Cincin cyan", "Violet glow": "Cahaya ungu", "Gold ring": "Cincin emas", "Rainbow": "Pelangi", "Newcomer": "Pendatang", "Explorer": "Penjelajah", "Script Hunter": "Pemburu Script", "Legend": "Legenda", "Mythic": "Mitos", "First favorite": "Favorit pertama", "Collector": "Kolektor", "Copy master": "Master salin", "Critic": "Kritikus", "Chatterbox": "Si Cerewet", "Browse 50 scripts": "Jelajahi 50 script", "7 day streak": "Beruntun 7 hari", "Reach level 5": "Capai level 5", "XP unlocks frames and titles. Earn XP by copying, favoriting, rating, chatting and daily quests.": "XP membuka bingkai dan gelar. Dapatkan XP dengan menyalin, memfavoritkan, memberi rating, chat, dan misi harian.", "Spin the wheel once a day for bonus XP.": "Putar roda sekali sehari untuk bonus XP.", "Chat": "Chat", "Menu": "Menu", "Owner tools": "Alat owner", "Set XP to 999": "Set XP ke 999", "XP set to 999.": "XP diset ke 999.", "All perks unlocked for the owner.": "Semua hadiah terbuka untuk owner.", "The server may be slow. Please try again.": "Server mungkin lambat. Coba lagi.", "Retry": "Coba lagi", "Published! Your script is live in Community Scripts.": "Terbit! Script-mu sudah tampil di Script Komunitas.", "API check": "Cek API", "Testing...": "Menguji...", "Run test": "Jalankan tes", "For You": "Untukmu", "Roblox": "Roblox", "Memes": "Meme", "Comedy": "Komedi", "Dance": "Dance", "History 3D": "Sejarah 3D", "Gaming": "Gaming", "Anime": "Anime", "Satisfying": "Satisfying", "Animals": "Hewan", "Sports": "Olahraga", "Cars": "Mobil", "Science": "Sains", "Food": "Makanan", "Music": "Musik", "Art": "Seni", "Magic": "Sulap", "Tech": "Teknologi", "Shorts left today": "Sisa Shorts hari ini", "Guest": "Tamu", "Free": "Gratis", "Pro": "Pro", "Premium": "Premium", "Upgrade": "Upgrade", "Daily limit reached": "Batas harian tercapai", "Resets in": "Reset dalam", "Log in to use your wallet": "Login untuk memakai dompetmu", "Enter the name on your payment.": "Isi nama di pembayaranmu.", "You have too many pending top-ups. Wait for them to be confirmed.": "Top up yang menunggu terlalu banyak. Tunggu sampai dikonfirmasi.", "Could not create the order.": "Gagal membuat tagihan.", "Could not send. Try again.": "Gagal mengirim. Coba lagi.", "Thanks! We will check your payment soon.": "Terima kasih! Pembayaranmu segera kami cek.", "Not enough Monux. Top up first.": "Monux tidak cukup. Top up dulu.", "Please confirm your email first.": "Konfirmasi emailmu dulu.", "You already used your free trial.": "Free trial sudah kamu pakai.", "You already have a membership.": "Kamu sudah punya membership.", "month(s)": "bulan", "Membership activated!": "Membership aktif!", "Premium trial started: 5 days!": "Trial Premium dimulai: 5 hari!", "Your balance": "Saldomu", "Free plan": "Paket Gratis", "until": "sampai", "Top up Monux": "Top up Monux", "Pay with DANA QR or Saweria, then we confirm it by hand.": "Bayar dengan QR DANA atau Saweria, lalu kami konfirmasi manual.", "Name on your payment": "Nama di pembayaranmu", "Note (optional): time of payment, last digits of your number": "Catatan (opsional): jam bayar, beberapa angka terakhir nomormu", "Create order": "Buat tagihan", "Order code": "Kode tagihan", "Scan with DANA or any QRIS app and pay exactly": "Scan dengan DANA atau aplikasi QRIS lain dan bayar tepat", "Donate": "Donasi", "and write this code in the message": "dan tulis kode ini di pesan", "I have paid": "Saya sudah bayar", "Your Monux arrive after the owner confirms the payment. Orders expire after 24 hours.": "Monux masuk setelah owner mengonfirmasi pembayaran. Tagihan hangus setelah 24 jam.", "Membership": "Membership", "day": "hari", "With ads": "Ada iklan", "No ads": "Tanpa iklan", "Buy": "Beli", "Try Premium free for 5 days": "Coba Premium gratis 5 hari", "Your top-ups": "Top up kamu", "History": "Riwayat", "pending": "menunggu", "approved": "disetujui", "rejected": "ditolak", "Wallet": "Dompet", "Review": "Review", "Did the money arrive? Approve this top-up?": "Uangnya sudah masuk? Setujui top up ini?", "Approved.": "Disetujui.", "Rejected.": "Ditolak.", "Delete this script?": "Hapus script ini?", "says paid": "bilang sudah bayar", "code": "kode", "expired": "kedaluwarsa", "Name on payment": "Nama di pembayaran", "Hide code": "Sembunyikan kode", "Show code": "Lihat kode", "Nothing to review": "Tidak ada yang perlu direview", "New top-ups and scripts show up here.": "Top up dan script baru muncul di sini.", "Not allowed": "Tidak diizinkan", "Only the owner and developers can open this page.": "Hanya owner dan developer yang bisa membuka halaman ini.", "Quiz": "Kuis", "Script Quiz": "Kuis Script", "Test your Roblox knowledge and earn XP.": "Uji pengetahuan Roblox-mu dan dapatkan XP.", "Legendary!": "Luar biasa!", "Great job!": "Kerja bagus!", "Not bad!": "Lumayan!", "Keep practicing!": "Terus berlatih!", "Daily quiz XP limit reached. Come back tomorrow!": "Batas XP kuis hari ini tercapai. Kembali besok!", "Play again": "Main lagi", "Question": "Soal", "Score": "Skor", "10 XP per correct answer, up to 60 XP a day.": "10 XP per jawaban benar, maksimal 60 XP per hari.", "Refresh": "Muat ulang", "Name must be 2-24 characters": "Nama harus 2-24 karakter", "Only letters, numbers, spaces and _ . -": "Hanya huruf, angka, spasi, dan _ . -", "Name not allowed": "Nama tidak diizinkan", "You can change your display name once every 7 days.": "Display name hanya bisa diganti sekali tiap 7 hari.", "Could not save the name.": "Gagal menyimpan nama.", "Display name saved.": "Display name tersimpan.", "Display name": "Display name", "Your username": "Username-mu", "permanent": "permanen", "Too many attempts. Try again in": "Terlalu banyak percobaan. Coba lagi dalam", "Password needs letters and numbers.": "Kata sandi harus berisi huruf dan angka.", "Warning": "Peringatan", "may steal accounts or data": "mungkin mencuri akun atau data", "Bypasser": "Bypasser", "AI Assistant": "Asisten AI", "Copy Link": "Salin Link", "Download": "Unduh", "Paste": "Tempel", "Run": "Jalankan", "Paste with your keyboard instead.": "Tempel pakai keyboard saja.", "Links are sent to a third-party bypass service. Results can fail or be wrong.": "Link dikirim ke layanan bypass pihak ketiga. Hasil bisa gagal atau salah.", "Please log in to chat with Nexa.": "Login dulu untuk ngobrol dengan Nexa.", "AI is not configured yet.": "AI belum dikonfigurasi.", "Nexa took too long. Try again.": "Nexa kelamaan. Coba lagi.", "Could not reach the server.": "Tidak bisa terhubung ke server.", "Clear this chat?": "Hapus chat ini?", "Clear": "Bersihkan", "Ask Nexa anything about Roblox Luau...": "Tanya Nexa soal Roblox Luau...", "Replies are AI-generated and can be wrong. Test code before using it.": "Balasan dibuat AI dan bisa salah. Tes kodenya dulu sebelum dipakai.", "Nexa is typing...": "Nexa lagi ngetik...", "Try asking": "Coba tanya", "Log in to chat with Nexa": "Login untuk chat dengan Nexa", "AI chat messages are sent to a third-party AI service to produce replies. Voice and video calls go directly between the people in the call and may be relayed by a TURN server. Do not share passwords or personal information.": "Pesan chat AI dikirim ke layanan AI pihak ketiga untuk menghasilkan balasan. Panggilan suara dan video berjalan langsung antar peserta dan bisa dilewatkan server TURN. Jangan membagikan kata sandi atau data pribadi.", "Continue": "Lanjutkan", "The reply was cut off because it was long.": "Balasan terpotong karena terlalu panjang.", "New friend request": "Permintaan pertemanan baru", "Load older messages": "Muat pesan lama", "is typing...": "sedang mengetik...", "Replying to": "Membalas", "Photo": "Foto", "Original message": "Pesan asli", "React": "Reaksi", "Reply": "Balas", "Members": "Anggota", "Friends": "Teman", "Online": "Online", "Offline": "Offline", "Idle": "Away", "Last seen": "Terakhir terlihat", "Pending": "Menunggu", "Add friend": "Tambah teman", "Add a friend with their username.": "Tambah teman lewat username-nya.", "Message": "Kirim pesan", "Remove": "Hapus", "Remove this friend?": "Hapus teman ini?", "No friends online right now.": "Belum ada teman yang online.", "No friends yet. Use \"Add friend\" to find people.": "Belum ada teman. Pakai \"Tambah teman\".", "No pending requests.": "Tidak ada permintaan.", "Accept": "Terima", "Decline": "Tolak", "Sent": "Terkirim", "You are now friends.": "Kalian sekarang berteman.", "Friend request sent.": "Permintaan pertemanan terkirim.", "Owner": "Owner", "Remove admin": "Cabut admin", "Make admin": "Jadikan admin", "Kick": "Keluarkan", "Kick this member?": "Keluarkan anggota ini?", "Create server": "Buat server", "New group": "Grup baru", "Join": "Gabung", "Create": "Buat", "Name": "Nama", "Icon": "Ikon", "Type": "Tipe", "Text": "Teks", "Voice": "Suara", "Leave": "Keluar", "Delete server": "Hapus server", "Invite": "Undangan", "Code": "Kode", "New code": "Kode baru", "Notifications": "Notifikasi", "All messages": "Semua pesan", "Only @mentions": "Hanya @mention", "Mute": "Bisukan", "Server info": "Info server", "Channels": "Channel", "Channel name": "Nama channel", "new-channel": "channel-baru", "Saved.": "Tersimpan.", "Delete this channel?": "Hapus channel ini?", "Leave this server?": "Keluar dari server ini?", "Delete this server for everyone? This cannot be undone.": "Hapus server ini untuk semua orang? Tidak bisa dibatalkan.", "A group is a private chat for a few friends (up to 10).": "Grup adalah chat privat untuk beberapa teman (maks 10).", "A server has channels, roles and an invite link (up to 500 members).": "Server punya channel, peran, dan link undangan (maks 500 anggota).", "Public: show this server in Discover": "Publik: tampilkan server ini di Jelajah", "Paste an invite code or link.": "Tempel kode atau link undangan.", "Invite code or link": "Kode atau link undangan", "That invite code does not work.": "Kode undangan itu tidak berlaku.", "members": "anggota", "No public servers yet. Create one and tick \"Public\".": "Belum ada server publik. Buat satu dan centang \"Publik\".", "Direct messages": "Pesan langsung", "Open a friend or a member and tap Message.": "Buka teman atau anggota lalu tekan Kirim pesan.", "Text channels": "Channel teks", "Voice channels": "Channel suara", "Pick a server.": "Pilih server.", "Pick a channel to start.": "Pilih channel untuk mulai.", "Go online": "Jadi online", "Go invisible": "Mode tak terlihat", "Invisible": "Tak terlihat", "Online status": "Status online", "Invisible: you look offline to everyone.": "Tak terlihat: kamu tampak offline bagi semua orang.", "In voice": "Di voice", "in voice": "di voice", "live": "live", "Log in to join the Community": "Login untuk bergabung ke Komunitas", "Chat in servers and groups, add friends and talk in voice.": "Ngobrol di server dan grup, tambah teman, dan bicara lewat voice.", "Could not load Community. Run the Community SQL in Supabase first.": "Gagal memuat Komunitas. Jalankan SQL Komunitas di Supabase dulu.", "Notifications are on.": "Notifikasi aktif.", "Notifications are blocked. Allow them in your browser or phone settings.": "Notifikasi diblokir. Izinkan di pengaturan browser atau HP.", "This browser does not support notifications.": "Browser ini tidak mendukung notifikasi.", "Notifications are not configured on the server yet.": "Notifikasi belum dikonfigurasi di server.", "Could not turn on notifications.": "Gagal mengaktifkan notifikasi.", "Test sent. It should pop up in a moment.": "Tes terkirim. Seharusnya muncul sebentar lagi.", "Nothing was sent. Turn notifications on first.": "Tidak ada yang terkirim. Aktifkan notifikasi dulu.", "Notifications are on for this device.": "Notifikasi aktif di perangkat ini.", "Notifications are blocked for this site. Allow them in your browser or phone settings.": "Notifikasi diblokir untuk situs ini. Izinkan di pengaturan browser atau HP.", "This browser does not support notifications. On iPhone, add NexScript to your Home Screen first.": "Browser ini tidak mendukung notifikasi. Di iPhone, tambahkan NexScript ke Layar Utama dulu.", "Get a pop-up on your phone or computer for new messages, @mentions and friend requests, even when the site is closed.": "Dapatkan pop-up di HP atau komputer untuk pesan baru, @mention, dan permintaan teman, bahkan saat situs ditutup.", "Send a test": "Kirim tes", "Turn off": "Matikan", "Turn on notifications": "Aktifkan notifikasi", "Microphone blocked. You can still listen.": "Mikrofon diblokir. Kamu masih bisa mendengarkan.", "Could not join the voice room.": "Gagal masuk ke ruang voice.", "Could not open the camera.": "Gagal membuka kamera.", "Could not switch the camera.": "Gagal mengganti kamera.", "Could not share the screen.": "Gagal membagikan layar.", "Could not open the voice room. Run the Community SQL (it sets the private voice rules) and reload.": "Gagal membuka ruang voice. Jalankan SQL Komunitas (berisi aturan voice privat) lalu muat ulang.", "In this room now": "Ada di ruang ini", "Nobody is in this room yet.": "Belum ada orang di ruang ini.", "Room is full": "Ruang penuh", "Join voice": "Gabung voice", "Best with up to 6 people. Use headphones to avoid echo.": "Terbaik untuk maks 6 orang. Pakai headphone supaya tidak bergema.", "You": "Kamu", "screen": "layar", "Microphone": "Mikrofon", "Camera": "Kamera", "Switch camera": "Ganti kamera", "Share screen": "Bagikan layar", "Create or join": "Buat atau gabung"};
 const tr=s=>(LANG==='id'&&ID[s])||s;
 // ---- Owner avatar ----
 const OWNER_IMG='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAMCAggICggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAoICAgICgkKCAgLDQoIDQgICQgBAwQEBgUGCgYGCg8OCw4QEA8PEBANDw8NEA8QEBANDQ4QEA0NDQ0NDQ8QDw0QDw0NDw0NDQ0NDQ0PDQ0NDQ0NDf/AABEIAMgAyAMBEQACEQEDEQH/xAAeAAEAAgIDAQEBAAAAAAAAAAAABwgFBgEECQIDCv/EAE8QAAIBAwIDBQQGBAkGDwAAAAECAwAEEQUSBhMhBwgiMUEUMlFhCSNCcYGRJDNSsxVicnOCkqGxwSVTZJSjwiY1Q0RjZXR1g5OyxNLh8P/EABwBAQACAgMBAAAAAAAAAAAAAAAGBwQFAgMIAf/EAEURAAEDAgMFBQQHBQcDBQAAAAEAAgMEEQUGIRIxQVFxYYGRobETIsHRFDJCYnLh8BUjM1KiNDWCkrLC8SZD4hYkJVPS/9oADAMBAAIRAxEAPwD1ToiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJREoiURKIuCaItP7Te2LS9Fh9q1W/trGEkhGnkCtKwBbZDGMyTybQTy4UdiAenSiLNcLcXWt9DFd2dxDdW0y74p4JFlikX4q6Eg48iM5BBBAIIoiywNEXNESiJREoiURKIlESiJREoiURKIlESiJREoiURKIlESiJRFU/6QDto4j0WziuNGjtorR3EV/qckbXM+miQ7EmFtsMQiyQTcutyEYBWgwwccHuLWkgX7FzY0OcATbt5KoHC3YJb3Ui6pq17JxBezoHF3dSNNblGO9RDGXdDCCx2RljFH9iKLyFIY1m2tc90MTfZAH/ABePyV24PlKiaxs0p9qSP8Ph81++n8I6xw3NJqHCdyY1djJdaLcEyWN0TjJSNnQCTAwpEkUoAVUnVByW3GCZzD7Q12h3B/zHxGvVafGsmlt5qEabyy/+n5dNyuJ3Ze/9pWvs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';
@@ -268,7 +265,7 @@ const imgChain=u=>{if(!u||typeof u!=='string')return [];if(/^https?:\/\//i.test(
 const ago=d=>{const s=(Date.now()-new Date(d))/1e3;for(const[n,l]of[[31536e3,'y'],[2592e3,'mo'],[86400,'d'],[3600,'h'],[60,'m']])if(s>=n)return Math.floor(s/n)+l+' ago';return 'just now'};
 const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':(n||0);
 
-const P={home:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',flame:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 2 4-5z',spark:'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1z',badge:'M5 12l5 5L20 7',unlock:'M7 11V7a5 5 0 0 1 9-3M5 11h14v10H5z',heart:'M12 21s-8-5-8-11a5 5 0 0 1 8-3 5 5 0 0 1 8 3c0 6-8 11-8 11z',info:'M12 8h.01M11 12h1v5h1M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0',coffee:'M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M7 2v3M11 2v3',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5',x:'M6 6l12 12M18 6L6 18',menu:'M3 6h18M3 12h18M3 18h18',copy:'M9 9h11v11H9zM5 15V5h10',back:'M15 6l-6 6 6 6',shield:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z',upload:'M12 16V4M7 9l5-5 5 5M4 20h16',chat:'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',gamepad:'M6 12h4M8 10v4M15 13h.01M18 11h.01M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.5 7A3 3 0 0 0 4.2 19a3 3 0 0 0 2.3-1l1.5-2h8l1.5 2a3 3 0 0 0 2.300 1 3 3 0 0 0 2.900-3.800l-1.500-7A4 4 0 0 0 17.300 5z',book:'M4 19.500A2.500 2.500 0 0 1 6.500 17H20V3H6.500A2.500 2.500 0 0 0 4 5.500zM4 19.500A2.500 2.500 0 0 0 6.500 22H20v-5',file:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8',play:'M8 5v14l11-7z',users:'M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9',video:'M23 7l-7 5 7 5V7zM1 5h15v14H1z',thumb:'M7 10v12M15 5.88L14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88z',thumbd:'M17 14V2M9 18.12L10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88z',pause:'M6 4h4v16H6zM14 4h4v16h-4z',music:'M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',edit:'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z',smile:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01',image:'M3 3h18v18H3zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM21 15l-5-5L5 21',mic:'M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8',share:'M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13',dice:'M3 3h18v18H3zM8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01',up:'M12 19V5M5 12l7-7 7 7',trash:'M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6',download:'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z',trophy:'M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 4h3v2a3 3 0 0 1-3 3M7 4H4v2a3 3 0 0 0 3 3',wallet:'M3 7a2 2 0 0 1 2-2h14v4M3 7v10a2 2 0 0 0 2 2h16V9H5a2 2 0 0 1-2-2zM17 14h.01',bolt:'M13 2L3 14h8l-1 8 10-12h-8z',terminal:'M4 17l6-6-6-6M12 19h8',bot:'M12 8V4H8M4 8h16v12H4zM2 14h2M20 14h2M15 13v2M9 13v2'};
+const P={home:'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z',flame:'M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 2 4-5z',spark:'M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',star:'M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 18l-6.2 3.1L7 14.2 2 9.3l6.9-1z',badge:'M5 12l5 5L20 7',unlock:'M7 11V7a5 5 0 0 1 9-3M5 11h14v10H5z',heart:'M12 21s-8-5-8-11a5 5 0 0 1 8-3 5 5 0 0 1 8 3c0 6-8 11-8 11z',info:'M12 8h.01M11 12h1v5h1M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0',coffee:'M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 9h2a2 2 0 0 1 0 5h-2M7 2v3M11 2v3',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5',x:'M6 6l12 12M18 6L6 18',menu:'M3 6h18M3 12h18M3 18h18',copy:'M9 9h11v11H9zM5 15V5h10',back:'M15 6l-6 6 6 6',shield:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z',upload:'M12 16V4M7 9l5-5 5 5M4 20h16',chat:'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',gamepad:'M6 12h4M8 10v4M15 13h.01M18 11h.01M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.5 7A3 3 0 0 0 4.2 19a3 3 0 0 0 2.3-1l1.5-2h8l1.5 2a3 3 0 0 0 2.300 1 3 3 0 0 0 2.900-3.800l-1.500-7A4 4 0 0 0 17.300 5z',book:'M4 19.500A2.500 2.500 0 0 1 6.500 17H20V3H6.500A2.500 2.500 0 0 0 4 5.500zM4 19.500A2.500 2.500 0 0 0 6.500 22H20v-5',file:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8',play:'M8 5v14l11-7z',users:'M17 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM21 20v-1a4 4 0 0 0-3-3.9',video:'M23 7l-7 5 7 5V7zM1 5h15v14H1z',thumb:'M7 10v12M15 5.88L14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88z',thumbd:'M17 14V2M9 18.12L10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88z',pause:'M6 4h4v16H6zM14 4h4v16h-4z',music:'M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z',edit:'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z',smile:'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01',image:'M3 3h18v18H3zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM21 15l-5-5L5 21',mic:'M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8',share:'M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13',dice:'M3 3h18v18H3zM8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01',up:'M12 19V5M5 12l7-7 7 7',trash:'M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6',download:'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z',trophy:'M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 4h3v2a3 3 0 0 1-3 3M7 4H4v2a3 3 0 0 0 3 3',wallet:'M3 7a2 2 0 0 1 2-2h14v4M3 7v10a2 2 0 0 0 2 2h16V9H5a2 2 0 0 1-2-2zM17 14h.01',bolt:'M13 2L3 14h8l-1 8 10-12h-8z',plus:'M12 5v14M5 12h14',phone:'M3 15c4-5 14-5 18 0l-2.5 2.5-3-1.5v-2.5a10 10 0 0 0-7 0V16l-3 1.5z',screen:'M4 4h16v12H4zM8 20h8M12 16v4',flip:'M21 12a9 9 0 0 0-15-6.7L3 8M3 3v5h5M3 12a9 9 0 0 0 15 6.7L21 16M21 21v-5h-5',micoff:'M1 1l22 22M9 9v3a3 3 0 0 0 5.1 2.1M15 9.3V4a3 3 0 0 0-5.9-.7M19 10v2a7 7 0 0 1-.1 1.2M12 19v4M8 23h8',videooff:'M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.7 0H14a2 2 0 0 1 2 2v3.3l1 1L23 7v10M1 1l22 22',volume:'M11 5L6 9H2v6h4l5 4zM15.5 8.5a5 5 0 0 1 0 7',hash:'M4 9h16M4 15h16M10 3L8 21M16 3l-2 18',reply:'M9 14L4 9l5-5M4 9h10a6 6 0 0 1 6 6v3',terminal:'M4 17l6-6-6-6M12 19h8',bot:'M12 8V4H8M4 8h16v12H4zM2 14h2M20 14h2M15 13v2M9 13v2'};
 const Ic=({n,s=18,fill,className=''})=><svg width={s} height={s} viewBox="0 0 24 24" fill={fill?'currentColor':'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true"><path d={P[n]}/></svg>;
 
 // Adsterra banner units (key per size). Rendered inside iframes (no sandbox, so the ad network can read the site origin).
@@ -312,7 +309,7 @@ const Banner=({title,sub,hue=220})=><div className="sheen relative overflow-hidd
   </svg>
   <div className="relative"><h1 className="hd text-2xl md:text-3xl font-bold text-white">{tr(title)}</h1>{sub&&<p className="text-slate-300 mt-1 max-w-md text-sm md:text-base">{tr(sub)}</p>}</div></div>;
 const LogoMark=()=><svg className="a-float" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#3b82f6"/><stop offset="1" stopColor="#22d3ee"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)"/><circle cx="14" cy="14" r="6" fill="none" stroke="#fff" strokeWidth="2.5"/><path d="M19 19l6 6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>;
-const BANNERS={community:['Community Scripts','Scripts shared by the community, reviewed before they go live.',200],chat:['Global Chat','Talk with other script hunters in real time.',280],upload:['Upload a Script','Share your script with the community.',160],quiz:['Script Quiz','Test your Roblox knowledge and earn XP.',45],games:['Popular Games','Pick a game and jump straight to its scripts.',320],guide:['Guide & FAQ','Everything to know before running a script.',190],legal:['Terms & Privacy','How NexScript handles your data.',240]};
+const BANNERS={cscripts:['Community Scripts','Scripts shared by the community, reviewed before they go live.',200],chat:['Global Chat','Talk with other script hunters in real time.',280],upload:['Upload a Script','Share your script with the community.',160],quiz:['Script Quiz','Test your Roblox knowledge and earn XP.',45],games:['Popular Games','Pick a game and jump straight to its scripts.',320],guide:['Guide & FAQ','Everything to know before running a script.',190],legal:['Terms & Privacy','How NexScript handles your data.',240]};
 
 const GAMES=['Blox Fruits','Pet Simulator 99','Arsenal','Brookhaven','Doors','Murder Mystery 2','Blade Ball','Da Hood','Adopt Me','Tower of Hell','King Legacy','Fisch'];
 function GamesPage({onPick}){
@@ -336,14 +333,14 @@ function GuidePage(){
       <Faq q={tr("What are UNIVERSAL and HUB?")} a={tr("UNIVERSAL scripts work in many games. A HUB bundles many features or games into one menu.")}/>
       <Faq q={tr("What is COMMUNITY?")} a={tr("Scripts uploaded by NexScript users. They go live after review.")}/>
       <Faq q={tr("A script is not working. Why?")} a={tr("It may be patched or outdated, need a key, or your executor may not support it. Try another script or a different executor.")}/>
-      <Faq q={tr("How do I upload my own script?")} a={tr("Create an account, log in, open Upload, fill in the form and submit. It appears in Community after review.")}/></div>
+      <Faq q={tr("How do I upload my own script?")} a={tr("Create an account, log in, open Upload, fill in the form and submit. It appears in Community Scripts after review.")}/></div>
   </div>;
 }
 function LegalPage(){
   const H=({children})=><h2 className="hd text-lg text-white mb-2">{children}</h2>;
   return <div className="page space-y-5 text-sm text-slate-300">
     <div className="glass rounded-2xl p-5"><H>{tr("Terms of use")}</H><ul className="list-disc pl-5 space-y-2"><li>{tr("NexScript is a free directory. Script data comes from ScriptBlox and from user uploads.")}</li><li>{tr("You use scripts at your own risk. We are not responsible for bans, losses or damage.")}</li><li>{tr("Do not upload malware, stolen content or anything that steals accounts. We may remove content or accounts without notice.")}</li><li>{tr("We are not affiliated with Roblox or ScriptBlox.")}</li></ul></div>
-    <div className="glass rounded-2xl p-5"><H>{tr("Privacy")}</H><ul className="list-disc pl-5 space-y-2"><li>{tr("If you sign up we store your email and password (hashed) with our login provider, Supabase.")}</li><li>{tr("We store your favorites, likes, ratings, uploads and chat messages (chat keeps only the latest 250 messages).")}</li><li>{tr("Your device stores some data locally, such as favorites and your chat nickname.")}</li><li>{tr("Ad networks such as Adsterra may use cookies to show ads.")}</li><li>{tr("AI chat messages and bypass links are sent to third-party services to produce results. Do not share passwords or personal information.")}</li><li>{tr("To delete your account or data, contact us through the links on the About page.")}</li></ul></div>
+    <div className="glass rounded-2xl p-5"><H>{tr("Privacy")}</H><ul className="list-disc pl-5 space-y-2"><li>{tr("If you sign up we store your email and password (hashed) with our login provider, Supabase.")}</li><li>{tr("We store your favorites, likes, ratings, uploads and chat messages (chat keeps only the latest 250 messages).")}</li><li>{tr("Your device stores some data locally, such as favorites and your chat nickname.")}</li><li>{tr("Ad networks such as Adsterra may use cookies to show ads.")}</li><li>{tr("AI chat messages are sent to a third-party AI service to produce replies. Voice and video calls go directly between the people in the call and may be relayed by a TURN server. Do not share passwords or personal information.")}</li><li>{tr("To delete your account or data, contact us through the links on the About page.")}</li></ul></div>
     <p className="text-xs text-slate-500">{tr("This page is a general summary, not legal advice.")}</p></div>;
 }
 
@@ -689,7 +686,7 @@ function UploadPage({user,go,toast}){
       const r=await fetch(ADMIN_API+'/api/submit-script',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},body:JSON.stringify({name,info,description:f.description.trim(),script,author:f.author.trim(),captchaToken:cap})});
       const d=await r.json().catch(()=>({}));
       if(!r.ok){setMsg(d.error||('Upload failed ('+r.status+')'));return}
-      setOk(true);setMsg(d.status==='approved'?tr('Published! Your script is live in Community.'):tr("Submitted! Your script will appear in Community after it is reviewed."));setF(p=>({name:'',info:'',description:'',script:'',author:p.author}));loadMine();
+      setOk(true);setMsg(d.status==='approved'?tr('Published! Your script is live in Community Scripts.'):tr("Submitted! Your script will appear in Community Scripts after it is reviewed."));setF(p=>({name:'',info:'',description:'',script:'',author:p.author}));loadMine();
     }catch(err){log('upload error',err);setMsg(tr("Could not reach the upload server."))}
     finally{setBusy(false);setNonce(n=>n+1)}
   };
@@ -1386,7 +1383,7 @@ function ProfileName({profile,onProfile,toast}){
     {msg&&<p className="text-amber-300 text-sm" role="alert">{msg}</p>}
     <button type="submit" disabled={busy} className="px-5 py-2 rounded-lg font-semibold text-white disabled:opacity-60" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?tr('Please wait...'):tr('Save')}</button></form>;
 }
-function SettingsPage({cfg,setCfg,resetCfg,lang,changeLang,user,profile,onProfile,onAvatar,onLogout,favs,onClearFavs,onClearRecent,onImport,toast}){
+function SettingsPage({cfg,setCfg,resetCfg,lang,changeLang,user,profile,onProfile,myStatus,setMyStatus,onAvatar,onLogout,favs,onClearFavs,onClearRecent,onImport,toast}){
   const fileRef=useRef();
   const exportFavs=()=>{try{const blob=new Blob([JSON.stringify(favs,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nexscript-favorites.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}catch(e){toast(tr('Export failed.'))}};
   const importFile=e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const arr=JSON.parse(rd.result);if(!Array.isArray(arr))throw new Error('bad');onImport(arr.filter(x=>x&&x.slug&&x.title))}catch(err){toast(tr('That file is not a valid favorites export.'))}};rd.readAsText(f)};
@@ -1401,6 +1398,7 @@ function SettingsPage({cfg,setCfg,resetCfg,lang,changeLang,user,profile,onProfil
       <Row title="Grid size"><Seg label="Grid size" value={cfg.cols} opts={[[1,'1 column'],[2,'2 columns'],[3,'3 columns']]} onChange={v=>setCfg({cols:v})}/></Row>
       <Row title="Animations" desc="Turn down motion if your phone feels slow."><Seg label="Animations" value={cfg.anim} opts={[['full','Full'],['reduced','Reduced'],['off','Off']]} onChange={v=>setCfg({anim:v})}/></Row></div>
     {user&&profile&&<ProfileName profile={profile} onProfile={onProfile} toast={toast}/>}
+    {user&&<CmNotifyCard user={user} toast={toast} myStatus={myStatus} setMyStatus={setMyStatus}/>}
     <div className="glass rounded-2xl p-5"><h2 className="hd text-lg text-white mb-1">{tr('Account')}</h2>
       {user?<><p className="text-sm text-slate-300 py-2 break-all">{profile?profile.username+' - ':''}{user.email}</p>
         <div className="flex flex-wrap gap-2 pt-1"><button onClick={onAvatar} className={btn}>{tr('Change profile picture')}</button><button onClick={onLogout} className={btn}>{tr('Log out')}</button></div></>
@@ -1725,86 +1723,6 @@ function QuizPage({toast}){
     <p className="text-[11px] text-slate-500">{tr('10 XP per correct answer, up to 60 XP a day.')}</p></div>;
 }
 
-// ---------- Universal Bypasser (terminal look). The real work happens on the server: api/bypass.js ----------
-const BYP_HOSTS=[['Linkvertise',/(^|\.)(linkvertise\.com|link-to\.net|link-hub\.net|link-center\.net|link-target\.net|direct-link\.net)$/i],['LootLabs',/(^|\.)(lootlabs\.gg|loot-link\.com|loot-links\.com|lootlinks\.co)$/i],['Delta',/(^|\.)platoboost\.(com|net)$/i]];
-const bypLabel=h=>{for(const [n,re] of BYP_HOSTS)if(re.test(h))return n;return 'Universal'};
-function BypassPage({user,go,toast}){
-  const [lines,setLines]=useState(()=>[{t:'sys',x:'NexScript Bypasser v1.0'},{t:'sys',x:"Supported: Delta, LootLabs, Linkvertise and similar. Type 'help' for commands."},{t:'sys',x:'Paste a link below and press Enter.'}]);
-  const [input,setInput]=useState('');const [busy,setBusy]=useState(false);const [result,setResult]=useState(null);const [copied,setCopied]=useState(false);
-  const endRef=useRef();const inRef=useRef();const hist=useRef([]);const hi=useRef(-1);const alive=useRef(true);
-  useEffect(()=>{alive.current=true;return()=>{alive.current=false}},[]);
-  useEffect(()=>{if(endRef.current)endRef.current.scrollIntoView({block:'end'})},[lines,result,busy]);
-  const add=(t,x)=>{if(alive.current)setLines(l=>[...l,{t,x}].slice(-200))};
-  const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  const focusIn=()=>{try{if(inRef.current)inRef.current.focus({preventScroll:true})}catch(e){}};
-  const run=async raw=>{
-    const cmd=String(raw||'').trim();if(!cmd||busy)return;
-    add('in',cmd);hist.current.unshift(cmd);hist.current=hist.current.slice(0,30);hi.current=-1;setResult(null);setCopied(false);
-    const lc=cmd.toLowerCase();
-    if(lc==='clear'||lc==='cls'){setLines([]);return}
-    if(lc==='login'){go('auth');return}
-    if(lc==='help'){['help       show this list','clear      clear the screen','services   show supported sites','login      open the login page','<link>     paste a link to bypass it'].forEach(x=>add('sys',x));return}
-    if(lc==='services'){add('sys','Linkvertise | LootLabs | Delta (Platoboost) | Work.ink | Rekonise | Boost.ink | Social Unlock');return}
-    let u;try{u=new URL(/^https?:\/\//i.test(cmd)?cmd:'https://'+cmd);if(u.hostname.indexOf('.')<0)throw new Error('host')}catch(e){add('err','[ERR] That is not a valid link. Example: https://linkvertise.com/12345/abc');return}
-    if(!user){add('err','[ERR] Login required.');add('sys','Type "login" to open the login page.');return}
-    if(!ADMIN_API){add('err','[ERR] Server address is not set (ADMIN_API).');return}
-    setBusy(true);
-    const label=bypLabel(u.hostname.toLowerCase());
-    const ac=new AbortController();const to=setTimeout(()=>ac.abort(),32000);
-    try{
-      const {data:{session}}=await sb.auth.getSession();
-      if(!session){add('err','[ERR] Session expired. Type "login".');return}
-      add('sys','Connecting to bypass node...');
-      const req=fetch(ADMIN_API+'/api/bypass',{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},body:JSON.stringify({url:u.href})}).then(async r=>({r,d:await r.json().catch(()=>({}))})).catch(e=>({neterr:e}));
-      await wait(500);add('sys','Resolving host: '+u.hostname);
-      await wait(500);add('sys','Bypassing '+label+'...');
-      const out=await req;
-      if(out.neterr){add('err',out.neterr.name==='AbortError'?'[ERR] Timed out. Try again.':'[ERR] Could not reach the server.');return}
-      const {r,d}=out;
-      if(!r.ok||!d.ok){
-        const m=r.status===401?'Login required or session expired.':r.status===429?'Too many requests. Wait a minute.':r.status===503?'Bypass service is not configured on the server yet.':(d&&d.error)||('Failed (HTTP '+r.status+')');
-        add('err','[ERR] '+m);return;
-      }
-      add('ok','Success! '+(d.service||label)+' bypassed.');
-      if(alive.current)setResult({value:d.result,kind:d.kind});
-    }catch(e){log('bypass error',e);add('err','[ERR] Something went wrong.')}
-    finally{clearTimeout(to);if(alive.current){setBusy(false);focusIn()}}
-  };
-  const submit=()=>{const v=input;setInput('');run(v)};
-  const onKey=e=>{
-    if(e.key==='Enter'){e.preventDefault();submit()}
-    else if(e.key==='ArrowUp'){e.preventDefault();if(hi.current<hist.current.length-1){hi.current++;setInput(hist.current[hi.current])}}
-    else if(e.key==='ArrowDown'){e.preventDefault();if(hi.current>0){hi.current--;setInput(hist.current[hi.current])}else{hi.current=-1;setInput('')}}
-  };
-  const copy=async()=>{try{await navigator.clipboard.writeText(result.value);setCopied(true);setTimeout(()=>setCopied(false),2000)}catch(e){toast(tr('Copy failed'))}};
-  const cls={err:'text-red-400',ok:'text-green-200',in:'text-white',sys:'text-green-500/90'};
-  return <div className="page space-y-3">
-    <div className="rounded-xl overflow-hidden border border-green-500/40" style={{background:'#000',boxShadow:'0 0 30px rgba(34,197,94,.18)'}}>
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-green-500/30" style={{background:'#04100a'}}>
-        <i className="w-2.5 h-2.5 rounded-full bg-red-500"/><i className="w-2.5 h-2.5 rounded-full bg-yellow-400"/><i className="w-2.5 h-2.5 rounded-full bg-green-500"/>
-        <span className="ml-2 text-xs font-mono text-green-400/80 truncate">nexscript@bypass: ~</span></div>
-      <div onClick={focusIn} role="log" aria-live="polite" className="relative font-mono text-sm px-4 py-3 overflow-y-auto cursor-text" style={{height:'58vh',minHeight:320,color:'#4ade80',textShadow:'0 0 6px rgba(74,222,128,.5)',backgroundImage:'repeating-linear-gradient(rgba(255,255,255,.025) 0 1px,transparent 1px 3px)'}}>
-        {lines.map((l,i)=><p key={i} className={'break-words whitespace-pre-wrap '+(cls[l.t]||'')}>{l.t==='in'?<><span className="text-green-400">$ </span>{l.x}</>:l.x}</p>)}
-        {result&&<div className="my-3 p-3 rounded-lg border border-green-400/50" style={{background:'rgba(34,197,94,.08)'}}>
-          <p className="text-[11px] text-green-500/80 mb-1">{result.kind==='link'?'RESULT LINK':'RESULT'}</p>
-          <p className="break-all text-green-200 select-all">{result.value}</p>
-          <div className="flex flex-wrap gap-2 mt-3">
-            <button onClick={copy} className="px-4 py-2 rounded-md text-xs font-bold text-black" style={{background:'#4ade80',textShadow:'none'}}>{copied?tr('Copied!'):(result.kind==='link'?tr('Copy Link'):tr('Copy'))}</button>
-            {result.kind==='link'&&<a href={result.value} target="_blank" rel="noopener noreferrer nofollow" className="px-4 py-2 rounded-md text-xs font-bold border border-green-400/60 text-green-300">{tr('Open')}</a>}</div></div>}
-        {busy?<p className="text-green-500/80 mt-1">working...</p>
-        :<div className="flex items-start gap-2 mt-1"><span className="shrink-0 text-green-400">$</span><span className="break-all text-white">{input}<i className="term-cursor"/></span></div>}
-        <input ref={inRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={onKey} disabled={busy} inputMode="url" autoCapitalize="off" autoCorrect="off" autoComplete="off" spellCheck={false} aria-label="Terminal input" style={{position:'absolute',left:0,top:0,width:1,height:1,opacity:0,pointerEvents:'none'}}/>
-        <div ref={endRef}/>
-      </div>
-    </div>
-    <div className="flex flex-wrap gap-2 text-xs">
-      <button onClick={async()=>{try{const t=await navigator.clipboard.readText();if(t){setInput(t.trim());focusIn()}}catch(e){toast(tr('Paste with your keyboard instead.'))}}} className="px-4 py-2 rounded-lg glass hover:border-green-400">{tr('Paste')}</button>
-      <button onClick={submit} disabled={busy||!input.trim()} className="px-4 py-2 rounded-lg font-semibold text-black disabled:opacity-50" style={{background:'#4ade80'}}>{tr('Run')}</button>
-      {!user&&<button onClick={()=>go('auth')} className="px-4 py-2 rounded-lg glass hover:border-blue-400">{tr('Log in / Sign up')}</button>}</div>
-    <p className="text-[11px] text-slate-500">{tr('Links are sent to a third-party bypass service. Results can fail or be wrong.')}</p>
-  </div>;
-}
-
 // ---------- AI Assistant (Nexa). The model runs on the server: api/ai-chat.js (key stays in Vercel, never in this file) ----------
 const AI_STARTERS={en:['Make a simple ESP for my private server','Why does my script say "attempt to index nil"?','Explain RemoteEvents like I am new'],id:['Bikinin ESP simple buat private server gue','Kenapa script gue error "attempt to index nil"?','Jelasin RemoteEvent buat pemula']};
 const aiFileName=n=>{let x=String(n||'script.lua').replace(/[^\w.\-]+/g,'_').slice(0,60)||'script.lua';return /\.lua$/i.test(x)?x:x.replace(/\.+$/,'')+'.lua'};
@@ -1905,13 +1823,845 @@ function AiPage({user,go,toast}){
   </div>;
 }
 
-const NAV=[['home','Home','home'],['feed','Feed','play'],['videos','Shorts','video'],['rewards','Rewards','trophy'],['quiz','Quiz','bolt'],['bypass','Bypasser','terminal'],['ai','AI Assistant','bot'],['wallet','Wallet','wallet'],['review','Review','shield'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['community','Community','users'],['chat','Global Chat','chat'],['games','Games','gamepad'],['upload','Upload','upload'],['guide','Guide & FAQ','book'],['legal','Terms & Privacy','file'],['settings','Settings','gear'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
+// ---------- Community 2.0 (Discord style): servers, groups, DMs, friends, voice, push notifications ----------
+// Database: supabase-community.sql. Notifications: api/push.js + sw.js. Voice: WebRTC (api/ice.js gives the ICE servers).
+const CM_STATUS={online:'#22c55e',idle:'#f59e0b',offline:'#64748b'};
+const CmDot=({s,size=10})=><i className="inline-block rounded-full shrink-0" style={{width:size,height:size,background:CM_STATUS[s]||CM_STATUS.offline,boxShadow:'0 0 0 2px #0a0f2c'}}/>;
+const cmStatus=(presence,id)=>presence&&presence[id]?(presence[id].s==='idle'?'idle':'online'):'offline';
+const cmName=x=>(x&&(x.display_name||x.username||x.author))||'?';
+const cmErr=e=>{const m=String((e&&e.message)||'');return m&&m.length<120?m:tr('Something went wrong.')};
+const CM_REACT=['\u{1F44D}','\u2764\uFE0F','\u{1F602}','\u{1F525}','\u{1F62E}','\u{1F622}'];
+const CM_POST_COLS='id,channel_id,user_id,author,display_name,role,kind,body,media_path,reply_to,created_at,edited_at';
+const CM_ICONS=['\u{1F3AE}','\u{1F525}','\u26A1','\u{1F680}','\u{1F47E}','\u{1F3A7}','\u{1F340}','\u{1F981}','\u{1F409}','\u{1F48E}','\u{1F31F}','\u{1F3AF}'];
+
+// fire-and-forget: asks the server to send push notifications for something I just did
+async function cmNotify(body){
+  try{
+    if(!ADMIN_API||!sb)return;
+    const {data:{session}}=await sb.auth.getSession();if(!session)return;
+    fetch(ADMIN_API+'/api/push',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token},body:JSON.stringify(body)}).catch(()=>{});
+  }catch(e){}
+}
+const cmCompress=file=>new Promise((res,rej)=>{
+  const img=new Image();const url=URL.createObjectURL(file);
+  img.onload=()=>{const k=Math.min(1,1024/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error('compress')),'image/jpeg',.78)};
+  img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('image'))};img.src=url;
+});
+const cmApplyReact=(m,type,row)=>{
+  if(!row||row.post_id===undefined)return m;
+  const n={...m};const cur={...(n[row.post_id]||{})};const list=(cur[row.emoji]||[]).filter(u=>u!==row.user_id);
+  if(type==='INSERT')list.push(row.user_id);
+  if(list.length)cur[row.emoji]=list;else delete cur[row.emoji];
+  n[row.post_id]=cur;return n;
+};
+
+// text with links and @mentions
+function CmText({text,me}){
+  const parts=String(text||'').split(/(https?:\/\/[^\s<]+|@[A-Za-z0-9_]{3,20})/g);
+  return <>{parts.map((p,i)=>{
+    if(!p)return null;
+    if(/^https?:\/\//.test(p))return <a key={i} href={p} target="_blank" rel="noopener noreferrer nofollow" className="text-blue-300 underline break-all">{p}</a>;
+    if(p.charAt(0)==='@'&&p.length>3){const mine=me&&p.slice(1).toLowerCase()===String(me).toLowerCase();return <span key={i} className={'rounded px-1 '+(mine?'bg-amber-400/25 text-amber-200':'bg-blue-500/20 text-blue-200')}>{p}</span>}
+    return <span key={i}>{p}</span>;
+  })}</>;
+}
+
+// ---------- one text channel (also used for DMs and groups) ----------
+function CmChat({user,profile,channel,title,subtitle,members,canMod,isDm,toast,markRead,onBack,onMembers}){
+  const uid=user.id;const cid=channel.id;
+  const [posts,setPosts]=useState([]);const [reacts,setReacts]=useState({});const [loading,setLoading]=useState(true);const [more,setMore]=useState(false);
+  const [text,setText]=useState('');const [sending,setSending]=useState(false);const [reply,setReply]=useState(null);const [emoji,setEmoji]=useState(false);
+  const [editId,setEditId]=useState(null);const [editText,setEditText]=useState('');const [typing,setTyping]=useState({});const [menu,setMenu]=useState(null);const [picker,setPicker]=useState(null);
+  const listRef=useRef();const stick=useRef(true);const lastSent=useRef(0);const fileRef=useRef();const typCh=useRef(null);const lastTyp=useRef(0);
+  const byId=useMemo(()=>{const m={};posts.forEach(p=>{m[p.id]=p});return m},[posts]);
+  const memMap=useMemo(()=>{const m={};(members||[]).forEach(x=>{m[x.user_id]=x});return m},[members]);
+  const loadReacts=useCallback(async ids=>{
+    if(!ids.length)return;
+    const r=await sb.from('chat_reactions').select('post_id,user_id,emoji').in('post_id',ids);
+    if(r.error)return;
+    setReacts(m=>{let n={...m};(r.data||[]).forEach(x=>{n=cmApplyReact(n,'INSERT',x)});return n});
+  },[]);
+
+  useEffect(()=>{
+    let dead=false;setPosts([]);setReacts({});setLoading(true);setReply(null);setEditId(null);setMenu(null);stick.current=true;
+    (async()=>{
+      const r=await sb.from('chat_posts').select(CM_POST_COLS).eq('channel_id',cid).order('id',{ascending:false}).limit(60);
+      if(dead)return;
+      if(r.error){log('posts error',r.error);toast(tr('Could not load chat.'));setLoading(false);return}
+      const list=(r.data||[]).slice().reverse();setPosts(list);setMore((r.data||[]).length>=60);setLoading(false);loadReacts(list.map(x=>x.id));
+    })();
+    return()=>{dead=true};
+  },[cid]);
+
+  const loadOlder=async()=>{
+    if(!posts.length)return;
+    const el=listRef.current;const before=el?el.scrollHeight:0;stick.current=false;
+    const r=await sb.from('chat_posts').select(CM_POST_COLS).eq('channel_id',cid).lt('id',posts[0].id).order('id',{ascending:false}).limit(60);
+    if(r.error)return;
+    const list=(r.data||[]).slice().reverse();setPosts(l=>[...list,...l]);setMore((r.data||[]).length>=60);loadReacts(list.map(x=>x.id));
+    setTimeout(()=>{if(el)el.scrollTop=el.scrollHeight-before},30);
+  };
+
+  // live events (App listens to the database once and passes them on)
+  useEffect(()=>{
+    const onIns=e=>{const p=e.detail;if(!p||p.channel_id!==cid)return;setPosts(l=>l.some(x=>x.id===p.id)?l:[...l,p].slice(-500))};
+    const onUpd=e=>{const p=e.detail;if(p)setPosts(l=>l.map(x=>x.id===p.id?{...x,...p}:x))};
+    const onDel=e=>{const id=e.detail&&e.detail.id;if(id!==undefined)setPosts(l=>l.filter(x=>x.id!==id))};
+    const onReact=e=>{const d=e.detail;if(d)setReacts(m=>cmApplyReact(m,d.type,d.row))};
+    window.addEventListener('nx-post',onIns);window.addEventListener('nx-post-upd',onUpd);window.addEventListener('nx-post-del',onDel);window.addEventListener('nx-react',onReact);
+    return()=>{window.removeEventListener('nx-post',onIns);window.removeEventListener('nx-post-upd',onUpd);window.removeEventListener('nx-post-del',onDel);window.removeEventListener('nx-react',onReact)};
+  },[cid]);
+
+  // "x is typing..." (private broadcast channel; silently skipped if the voice/typing rules are not installed)
+  useEffect(()=>{
+    if(!sb)return;
+    const ch=sb.channel('typing:'+cid,{config:{private:true,broadcast:{self:false}}});
+    ch.on('broadcast',{event:'t'},({payload})=>{if(payload&&payload.uid&&payload.uid!==uid)setTyping(t=>({...t,[payload.uid]:{u:payload.u,at:Date.now()}}))}).subscribe();
+    typCh.current=ch;
+    const iv=setInterval(()=>setTyping(t=>{const n={};let changed=false;Object.keys(t).forEach(k=>{if(Date.now()-t[k].at<4500)n[k]=t[k];else changed=true});return changed?n:t}),1500);
+    return()=>{clearInterval(iv);typCh.current=null;try{sb.removeChannel(ch)}catch(e){}setTyping({})};
+  },[cid]);
+  const pingTyping=()=>{const n=Date.now();if(n-lastTyp.current<2500||!typCh.current)return;lastTyp.current=n;try{typCh.current.send({type:'broadcast',event:'t',payload:{uid,u:cmName(profile)}})}catch(e){}};
+
+  useLayoutEffect(()=>{const el=listRef.current;if(el&&stick.current)el.scrollTop=el.scrollHeight},[posts.length,loading]);
+  const lastId=posts.length?posts[posts.length-1].id:0;
+  useEffect(()=>{
+    if(!lastId)return;
+    const t=setTimeout(()=>{if(!document.hidden)markRead(cid,lastId)},500);
+    const vis=()=>{if(!document.hidden)markRead(cid,lastId)};
+    document.addEventListener('visibilitychange',vis);
+    return()=>{clearTimeout(t);document.removeEventListener('visibilitychange',vis)};
+  },[lastId,cid]);
+
+  const guard=()=>{if(Date.now()-lastSent.current<800){toast(tr('Slow down a little.'));return false}lastSent.current=Date.now();return true};
+  const insert=async row=>{
+    const r=await sb.from('chat_posts').insert({channel_id:cid,user_id:uid,...row}).select(CM_POST_COLS).single();
+    if(r.error){log('post error',r.error);const m=r.error.message||'';toast(m.indexOf('Inappropriate')>=0?tr('Your message contains inappropriate language.'):m.indexOf('Slow')>=0?tr('Slow down a little.'):tr('Message not sent.'));return false}
+    const p=r.data;stick.current=true;setPosts(l=>l.some(x=>x.id===p.id)?l:[...l,p]);bumpXp(1,'chat');cmNotify({kind:'post',id:p.id});return true;
+  };
+  const sendText=async e=>{
+    if(e)e.preventDefault();
+    const body=text.trim();if(!body||sending)return;
+    if(isProfane(body)){toast(tr('Your message contains inappropriate language.'));return}
+    if(!guard())return;
+    setSending(true);const ok=await insert({kind:'text',body,reply_to:reply?reply.id:null});setSending(false);
+    if(ok){setText('');setReply(null);setEmoji(false)}
+  };
+  const pickImage=async e=>{
+    const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+    if(!/^image\//.test(f.type)){toast(tr('Please choose an image.'));return}
+    if(!guard())return;
+    setSending(true);
+    try{
+      const blob=await cmCompress(f);const path=uid+'/'+Date.now()+'.jpg';
+      const up=await sb.storage.from('chat-media').upload(path,blob,{contentType:'image/jpeg',cacheControl:'31536000'});
+      if(up.error)throw up.error;
+      await insert({kind:'image',media_path:path,body:'',reply_to:reply?reply.id:null});setReply(null);
+    }catch(err){log('cm image error',err);toast(tr('Could not send image.'))}
+    finally{setSending(false)}
+  };
+  const saveEdit=async p=>{
+    const body=editText.trim();
+    if(!body||body===p.body){setEditId(null);return}
+    if(isProfane(body)){toast(tr('Your message contains inappropriate language.'));return}
+    const r=await sb.from('chat_posts').update({body}).eq('id',p.id).select(CM_POST_COLS).single();
+    if(r.error){toast(tr('Could not edit message.'));return}
+    setPosts(l=>l.map(x=>x.id===p.id?{...x,...r.data}:x));setEditId(null);
+  };
+  const del=async p=>{
+    if(!window.confirm(tr('Delete this message?')))return;
+    const r=await sb.from('chat_posts').delete().eq('id',p.id);
+    if(r.error){toast(tr('Could not delete message.'));return}
+    setPosts(l=>l.filter(x=>x.id!==p.id));
+    if(p.media_path&&p.user_id===uid)sb.storage.from('chat-media').remove([p.media_path]).then(()=>{},()=>{});
+  };
+  const react=async(p,emo)=>{
+    setPicker(null);setMenu(null);
+    const mine=((reacts[p.id]||{})[emo]||[]).indexOf(uid)>=0;
+    setReacts(m=>cmApplyReact(m,mine?'DELETE':'INSERT',{post_id:p.id,user_id:uid,emoji:emo}));
+    const r=mine?await sb.from('chat_reactions').delete().eq('post_id',p.id).eq('user_id',uid).eq('emoji',emo):await sb.from('chat_reactions').insert({post_id:p.id,user_id:uid,emoji:emo});
+    if(r.error){setReacts(m=>cmApplyReact(m,mine?'INSERT':'DELETE',{post_id:p.id,user_id:uid,emoji:emo}))}
+  };
+  const mediaUrl=path=>sb.storage.from('chat-media').getPublicUrl(path).data.publicUrl;
+  const typers=Object.keys(typing).map(k=>typing[k].u).filter(Boolean);
+  const myName=(profile&&profile.username)||'';
+
+  return <div className="flex flex-col min-h-0 flex-1">
+    <div className="flex items-center gap-2 px-3 py-2.5 border-b border-white/10">
+      {onBack&&<button onClick={onBack} aria-label={tr('Back')} className="md:hidden p-2 -ml-1 text-slate-300"><Ic n="back" s={20}/></button>}
+      <span className="min-w-0 flex-1"><span className="hd text-white font-bold block truncate">{title}</span>{subtitle&&<span className="text-[11px] text-slate-400 block truncate">{subtitle}</span>}</span>
+      {onMembers&&<button onClick={onMembers} aria-label={tr('Members')} className="hidden lg:flex p-2 rounded-lg glass text-slate-300"><Ic n="users" s={16}/></button>}
+    </div>
+    <div ref={listRef} onScroll={e=>{const el=e.target;stick.current=el.scrollHeight-el.scrollTop-el.clientHeight<140}} className="flex-1 min-h-0 overflow-y-auto overscroll-contain py-2" aria-live="polite">
+      {more&&<div className="text-center py-2"><button onClick={loadOlder} className="px-4 py-2 rounded-lg glass text-xs">{tr('Load older messages')}</button></div>}
+      {loading&&<p className="text-center text-slate-500 text-sm pt-8">{tr('Loading more scripts...')}</p>}
+      {!loading&&posts.length===0&&<p className="text-center text-slate-500 text-sm pt-10 px-6">{tr('No messages yet. Say hi!')}</p>}
+      {posts.map((p,i)=>{
+        const prev=posts[i-1];const head=!prev||prev.user_id!==p.user_id||(new Date(p.created_at)-new Date(prev.created_at))>300000||!!p.reply_to;
+        const mem=memMap[p.user_id];const mine=p.user_id===uid;const rp=p.reply_to?byId[p.reply_to]:null;const rx=reacts[p.id]||{};
+        const open=menu===p.id;
+        return <div key={p.id} className="group relative flex gap-3 px-3 py-0.5 hover:bg-white/5">
+          {head?<Avatar name={p.author} role={p.role} url={mem&&mem.avatar_url} size={36}/>:<span className="shrink-0" style={{width:36}}/>}
+          <div className="min-w-0 flex-1">
+            {head&&<div className="flex items-baseline gap-2 flex-wrap"><span className={'font-semibold text-sm '+(p.role==='owner'?'owner-name':'text-blue-300')}>{p.display_name||p.author}</span><RoleBadge role={p.role}/><span className="text-[10px] text-slate-500">{ago(p.created_at)}</span></div>}
+            {p.reply_to&&<p className="text-[11px] text-slate-400 border-l-2 border-white/25 pl-2 mb-0.5 truncate">{rp?(rp.display_name||rp.author)+': '+(rp.kind==='image'?tr('Photo'):rp.body):tr('Original message')}</p>}
+            {p.kind==='image'&&p.media_path?<img src={mediaUrl(p.media_path)} alt="" loading="lazy" className="mt-1 max-h-64 rounded-lg cursor-pointer" onClick={()=>window.open(mediaUrl(p.media_path),'_blank','noopener')}/>
+            :editId===p.id?<div className="mt-1 space-y-2"><textarea value={editText} onChange={e=>setEditText(e.target.value)} maxLength={1000} rows={2} autoFocus aria-label="Edit message" className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white text-sm"/><div className="flex gap-2 justify-end"><button onClick={()=>setEditId(null)} className="px-4 py-2 rounded-lg glass text-xs">{tr('Cancel')}</button><button onClick={()=>saveEdit(p)} className="px-4 py-2 rounded-lg text-xs font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Save')}</button></div></div>
+            :<p onClick={()=>setMenu(open?null:p.id)} className="text-sm text-slate-200 break-words whitespace-pre-wrap cursor-pointer"><CmText text={p.body} me={myName}/>{p.edited_at&&<span className="text-[10px] text-slate-500 ml-1">({tr('edited')})</span>}</p>}
+            {Object.keys(rx).length>0&&<div className="flex flex-wrap gap-1 mt-1">{Object.keys(rx).map(emo=>{const on=rx[emo].indexOf(uid)>=0;return <button key={emo} onClick={()=>react(p,emo)} className={'px-2 py-0.5 rounded-full text-xs border '+(on?'border-blue-400 bg-blue-500/20 text-white':'border-white/10 bg-white/5 text-slate-300')}>{emo} {rx[emo].length}</button>})}</div>}
+          </div>
+          <div className={'absolute right-2 -top-3 z-10 flex gap-0.5 rounded-lg px-1 py-0.5 border border-white/10 '+(open?'flex':'hidden group-hover:flex')} style={{background:'rgba(10,15,44,.96)'}}>
+            <button onClick={()=>setPicker(picker===p.id?null:p.id)} aria-label={tr('React')} className="p-2 text-slate-300 hover:text-white"><Ic n="smile" s={15}/></button>
+            <button onClick={()=>{setReply(p);setMenu(null)}} aria-label={tr('Reply')} className="p-2 text-slate-300 hover:text-white"><Ic n="reply" s={15}/></button>
+            {mine&&p.kind==='text'&&<button onClick={()=>{setEditId(p.id);setEditText(p.body);setMenu(null)}} aria-label="Edit message" className="p-2 text-slate-300 hover:text-white"><Ic n="edit" s={15}/></button>}
+            {(mine||canMod)&&<button onClick={()=>del(p)} aria-label="Delete message" className="p-2 text-slate-300 hover:text-red-300"><Ic n="trash" s={15}/></button>}
+          </div>
+          {picker===p.id&&<div className="absolute right-2 top-5 z-20 flex gap-1 rounded-xl px-2 py-1.5 border border-white/10" style={{background:'rgba(10,15,44,.98)'}}>{CM_REACT.map(emo=><button key={emo} onClick={()=>react(p,emo)} className="text-xl p-1 rounded hover:bg-white/10">{emo}</button>)}</div>}
+        </div>;
+      })}
+    </div>
+    <div className="px-3 pb-3 pt-1 space-y-1.5">
+      <p className="text-[11px] text-slate-400 h-4 truncate">{typers.length?typers.slice(0,2).join(', ')+' '+tr('is typing...'):''}</p>
+      {reply&&<div className="flex items-center gap-2 text-xs text-slate-300 rounded-lg bg-white/5 px-3 py-1.5"><span className="truncate flex-1">{tr('Replying to')} {reply.display_name||reply.author}: {reply.kind==='image'?tr('Photo'):reply.body}</span><button onClick={()=>setReply(null)} aria-label={tr('Cancel')} className="p-1"><Ic n="x" s={14}/></button></div>}
+      {emoji&&<div className="glass rounded-xl p-2 grid grid-cols-8 gap-1 max-h-36 overflow-y-auto">{EMOJIS.map(e=><button type="button" key={e} onClick={()=>setText(t=>(t+e).slice(0,1000))} className="text-xl p-1 rounded hover:bg-white/10">{e}</button>)}</div>}
+      <form onSubmit={sendText} className="flex gap-2 items-end">
+        <button type="button" onClick={()=>setEmoji(v=>!v)} aria-label="Emoji" className="shrink-0 w-11 h-11 rounded-lg glass flex items-center justify-center"><Ic n="smile" s={20}/></button>
+        <button type="button" onClick={()=>fileRef.current&&fileRef.current.click()} disabled={sending} aria-label="Send photo" className="shrink-0 w-11 h-11 rounded-lg glass flex items-center justify-center"><Ic n="image" s={20}/></button>
+        <input type="file" accept="image/*" hidden ref={fileRef} onChange={pickImage}/>
+        <textarea value={text} onChange={e=>{setText(e.target.value);pingTyping()}} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey&&!(e.nativeEvent&&e.nativeEvent.isComposing)){e.preventDefault();sendText()}}} rows={Math.min(4,Math.max(1,text.split('\n').length))} maxLength={1000} aria-label="Message" placeholder={tr('Type a message...')} className="min-w-0 flex-1 px-3 py-2.5 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500 text-sm resize-none"/>
+        <button type="submit" disabled={sending||!text.trim()} className="shrink-0 h-11 px-4 rounded-lg font-semibold text-white disabled:opacity-50" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Send')}</button>
+      </form>
+    </div>
+  </div>;
+}
+
+// ---------- friends ----------
+function CmFriendRow({f,presence,children}){
+  const s=cmStatus(presence,f.user_id);
+  return <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5">
+    <span className="relative shrink-0"><Avatar name={f.username} url={f.avatar_url} size={38}/><span className="absolute -bottom-0.5 -right-0.5"><CmDot s={s} size={11}/></span></span>
+    <span className="min-w-0 flex-1"><span className="block text-sm text-white font-semibold truncate">{cmName(f)}</span><span className="block text-[11px] text-slate-400 truncate">@{f.username} - {s==='online'?tr('Online'):s==='idle'?tr('Idle'):(f.last_seen_at?tr('Last seen')+' '+ago(f.last_seen_at):tr('Offline'))}</span></span>
+    {children}</div>;
+}
+function CmFriends({friends,presence,reload,openDm,toast}){
+  const [tab,setTab]=useState('online');const [name,setName]=useState('');const [busy,setBusy]=useState(false);
+  const accepted=friends.filter(f=>f.status==='accepted');
+  const incoming=friends.filter(f=>f.status==='pending'&&f.incoming);
+  const outgoing=friends.filter(f=>f.status==='pending'&&!f.incoming);
+  const shown=tab==='online'?accepted.filter(f=>cmStatus(presence,f.user_id)!=='offline'):accepted;
+  const ib='px-3 py-2 rounded-lg glass text-xs hover:border-blue-400';
+  const add=async e=>{
+    e.preventDefault();const n=name.trim().replace(/^@/,'');if(!n)return;
+    setBusy(true);const r=await sb.rpc('send_friend_request',{p_username:n});setBusy(false);
+    if(r.error){toast(cmErr(r.error));return}
+    setName('');toast(r.data&&r.data.status==='accepted'?tr('You are now friends.'):tr('Friend request sent.'),'ok');
+    if(r.data)cmNotify({kind:r.data.status==='accepted'?'friend_accept':'friend',id:r.data.id});
+    reload();
+  };
+  const respond=async(f,ok)=>{
+    const r=await sb.rpc('respond_friend',{p_id:f.id,p_accept:ok});
+    if(r.error){toast(cmErr(r.error));return}
+    if(ok)cmNotify({kind:'friend_accept',id:f.id});
+    reload();
+  };
+  const remove=async f=>{
+    if(!window.confirm(tr('Remove this friend?')))return;
+    const r=await sb.rpc('remove_friend',{p_id:f.id});
+    if(r.error){toast(cmErr(r.error));return}
+    reload();
+  };
+  const tabs=[['online','Online'],['all','All'],['pending','Pending'],['add','Add friend']];
+  return <div className="flex flex-col min-h-0 flex-1">
+    <div className="flex items-center gap-2 px-3 py-2.5 border-b border-white/10 overflow-x-auto nx-chips">
+      <span className="hd text-white font-bold mr-2 shrink-0">{tr('Friends')}</span>
+      {tabs.map(([id,l])=><button key={id} onClick={()=>setTab(id)} className={'shrink-0 px-3 py-1.5 rounded-lg text-xs '+(tab===id?'bg-blue-500 text-white':'glass text-slate-300')}>{tr(l)}{id==='pending'&&incoming.length>0&&<b className="ml-1.5 px-1.5 rounded-full bg-red-500 text-white">{incoming.length}</b>}</button>)}
+    </div>
+    <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-2">
+      {tab==='add'&&<form onSubmit={add} className="p-3 space-y-3 max-w-md"><p className="text-sm text-slate-300">{tr('Add a friend with their username.')}</p>
+        <div className="flex gap-2"><input value={name} onChange={e=>setName(e.target.value)} maxLength={20} placeholder={tr('Username')} aria-label={tr('Username')} className="min-w-0 flex-1 px-3 py-2.5 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white"/>
+          <button type="submit" disabled={busy||!name.trim()} className="px-4 rounded-lg font-semibold text-white disabled:opacity-50" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Send')}</button></div></form>}
+      {(tab==='online'||tab==='all')&&(shown.length===0?<p className="text-center text-slate-500 text-sm pt-10 px-6">{tab==='online'?tr('No friends online right now.'):tr('No friends yet. Use "Add friend" to find people.')}</p>
+        :shown.map(f=><CmFriendRow key={f.id} f={f} presence={presence}><button onClick={()=>openDm(f.user_id)} className={ib}>{tr('Message')}</button><button onClick={()=>remove(f)} aria-label={tr('Remove')} className="p-2 text-slate-500 hover:text-red-300"><Ic n="x" s={14}/></button></CmFriendRow>))}
+      {tab==='pending'&&<>{incoming.length===0&&outgoing.length===0&&<p className="text-center text-slate-500 text-sm pt-10">{tr('No pending requests.')}</p>}
+        {incoming.map(f=><CmFriendRow key={f.id} f={f} presence={presence}><button onClick={()=>respond(f,true)} className="px-3 py-2 rounded-lg text-xs font-semibold bg-green-500/20 border border-green-400/40 text-green-200">{tr('Accept')}</button><button onClick={()=>respond(f,false)} className={ib}>{tr('Decline')}</button></CmFriendRow>)}
+        {outgoing.map(f=><CmFriendRow key={f.id} f={f} presence={presence}><span className="text-[11px] text-slate-500">{tr('Sent')}</span><button onClick={()=>remove(f)} className={ib}>{tr('Cancel')}</button></CmFriendRow>)}</>}
+    </div>
+  </div>;
+}
+
+// ---------- member list of a server / group ----------
+function CmMembers({members,presence,uid,myRole,spaceId,openDm,reload,toast,className}){
+  const [open,setOpen]=useState(null);
+  const on=members.filter(m=>cmStatus(presence,m.user_id)!=='offline');const off=members.filter(m=>cmStatus(presence,m.user_id)==='offline');
+  const isAdmin=myRole==='owner'||myRole==='admin';
+  const addFriend=async m=>{
+    const r=await sb.rpc('send_friend_request',{p_username:m.username});
+    if(r.error){toast(cmErr(r.error));return}
+    toast(tr('Friend request sent.'),'ok');if(r.data)cmNotify({kind:r.data.status==='accepted'?'friend_accept':'friend',id:r.data.id});setOpen(null);
+  };
+  const kick=async m=>{
+    if(!window.confirm(tr('Kick this member?')))return;
+    const r=await sb.rpc('kick_member',{p_space:spaceId,p_user:m.user_id});
+    if(r.error){toast(cmErr(r.error));return}
+    setOpen(null);reload();
+  };
+  const role=async(m,nr)=>{
+    const r=await sb.rpc('set_role',{p_space:spaceId,p_user:m.user_id,p_role:nr});
+    if(r.error){toast(cmErr(r.error));return}
+    setOpen(null);reload();
+  };
+  const bt='px-2.5 py-1.5 rounded-md glass text-[11px] hover:border-blue-400';
+  const row=m=>{
+    const s=cmStatus(presence,m.user_id);const me=m.user_id===uid;
+    const canKick=isAdmin&&!me&&m.role!=='owner'&&(myRole==='owner'||m.role==='member');
+    return <div key={m.user_id}>
+      <button onClick={()=>setOpen(open===m.user_id?null:m.user_id)} className={'w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 text-left '+(s==='offline'?'opacity-60':'')}>
+        <span className="relative shrink-0"><Avatar name={m.username} url={m.avatar_url} size={30}/><span className="absolute -bottom-0.5 -right-0.5"><CmDot s={s} size={10}/></span></span>
+        <span className="min-w-0 flex-1 text-sm text-slate-200 truncate">{cmName(m)}</span>
+        {m.role==='owner'&&<span className="text-[10px] text-amber-300">{tr('Owner')}</span>}{m.role==='admin'&&<span className="text-[10px] text-cyan-300">{tr('Admin')}</span>}
+      </button>
+      {open===m.user_id&&<div className="flex flex-wrap gap-1.5 px-2 pb-2 pl-12">
+        {!me&&<button onClick={()=>{setOpen(null);openDm(m.user_id)}} className={bt}>{tr('Message')}</button>}
+        {!me&&<button onClick={()=>addFriend(m)} className={bt}>{tr('Add friend')}</button>}
+        {myRole==='owner'&&!me&&m.role!=='owner'&&<button onClick={()=>role(m,m.role==='admin'?'member':'admin')} className={bt}>{m.role==='admin'?tr('Remove admin'):tr('Make admin')}</button>}
+        {canKick&&<button onClick={()=>kick(m)} className={bt+' text-red-300'}>{tr('Kick')}</button>}
+      </div>}
+    </div>;
+  };
+  return <div className={'w-56 shrink-0 border-l border-white/10 overflow-y-auto overscroll-contain p-2 '+(className||'')}>
+    <p className="text-[11px] font-semibold text-slate-400 px-2 py-1.5">{tr('Online')} - {on.length}</p>{on.map(row)}
+    <p className="text-[11px] font-semibold text-slate-400 px-2 py-1.5 mt-2">{tr('Offline')} - {off.length}</p>{off.map(row)}
+  </div>;
+}
+
+// ---------- create / join / discover ----------
+function CmNewModal({initialCode,onClose,onDone,toast}){
+  const [tab,setTab]=useState(initialCode?'join':'create');const [name,setName]=useState('');const [icon,setIcon]=useState(CM_ICONS[0]);const [pub,setPub]=useState(false);
+  const [code,setCode]=useState(initialCode||'');const [busy,setBusy]=useState(false);const [found,setFound]=useState(null);
+  useEffect(()=>{
+    if(tab!=='discover'||found)return;
+    sb.rpc('discover_spaces').then(r=>{if(r.error){toast(cmErr(r.error));setFound([])}else setFound(r.data||[])});
+  },[tab]);
+  const inp="w-full px-3 py-2.5 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500 text-sm";
+  const done=sp=>{onDone(sp);onClose()};
+  const create=async e=>{
+    e.preventDefault();if(!name.trim())return;
+    if(isProfane(name)){toast(tr('Name not allowed'));return}
+    setBusy(true);const r=await sb.rpc('create_space',{p_name:name.trim(),p_kind:tab==='group'?'group':'server',p_public:tab==='create'&&pub,p_icon:icon});setBusy(false);
+    if(r.error){toast(cmErr(r.error));return}
+    done(r.data);
+  };
+  const join=async e=>{
+    e.preventDefault();
+    const m=/[?&]join=([a-z0-9]+)/i.exec(code);const c=(m?m[1]:code).trim();if(!c)return;
+    setBusy(true);const r=await sb.rpc('join_space',{p_code:c});setBusy(false);
+    if(r.error){toast(r.error.message&&r.error.message.indexOf('Invalid invite')>=0?tr('That invite code does not work.'):cmErr(r.error));return}
+    done(r.data);
+  };
+  const joinPub=async s=>{
+    setBusy(true);const r=await sb.rpc('join_public',{p_id:s.id});setBusy(false);
+    if(r.error){toast(cmErr(r.error));return}
+    done(r.data);
+  };
+  const tabs=[['create','Create server'],['group','New group'],['join','Join'],['discover','Discover']];
+  return <div className="fixed inset-0 z-[58] bg-black/70 flex items-center justify-center p-4" role="dialog" aria-label="Community">
+    <div className="glass rounded-2xl p-5 w-full max-w-md space-y-4 max-h-[90vh] overflow-y-auto" style={{background:'rgba(10,15,44,.98)'}}>
+      <div className="flex items-center justify-between"><h2 className="hd text-lg text-white">{tr('Community')}</h2><button onClick={onClose} aria-label={tr('Close')} className="p-2 text-slate-400"><Ic n="x" s={18}/></button></div>
+      <div className="flex gap-1 overflow-x-auto nx-chips">{tabs.map(([id,l])=><button key={id} onClick={()=>setTab(id)} className={'shrink-0 px-3 py-1.5 rounded-lg text-xs '+(tab===id?'bg-blue-500 text-white':'glass text-slate-300')}>{tr(l)}</button>)}</div>
+      {(tab==='create'||tab==='group')&&<form onSubmit={create} className="space-y-3">
+        <p className="text-xs text-slate-400">{tab==='group'?tr('A group is a private chat for a few friends (up to 10).'):tr('A server has channels, roles and an invite link (up to 500 members).')}</p>
+        <input value={name} onChange={e=>setName(e.target.value)} maxLength={40} placeholder={tr('Name')} aria-label={tr('Name')} className={inp}/>
+        <div className="flex flex-wrap gap-1.5">{CM_ICONS.map(x=><button type="button" key={x} onClick={()=>setIcon(x)} className={'w-9 h-9 rounded-lg text-lg '+(icon===x?'bg-blue-500/40 border border-blue-400':'glass')}>{x}</button>)}</div>
+        {tab==='create'&&<label className="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" checked={pub} onChange={e=>setPub(e.target.checked)}/>{tr('Public: show this server in Discover')}</label>}
+        <button type="submit" disabled={busy||!name.trim()} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-50" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?tr('Please wait...'):tr('Create')}</button></form>}
+      {tab==='join'&&<form onSubmit={join} className="space-y-3"><p className="text-xs text-slate-400">{tr('Paste an invite code or link.')}</p>
+        <input value={code} onChange={e=>setCode(e.target.value)} maxLength={200} placeholder={tr('Invite code or link')} aria-label={tr('Invite code or link')} className={inp}/>
+        <button type="submit" disabled={busy||!code.trim()} className="w-full py-3 rounded-lg font-semibold text-white disabled:opacity-50" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{busy?tr('Please wait...'):tr('Join')}</button></form>}
+      {tab==='discover'&&<div className="space-y-2">{!found&&<p className="text-sm text-slate-400 text-center py-6">{tr('Loading more scripts...')}</p>}
+        {found&&found.length===0&&<p className="text-sm text-slate-400 text-center py-6">{tr('No public servers yet. Create one and tick "Public".')}</p>}
+        {(found||[]).map(s=><div key={s.id} className="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-2.5"><span className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0" style={{background:'linear-gradient(135deg,#3b82f6,#8b5cf6)'}}>{s.icon||s.name[0]}</span>
+          <span className="min-w-0 flex-1"><span className="block text-sm text-white font-semibold truncate">{s.name}</span><span className="block text-[11px] text-slate-400 truncate">{s.members} {tr('members')}{s.description?' - '+s.description:''}</span></span>
+          <button disabled={busy} onClick={()=>joinPub(s)} className="px-3 py-2 rounded-lg text-xs font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Join')}</button></div>)}</div>}
+    </div></div>;
+}
+
+// ---------- server settings: info, invite, notifications, channels, leave ----------
+function CmSettings({space,channels,onClose,reload,onLeft,toast}){
+  const admin=space.role==='owner'||space.role==='admin';const owner=space.role==='owner';
+  const [name,setName]=useState(space.name);const [icon,setIcon]=useState(space.icon||'');const [desc,setDesc]=useState(space.description||'');const [pub,setPub]=useState(!!space.is_public);
+  const [chName,setChName]=useState('');const [chType,setChType]=useState('text');const [busy,setBusy]=useState(false);const [code,setCode]=useState(space.invite_code||'');const [copied,setCopied]=useState('');
+  const link=location.origin+'/?join='+code;
+  const inp="w-full px-3 py-2.5 rounded-lg bg-white/10 border border-white/10 outline-none focus:border-blue-400 text-white placeholder:text-slate-500 text-sm";
+  const run=async(fn,okMsg)=>{setBusy(true);const r=await fn();setBusy(false);if(r.error){toast(cmErr(r.error));return false}if(okMsg)toast(okMsg,'ok');return r};
+  const save=async e=>{e.preventDefault();if(isProfane(name)||isProfane(desc)){toast(tr('Name not allowed'));return}if(await run(()=>sb.rpc('update_space',{p_id:space.id,p_name:name,p_icon:icon,p_desc:desc,p_public:pub}),tr('Saved.')))reload()};
+  const copy=async(v,k)=>{try{await navigator.clipboard.writeText(v);setCopied(k);setTimeout(()=>setCopied(''),1500)}catch(e){toast(tr('Copy failed'))}};
+  const reset=async()=>{const r=await run(()=>sb.rpc('reset_invite',{p_id:space.id}));if(r){setCode(r.data);reload()}};
+  const setNotify=async m=>{if(await run(()=>sb.rpc('set_notify',{p_space:space.id,p_mode:m})))reload()};
+  const addCh=async e=>{e.preventDefault();if(!chName.trim())return;if(await run(()=>sb.rpc('create_channel',{p_space:space.id,p_name:chName,p_type:chType}))){setChName('');reload()}};
+  const delCh=async c=>{if(!window.confirm(tr('Delete this channel?')))return;if(await run(()=>sb.rpc('delete_channel',{p_id:c.id})))reload()};
+  const leave=async()=>{if(!window.confirm(tr('Leave this server?')))return;if(await run(()=>sb.rpc('leave_space',{p_id:space.id}))){onLeft();onClose()}};
+  const remove=async()=>{if(!window.confirm(tr('Delete this server for everyone? This cannot be undone.')))return;if(await run(()=>sb.rpc('delete_space',{p_id:space.id}))){onLeft();onClose()}};
+  return <div className="fixed inset-0 z-[58] bg-black/70 flex items-center justify-center p-4" role="dialog" aria-label="Server settings">
+    <div className="glass rounded-2xl p-5 w-full max-w-md space-y-5 max-h-[90vh] overflow-y-auto" style={{background:'rgba(10,15,44,.98)'}}>
+      <div className="flex items-center justify-between"><h2 className="hd text-lg text-white truncate">{space.name}</h2><button onClick={onClose} aria-label={tr('Close')} className="p-2 text-slate-400"><Ic n="x" s={18}/></button></div>
+      {space.invite_code&&<div className="space-y-2"><p className="text-xs font-semibold text-slate-300">{tr('Invite')}</p>
+        <div className="flex gap-2"><input readOnly value={link} onFocus={e=>e.target.select()} className={inp+' text-xs'}/><button onClick={()=>copy(link,'link')} className="px-3 rounded-lg glass text-xs shrink-0">{copied==='link'?tr('Copied!'):tr('Copy')}</button></div>
+        <div className="flex items-center gap-2 text-xs text-slate-400"><span>{tr('Code')}: <b className="text-white tracking-wider">{code}</b></span><button onClick={()=>copy(code,'code')} className="px-2 py-1 rounded-md glass">{copied==='code'?tr('Copied!'):tr('Copy')}</button>{admin&&<button onClick={reset} disabled={busy} className="px-2 py-1 rounded-md glass">{tr('New code')}</button>}</div></div>}
+      <div className="space-y-2"><p className="text-xs font-semibold text-slate-300">{tr('Notifications')}</p>
+        <Seg label="Notifications" value={space.notify||'all'} opts={[['all','All messages'],['mentions','Only @mentions'],['none','Mute']]} onChange={setNotify}/></div>
+      {admin&&space.kind!=='dm'&&<form onSubmit={save} className="space-y-2"><p className="text-xs font-semibold text-slate-300">{tr('Server info')}</p>
+        <div className="flex gap-2"><input value={icon} onChange={e=>setIcon(e.target.value)} maxLength={8} placeholder={tr('Icon')} aria-label={tr('Icon')} className={inp+' w-20 text-center'}/><input value={name} onChange={e=>setName(e.target.value)} maxLength={40} placeholder={tr('Name')} aria-label={tr('Name')} className={inp}/></div>
+        <input value={desc} onChange={e=>setDesc(e.target.value)} maxLength={200} placeholder={tr('Description')} aria-label={tr('Description')} className={inp}/>
+        {space.kind==='server'&&<label className="flex items-center gap-2 text-sm text-slate-300"><input type="checkbox" checked={pub} onChange={e=>setPub(e.target.checked)}/>{tr('Public: show this server in Discover')}</label>}
+        <button type="submit" disabled={busy} className="px-4 py-2 rounded-lg text-sm font-semibold text-white disabled:opacity-50" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Save')}</button></form>}
+      {admin&&space.kind!=='dm'&&<div className="space-y-2"><p className="text-xs font-semibold text-slate-300">{tr('Channels')}</p>
+        <ul className="space-y-1">{channels.map(c=><li key={c.id} className="flex items-center gap-2 text-sm text-slate-300 rounded-lg bg-white/5 px-3 py-1.5"><Ic n={c.type==='voice'?'volume':'hash'} s={14}/><span className="flex-1 truncate">{c.name}</span><button onClick={()=>delCh(c)} aria-label={tr('Delete')} className="p-1 text-slate-500 hover:text-red-300"><Ic n="trash" s={14}/></button></li>)}</ul>
+        <form onSubmit={addCh} className="flex gap-2"><input value={chName} onChange={e=>setChName(e.target.value)} maxLength={24} placeholder={tr('new-channel')} aria-label={tr('Channel name')} className={inp}/>
+          <select value={chType} onChange={e=>setChType(e.target.value)} aria-label={tr('Type')} className="px-2 rounded-lg bg-white/10 border border-white/10 text-sm text-white"><option value="text" className="text-black">{tr('Text')}</option><option value="voice" className="text-black">{tr('Voice')}</option></select>
+          <button type="submit" disabled={busy||!chName.trim()} className="px-3 rounded-lg glass text-xs shrink-0">{tr('Add')}</button></form></div>}
+      {space.kind!=='dm'&&<div className="flex flex-wrap gap-2 pt-1 border-t border-white/10">
+        <button onClick={leave} disabled={busy} className="px-4 py-2 rounded-lg glass text-sm text-amber-200">{tr('Leave')}</button>
+        {owner&&<button onClick={remove} disabled={busy} className="px-4 py-2 rounded-lg glass text-sm text-red-300">{tr('Delete server')}</button>}</div>}
+    </div></div>;
+}
+
+// ---------- voice rooms: WebRTC mesh (works best for up to about 6 people). Signalling goes through a private Realtime channel. ----------
+let vcAudioCtx=null;
+function useSpeaking(stream,on){
+  const [sp,setSp]=useState(false);
+  useEffect(()=>{
+    if(!stream||!on||!stream.getAudioTracks().length){setSp(false);return}
+    let iv=null,src=null,node=null;
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+      vcAudioCtx=vcAudioCtx||new AC();
+      src=vcAudioCtx.createMediaStreamSource(new MediaStream(stream.getAudioTracks()));
+      node=vcAudioCtx.createAnalyser();node.fftSize=256;src.connect(node);
+      const buf=new Uint8Array(node.frequencyBinCount);
+      iv=setInterval(()=>{node.getByteFrequencyData(buf);let s=0;for(let i=0;i<buf.length;i++)s+=buf[i];setSp(s/buf.length>14)},160);
+    }catch(e){}
+    return()=>{clearInterval(iv);try{src&&src.disconnect()}catch(e){}setSp(false)};
+  },[stream,on]);
+  return sp;
+}
+const VcLabel=({children,micOff})=><span className="absolute left-2 bottom-2 flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] text-white bg-black/60 max-w-[85%] truncate">{children}{micOff&&<Ic n="micoff" s={11}/>}</span>;
+function VcMedia({stream,self,mirror,label,micOff}){
+  const ref=useRef();
+  useEffect(()=>{const v=ref.current;if(v&&stream&&v.srcObject!==stream){v.srcObject=stream;const p=v.play&&v.play();if(p&&p.catch)p.catch(()=>{})}},[stream]);
+  const sp=useSpeaking(stream,!self&&!micOff);
+  return <div className={'relative rounded-xl overflow-hidden bg-black border '+(sp?'border-green-400':'border-white/10')} style={{aspectRatio:'16/10'}}>
+    <video ref={ref} autoPlay playsInline muted={!!self} className="w-full h-full object-contain bg-black" style={{transform:mirror?'scaleX(-1)':undefined}}/><VcLabel micOff={micOff}>{label}</VcLabel></div>;
+}
+function VcSink({stream}){
+  const ref=useRef();
+  useEffect(()=>{const a=ref.current;if(a&&stream&&a.srcObject!==stream){a.srcObject=stream;const p=a.play&&a.play();if(p&&p.catch)p.catch(()=>{})}},[stream]);
+  return stream?<audio ref={ref} autoPlay style={{display:'none'}}/>:null;
+}
+function VcAvatarTile({stream,name,url,micOff,self}){
+  const sp=useSpeaking(stream,!micOff);
+  return <div className={'relative rounded-xl bg-white/5 border flex items-center justify-center '+(sp?'border-green-400':'border-white/10')} style={{aspectRatio:'16/10'}}>
+    {!self&&<VcSink stream={stream}/>}
+    <span className="rounded-full" style={{boxShadow:sp?'0 0 0 3px #22c55e':'none'}}><Avatar name={name} url={url} size={64}/></span><VcLabel micOff={micOff}>{name}</VcLabel></div>;
+}
+const vcDesc=d=>d&&d.toJSON?d.toJSON():{type:d.type,sdp:d.sdp};
+
+function VcRoom({user,profile,channel,spaceName,visible,onClose,onJoined,toast}){
+  const me=user.id;const myName=cmName(profile);
+  const [joined,setJoined]=useState(false);const [roster,setRoster]=useState({});const [tiles,setTiles]=useState([]);
+  const [mic,setMic]=useState(true);const [cam,setCam]=useState(false);const [scr,setScr]=useState(false);const [facing,setFacing]=useState('user');
+  const [err,setErr]=useState('');const [busy,setBusy]=useState(false);const [state,setState]=useState('connecting');
+  const chRef=useRef(null);const pcs=useRef(new Map());const loc=useRef({mic:null,cam:null,scr:null});const joinedRef=useRef(false);
+  const iceRef=useRef([{urls:['stun:stun.l.google.com:19302']}]);const flags=useRef({mic:true,cam:false,scr:false,scrId:null});const facingRef=useRef('user');
+  const canScreen=!!(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia);
+
+  const sig=(to,data)=>{try{if(chRef.current)chRef.current.send({type:'broadcast',event:'sig',payload:{from:me,to,...data}})}catch(e){}};
+  const pushMeta=()=>{try{if(chRef.current&&joinedRef.current)chRef.current.track({u:myName,a:(profile&&profile.avatar_url)||null,mic:flags.current.mic,cam:flags.current.cam,scr:flags.current.scr,scrId:flags.current.scrId,t:Date.now()})}catch(e){}};
+  const addStream=(info,stream)=>{stream.getTracks().forEach(t=>{try{const s=info.pc.addTrack(t,stream);(info.senders[stream.id]=info.senders[stream.id]||[]).push(s)}catch(e){log('vc addTrack',e)}})};
+  const removeStream=stream=>{pcs.current.forEach(info=>{(info.senders[stream.id]||[]).forEach(s=>{try{info.pc.removeTrack(s)}catch(e){}});delete info.senders[stream.id]})};
+
+  const makePeer=id=>{
+    const pc=new RTCPeerConnection({iceServers:iceRef.current});
+    const info={pc,polite:me>id,making:false,ignore:false,senders:{}};
+    pcs.current.set(id,info);
+    pc.onnegotiationneeded=async()=>{try{info.making=true;await pc.setLocalDescription();sig(id,{description:vcDesc(pc.localDescription)})}catch(e){log('vc negotiation',e)}finally{info.making=false}};
+    pc.onicecandidate=e=>{if(e.candidate)sig(id,{candidate:e.candidate.toJSON?e.candidate.toJSON():e.candidate})};
+    pc.ontrack=e=>{
+      const st=(e.streams&&e.streams[0])||new MediaStream([e.track]);
+      setTiles(l=>l.some(t=>t.stream.id===st.id&&t.peer===id)?l.slice():[...l,{key:id+':'+st.id,peer:id,stream:st}]);
+      st.onremovetrack=()=>{if(!st.getTracks().length)setTiles(l=>l.filter(t=>t.stream!==st))};
+      e.track.onended=()=>{if(st.getTracks().every(t=>t.readyState==='ended'))setTiles(l=>l.filter(t=>t.stream!==st))};
+    };
+    pc.onconnectionstatechange=()=>{if(pc.connectionState==='failed'){try{pc.restartIce()}catch(e){}}};
+    const L=loc.current;let any=false;
+    [L.mic,L.cam,L.scr].forEach(s=>{if(s){addStream(info,s);any=true}});
+    if(!any){try{pc.addTransceiver('audio',{direction:'recvonly'})}catch(e){}}   // makes sure a connection is negotiated even if I have no microphone
+    return info;
+  };
+  const closePeer=id=>{
+    const info=pcs.current.get(id);
+    if(info){try{info.pc.onnegotiationneeded=null;info.pc.ontrack=null;info.pc.onicecandidate=null;info.pc.close()}catch(e){}pcs.current.delete(id)}
+    setTiles(l=>l.filter(t=>t.peer!==id));
+  };
+  const syncPeers=r=>{
+    Object.keys(r).forEach(id=>{if(id!==me&&!pcs.current.has(id))makePeer(id)});
+    Array.from(pcs.current.keys()).forEach(id=>{if(!r[id])closePeer(id)});
+  };
+  // "perfect negotiation": both sides may offer at the same time, the polite one backs off
+  const handleSig=async p=>{
+    const id=p.from;let info=pcs.current.get(id);if(!info)info=makePeer(id);
+    const pc=info.pc;
+    try{
+      if(p.description){
+        const d=p.description;
+        const collision=d.type==='offer'&&(info.making||pc.signalingState!=='stable');
+        info.ignore=!info.polite&&collision;
+        if(info.ignore)return;
+        await pc.setRemoteDescription(d);
+        if(d.type==='offer'){await pc.setLocalDescription();sig(id,{description:vcDesc(pc.localDescription)})}
+      }else if(p.candidate){
+        try{await pc.addIceCandidate(p.candidate)}catch(e){if(!info.ignore)throw e}
+      }
+    }catch(e){log('vc signal error',e)}
+  };
+  const leave=silent=>{
+    joinedRef.current=false;
+    ['mic','cam','scr'].forEach(k=>{const s=loc.current[k];if(s)s.getTracks().forEach(t=>{try{t.onended=null;t.stop()}catch(e){}});loc.current[k]=null});
+    Array.from(pcs.current.keys()).forEach(closePeer);
+    try{if(chRef.current)chRef.current.untrack()}catch(e){}
+    flags.current={mic:true,cam:false,scr:false,scrId:null};
+    if(!silent){setJoined(false);setMic(true);setCam(false);setScr(false);setTiles([]);onJoined(false)}
+  };
+
+  useEffect(()=>{
+    if(!sb)return;
+    const ch=sb.channel('voice:'+channel.id,{config:{private:true,presence:{key:me},broadcast:{self:false}}});
+    chRef.current=ch;
+    ch.on('presence',{event:'sync'},()=>{
+      const st=ch.presenceState();const r={};
+      Object.keys(st).forEach(k=>{const m=st[k]&&st[k][st[k].length-1];if(m)r[k]=m});
+      setRoster(r);
+      if(joinedRef.current)syncPeers(r);
+    });
+    ch.on('broadcast',{event:'sig'},({payload})=>{if(payload&&payload.to===me&&joinedRef.current)handleSig(payload)});
+    ch.subscribe(s=>{if(s==='SUBSCRIBED')setState('ready');else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT')setState('error')});
+    return()=>{leave(true);try{sb.removeChannel(ch)}catch(e){}chRef.current=null};
+  },[channel.id]);
+
+  const join=async()=>{
+    if(busy||joinedRef.current||state!=='ready')return;
+    setBusy(true);setErr('');
+    try{
+      try{
+        const {data:{session}}=await sb.auth.getSession();
+        if(session&&ADMIN_API){const r=await fetch(ADMIN_API+'/api/ice',{headers:{Authorization:'Bearer '+session.access_token}});const d=await r.json().catch(()=>({}));if(r.ok&&Array.isArray(d.iceServers))iceRef.current=d.iceServers}
+      }catch(e){log('ice error',e)}
+      let ms=null;
+      if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+        try{ms=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}})}
+        catch(e){setErr(tr('Microphone blocked. You can still listen.'))}
+      }
+      loc.current.mic=ms;setMic(!!ms);flags.current.mic=!!ms;
+      joinedRef.current=true;setJoined(true);onJoined(true);
+      await chRef.current.track({u:myName,a:(profile&&profile.avatar_url)||null,mic:!!ms,cam:false,scr:false,scrId:null,t:Date.now()});
+    }catch(e){log('vc join error',e);leave(false);setErr(tr('Could not join the voice room.'))}
+    finally{setBusy(false)}
+  };
+  const toggleMic=()=>{
+    const ms=loc.current.mic;if(!ms){setErr(tr('Microphone blocked. You can still listen.'));return}
+    const on=!mic;ms.getAudioTracks().forEach(t=>{t.enabled=on});setMic(on);flags.current.mic=on;pushMeta();
+  };
+  const camConstraints=f=>({video:{facingMode:{ideal:f},width:{ideal:640},height:{ideal:480}}});
+  const toggleCam=async()=>{
+    if(cam){const s=loc.current.cam;if(s){removeStream(s);s.getTracks().forEach(t=>t.stop())}loc.current.cam=null;setCam(false);flags.current.cam=false;pushMeta();return}
+    try{
+      const s=await navigator.mediaDevices.getUserMedia(camConstraints(facingRef.current));
+      loc.current.cam=s;pcs.current.forEach(info=>addStream(info,s));setCam(true);flags.current.cam=true;pushMeta();
+    }catch(e){log('vc cam error',e);toast(tr('Could not open the camera.'))}
+  };
+  const flipCam=async()=>{
+    const old=loc.current.cam;if(!old)return;
+    const nf=facingRef.current==='user'?'environment':'user';
+    try{
+      old.getVideoTracks().forEach(t=>t.stop());                      // phones can only open one camera at a time
+      const ns=await navigator.mediaDevices.getUserMedia(camConstraints(nf));
+      const nt=ns.getVideoTracks()[0];
+      pcs.current.forEach(info=>{(info.senders[old.id]||[]).forEach(s=>{if(s.track===null||s.track.kind==='video')s.replaceTrack(nt)})});
+      old.getVideoTracks().forEach(t=>old.removeTrack(t));old.addTrack(nt);
+      facingRef.current=nf;setFacing(nf);
+    }catch(e){log('vc flip error',e);toast(tr('Could not switch the camera.'));stopCamHard()}
+  };
+  const stopCamHard=()=>{const s=loc.current.cam;if(s){removeStream(s);s.getTracks().forEach(t=>t.stop())}loc.current.cam=null;setCam(false);flags.current.cam=false;pushMeta()};
+  const stopScr=()=>{
+    const s=loc.current.scr;if(!s)return;
+    removeStream(s);s.getTracks().forEach(t=>{t.onended=null;t.stop()});loc.current.scr=null;setScr(false);flags.current.scr=false;flags.current.scrId=null;pushMeta();
+  };
+  const toggleScr=async()=>{
+    if(scr){stopScr();return}
+    try{
+      const s=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:15,max:30}},audio:true});
+      loc.current.scr=s;const vt=s.getVideoTracks()[0];if(vt)vt.onended=stopScr;
+      pcs.current.forEach(info=>addStream(info,s));setScr(true);flags.current.scr=true;flags.current.scrId=s.id;pushMeta();
+    }catch(e){if(e&&e.name!=='NotAllowedError')toast(tr('Could not share the screen.'))}
+  };
+
+  const peers=Object.keys(roster).filter(id=>id!==me);
+  const inRoom=Object.keys(roster).length;
+  const cards=[];
+  if(joined){
+    if(loc.current.cam)cards.push(<VcMedia key="me-cam" stream={loc.current.cam} self mirror={facing==='user'} label={tr('You')} micOff={!mic}/>);
+    if(loc.current.scr)cards.push(<VcMedia key="me-scr" stream={loc.current.scr} self label={tr('You')+' ('+tr('screen')+')'}/>);
+    if(!loc.current.cam&&!loc.current.scr)cards.push(<VcAvatarTile key="me" self stream={loc.current.mic} name={myName} url={profile&&profile.avatar_url} micOff={!mic}/>);
+  }
+  peers.forEach(id=>{
+    const m=roster[id]||{};const ts=tiles.filter(t=>t.peer===id);
+    const vids=ts.filter(t=>t.stream.getVideoTracks().length>0);const auds=ts.filter(t=>t.stream.getVideoTracks().length===0);
+    const audio=auds[0]?auds[0].stream:null;
+    vids.forEach(t=>cards.push(<VcMedia key={t.key} stream={t.stream} label={(m.u||'?')+(m.scrId===t.stream.id?' ('+tr('screen')+')':'')} micOff={m.mic===false}/>));
+    if(!vids.length)cards.push(<VcAvatarTile key={'p'+id} stream={audio} name={m.u||'?'} url={m.a} micOff={m.mic===false}/>);
+    else if(audio)cards.push(<VcSink key={'s'+id} stream={audio}/>);
+  });
+  const cb='w-12 h-12 rounded-full flex items-center justify-center text-white border border-white/15 ';
+  return <div className={'flex-col min-h-0 flex-1 '+(visible?'flex':'hidden')}>
+    <div className="flex items-center gap-2 px-3 py-2.5 border-b border-white/10">
+      <Ic n="volume" s={18}/><span className="min-w-0 flex-1"><span className="hd text-white font-bold block truncate">{channel.name}</span><span className="text-[11px] text-slate-400 block truncate">{spaceName} - {inRoom} {tr('in voice')}</span></span>
+      <button onClick={()=>{leave(false);onClose()}} aria-label={tr('Close')} className="p-2 text-slate-400"><Ic n="x" s={18}/></button></div>
+    <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-3">
+      {state==='error'&&<p className="text-sm text-amber-200 rounded-lg border border-amber-400/40 bg-amber-400/10 px-3 py-2">{tr('Could not open the voice room. Run the Community SQL (it sets the private voice rules) and reload.')}</p>}
+      {err&&<p className="text-sm text-amber-200" role="alert">{err}</p>}
+      {!joined&&<div className="text-center space-y-3 py-6">
+        <p className="text-sm text-slate-300">{inRoom?tr('In this room now')+':':tr('Nobody is in this room yet.')}</p>
+        <div className="flex flex-wrap justify-center gap-3">{Object.keys(roster).map(id=><span key={id} className="flex flex-col items-center gap-1 text-[11px] text-slate-300"><Avatar name={roster[id].u} url={roster[id].a} size={44}/>{roster[id].u}</span>)}</div>
+        <button onClick={join} disabled={busy||state!=='ready'||inRoom>=6} className="px-8 py-3 rounded-xl font-semibold text-white disabled:opacity-50" style={{background:'linear-gradient(135deg,#22c55e,#16a34a)'}}>{busy?tr('Please wait...'):inRoom>=6?tr('Room is full'):tr('Join voice')}</button>
+        <p className="text-[11px] text-slate-500 max-w-sm mx-auto">{tr('Best with up to 6 people. Use headphones to avoid echo.')}</p></div>}
+      {joined&&<div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">{cards}</div>}
+    </div>
+    {joined&&<div className="flex flex-wrap items-center justify-center gap-3 p-3 border-t border-white/10">
+      <button onClick={toggleMic} aria-label={tr('Microphone')} className={cb+(mic?'bg-white/10':'bg-red-500/60')}><Ic n={mic?'mic':'micoff'} s={20}/></button>
+      <button onClick={toggleCam} aria-label={tr('Camera')} className={cb+(cam?'bg-blue-500/60':'bg-white/10')}><Ic n={cam?'video':'videooff'} s={20}/></button>
+      {cam&&<button onClick={flipCam} aria-label={tr('Switch camera')} className={cb+'bg-white/10'}><Ic n="flip" s={20}/></button>}
+      {canScreen&&<button onClick={toggleScr} aria-label={tr('Share screen')} className={cb+(scr?'bg-blue-500/60':'bg-white/10')}><Ic n="screen" s={20}/></button>}
+      <button onClick={()=>leave(false)} aria-label={tr('Leave')} className={cb+'bg-red-600'}><Ic n="phone" s={20}/></button></div>}
+  </div>;
+}
+
+// ---------- push notification helpers (browser side) ----------
+const cmPushOk=()=>typeof window!=='undefined'&&'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window;
+const cmB64=s=>{const p='='.repeat((4-s.length%4)%4);const r=atob((s+p).replace(/-/g,'+').replace(/_/g,'/'));const a=new Uint8Array(r.length);for(let i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a};
+async function cmPushState(){
+  if(!cmPushOk())return 'unsupported';
+  if(Notification.permission==='denied')return 'denied';
+  try{const reg=await navigator.serviceWorker.getRegistration();const sub=reg&&await reg.pushManager.getSubscription();return sub&&Notification.permission==='granted'?'on':'off'}catch(e){return 'off'}
+}
+async function cmPushEnable(user){
+  if(!cmPushOk())throw new Error('unsupported');
+  const perm=await Notification.requestPermission();
+  if(perm!=='granted')throw new Error('denied');
+  const kr=await fetch(ADMIN_API+'/api/push?action=key');const kd=await kr.json().catch(()=>({}));
+  if(!kd.key)throw new Error('not_configured');
+  const reg=await navigator.serviceWorker.register('/sw.js');await navigator.serviceWorker.ready;
+  let sub=await reg.pushManager.getSubscription();
+  if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:cmB64(kd.key)});
+  const j=sub.toJSON();
+  const r=await sb.from('push_subs').upsert({user_id:user.id,endpoint:j.endpoint,p256dh:j.keys.p256dh,auth:j.keys.auth,ua:navigator.userAgent.slice(0,200)},{onConflict:'endpoint'});
+  if(r.error)throw r.error;
+  return true;
+}
+async function cmPushDisable(){
+  const reg=await navigator.serviceWorker.getRegistration();const sub=reg&&await reg.pushManager.getSubscription();
+  if(sub){const ep=sub.endpoint;await sub.unsubscribe();try{await sb.from('push_subs').delete().eq('endpoint',ep)}catch(e){}}
+}
+function CmNotifyCard({user,toast,myStatus,setMyStatus}){
+  const [st,setSt]=useState('checking');const [busy,setBusy]=useState(false);
+  const refresh=useCallback(async()=>setSt(await cmPushState()),[]);
+  useEffect(()=>{refresh()},[refresh]);
+  const enable=async()=>{
+    setBusy(true);
+    try{await cmPushEnable(user);toast(tr('Notifications are on.'),'ok')}
+    catch(e){const m=e&&e.message;toast(m==='denied'?tr('Notifications are blocked. Allow them in your browser or phone settings.'):m==='unsupported'?tr('This browser does not support notifications.'):m==='not_configured'?tr('Notifications are not configured on the server yet.'):tr('Could not turn on notifications.'))}
+    finally{setBusy(false);refresh()}
+  };
+  const disable=async()=>{setBusy(true);try{await cmPushDisable()}catch(e){log('push off error',e)}setBusy(false);refresh()};
+  const test=async()=>{
+    try{
+      const {data:{session}}=await sb.auth.getSession();
+      const r=await fetch(ADMIN_API+'/api/push',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+(session?session.access_token:'')},body:JSON.stringify({action:'test'})});
+      const d=await r.json().catch(()=>({}));
+      toast(r.ok&&d.sent?tr('Test sent. It should pop up in a moment.'):tr('Nothing was sent. Turn notifications on first.'),r.ok&&d.sent?'ok':undefined);
+    }catch(e){toast(tr('Could not reach the server.'))}
+  };
+  const btn='px-4 py-2 rounded-lg glass hover:border-blue-400 text-sm disabled:opacity-50';
+  return <div className="glass rounded-2xl p-5 space-y-3"><h2 className="hd text-lg text-white">{tr('Notifications')}</h2>
+    <p className="text-sm text-slate-300">{st==='on'?tr('Notifications are on for this device.'):st==='denied'?tr('Notifications are blocked for this site. Allow them in your browser or phone settings.'):st==='unsupported'?tr('This browser does not support notifications. On iPhone, add NexScript to your Home Screen first.'):tr('Get a pop-up on your phone or computer for new messages, @mentions and friend requests, even when the site is closed.')}</p>
+    <div className="flex flex-wrap gap-2">
+      {st==='on'?<><button onClick={test} className={btn}>{tr('Send a test')}</button><button onClick={disable} disabled={busy} className={btn}>{tr('Turn off')}</button></>
+      :st!=='unsupported'&&st!=='denied'&&<button onClick={enable} disabled={busy||st==='checking'} className="px-4 py-2 rounded-lg font-semibold text-white text-sm disabled:opacity-50" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Turn on notifications')}</button>}</div>
+    <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/10"><div><p className="text-white text-sm font-semibold">{tr('Online status')}</p><p className="text-xs text-slate-400">{tr('Invisible: you look offline to everyone.')}</p></div>
+      <Seg label="Status" value={myStatus} opts={[['online','Online'],['invisible','Invisible']]} onChange={setMyStatus}/></div>
+  </div>;
+}
+
+// ---------- the Community page: server rail, channel list, chat / friends / voice ----------
+function CmRail({spaces,sel,onHome,onSpace,onNew,unreadBy,homeBadge}){
+  const servers=spaces.filter(s=>s.kind!=='dm');
+  const Badge=({n})=>n>0?<b className="absolute -bottom-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center">{n>99?'99+':n}</b>:null;
+  const base='relative w-11 h-11 rounded-2xl flex items-center justify-center text-lg text-white shrink-0 transition-all ';
+  return <div className="w-[60px] shrink-0 flex flex-col items-center gap-2 py-3 overflow-y-auto border-r border-white/10" style={{background:'rgba(5,7,26,.5)'}}>
+    <button onClick={onHome} aria-label={tr('Home')} title={tr('Home')} className={base+(sel.space==='home'||(spaces.find(s=>s.id===sel.space)||{}).kind==='dm'?'bg-blue-500':'bg-white/10 hover:bg-blue-500/60')}><Ic n="chat" s={20}/><Badge n={homeBadge}/></button>
+    <span className="w-8 h-px bg-white/15"/>
+    {servers.map(s=><button key={s.id} onClick={()=>onSpace(s)} aria-label={s.name} title={s.name} className={base+(sel.space===s.id?'ring-2 ring-blue-400 ':'hover:rounded-xl ')} style={{background:'linear-gradient(135deg,#3b82f6,#8b5cf6)'}}>{s.icon||s.name[0].toUpperCase()}<Badge n={unreadBy[s.id]||0}/></button>)}
+    <button onClick={onNew} aria-label={tr('Add')} title={tr('Create or join')} className={base+'bg-green-500/20 text-green-300 hover:bg-green-500/40'}><Ic n="plus" s={20}/></button>
+  </div>;
+}
+
+function CommunityPage({user,profile,presence,myStatus,setMyStatus,go,toast,unread,markRead,setActiveCh}){
+  const uid=user&&user.id;
+  const [spaces,setSpaces]=useState([]);const [channels,setChannels]=useState({});const [peers,setPeers]=useState({});const [loaded,setLoaded]=useState(false);
+  const [sel,setSel]=useState(()=>{const s=store.get('nx_comm_sel',null);return s&&typeof s==='object'&&s.space?s:{space:'home',channel:null}});
+  const [pane,setPane]=useState('side');const [friends,setFriends]=useState([]);const [members,setMembers]=useState([]);
+  const [modal,setModal]=useState(null);const [showMembers,setShowMembers]=useState(true);const [membersSheet,setMembersSheet]=useState(false);
+  const [voice,setVoice]=useState(null);const [voiceJoined,setVoiceJoined]=useState(false);
+
+  const loadSpaces=useCallback(async()=>{
+    if(!sb||!uid)return;
+    const m=await sb.from('chat_members').select('role,notify,space:chat_spaces(id,kind,name,icon,description,owner_id,invite_code,is_public)').eq('user_id',uid);
+    if(m.error){log('community error',m.error);toast(tr('Could not load Community. Run the Community SQL in Supabase first.'));setLoaded(true);return}
+    const list=(m.data||[]).filter(r=>r.space).map(r=>({...r.space,role:r.role,notify:r.notify}));
+    setSpaces(list);
+    const ids=list.map(s=>s.id);
+    if(ids.length){
+      const c=await sb.from('chat_channels').select('id,space_id,name,type,position').in('space_id',ids).order('position');
+      const map={};(c.data||[]).forEach(x=>{(map[x.space_id]=map[x.space_id]||[]).push(x)});setChannels(map);
+    }else setChannels({});
+    const p=await sb.rpc('dm_peers');const pm={};(p.data||[]).forEach(x=>{pm[x.space_id]=x});setPeers(pm);
+    setLoaded(true);
+  },[uid]);
+  const loadFriends=useCallback(async()=>{if(!sb||!uid)return;const r=await sb.rpc('friend_list');if(!r.error)setFriends(r.data||[])},[uid]);
+  const loadMembers=useCallback(async id=>{if(!sb||!id||id==='home')return;const r=await sb.rpc('space_members',{p_space:id});if(!r.error)setMembers(r.data||[])},[]);
+
+  useEffect(()=>{loadSpaces();loadFriends()},[uid]);
+  useEffect(()=>{
+    const m=()=>{loadSpaces();if(sel.space!=='home')loadMembers(sel.space)};const f=()=>loadFriends();
+    window.addEventListener('nx-members',m);window.addEventListener('nx-channels',loadSpaces);window.addEventListener('nx-friends',f);
+    return()=>{window.removeEventListener('nx-members',m);window.removeEventListener('nx-channels',loadSpaces);window.removeEventListener('nx-friends',f)};
+  },[sel.space,loadSpaces,loadFriends,loadMembers]);
+  useEffect(()=>{store.set('nx_comm_sel',sel)},[sel]);
+
+  const activeSpace=spaces.find(s=>s.id===sel.space)||null;
+  const isDm=!!activeSpace&&activeSpace.kind==='dm';
+  const isHome=sel.space==='home'||isDm;
+  const chList=activeSpace?(channels[activeSpace.id]||[]):[];
+  const activeCh=chList.find(c=>c.id===sel.channel)||null;
+  const peer=isDm?peers[activeSpace.id]:null;
+
+  useEffect(()=>{if(activeSpace&&!isDm)loadMembers(activeSpace.id)},[activeSpace&&activeSpace.id]);
+  useEffect(()=>{   // pick a channel when a space is opened
+    if(!loaded||!activeSpace||activeCh)return;
+    const first=chList.find(c=>c.type==='text')||chList[0];
+    if(first)setSel(s=>({...s,channel:first.id}));
+  },[loaded,activeSpace&&activeSpace.id,chList.length,!!activeCh]);
+  useEffect(()=>{   // left / kicked / deleted: go home
+    if(loaded&&sel.space!=='home'&&!activeSpace)setSel({space:'home',channel:null});
+  },[loaded,spaces]);
+  useEffect(()=>{setActiveCh(activeCh&&activeCh.type==='text'&&(pane==='chat'||window.innerWidth>=768)?activeCh.id:null);return()=>setActiveCh(null)},[activeCh&&activeCh.id,pane]);
+
+  // deep links: ?join=CODE and opening a channel from a notification
+  const applyOpen=useCallback(cid=>{
+    for(const s of spaces){const c=(channels[s.id]||[]).find(x=>x.id===cid);if(c){setSel({space:s.id,channel:c.id});setPane('chat');return true}}
+    return false;
+  },[spaces,channels]);
+  useEffect(()=>{
+    if(!loaded)return;
+    const o=store.get('nx_pending_open',null);if(o&&applyOpen(o))store.set('nx_pending_open',null);
+  },[loaded,spaces,channels]);
+  useEffect(()=>{
+    if(!loaded)return;
+    const j=store.get('nx_pending_join',null);if(j){store.set('nx_pending_join',null);setModal({code:j})}
+  },[loaded]);
+  useEffect(()=>{const h=()=>{const o=store.get('nx_pending_open',null);if(o&&applyOpen(o))store.set('nx_pending_open',null)};window.addEventListener('nx-open',h);return()=>window.removeEventListener('nx-open',h)},[applyOpen]);
+
+  if(!user)return <div className="page glass rounded-2xl p-8 max-w-md mx-auto text-center space-y-3"><h1 className="hd text-2xl text-white">{tr('Log in to join the Community')}</h1><p className="text-slate-300 text-sm">{tr('Chat in servers and groups, add friends and talk in voice.')}</p>
+    <button onClick={()=>go('auth')} className="px-5 py-2 rounded-lg font-semibold text-white" style={{background:'linear-gradient(135deg,#3b82f6,#60a5fa)'}}>{tr('Log in / Sign up')}</button></div>;
+
+  const unreadBy={};spaces.forEach(s=>{let n=0;(channels[s.id]||[]).forEach(c=>{n+=unread[c.id]||0});if(n)unreadBy[s.id]=n});
+  const dmSpaces=spaces.filter(s=>s.kind==='dm');
+  const homeBadge=dmSpaces.reduce((n,s)=>n+((channels[s.id]||[]).reduce((m,c)=>m+(unread[c.id]||0),0)),0);
+  const pendingIn=friends.filter(f=>f.status==='pending'&&f.incoming).length;
+
+  const goHome=()=>{setSel({space:'home',channel:null});setPane('side')};
+  const openSpace=s=>{const first=(channels[s.id]||[]).find(c=>c.type==='text');setSel({space:s.id,channel:first?first.id:null});setPane('side')};
+  const openCh=(s,c)=>{
+    if(c.type==='voice')setVoice({id:c.id,name:c.name,spaceName:s.kind==='dm'?cmName(peer):s.name,channel:c});
+    setSel({space:s.id,channel:c.id});setPane('chat');
+  };
+  const openDm=async other=>{
+    const r=await sb.rpc('open_dm',{p_other:other});
+    if(r.error){toast(cmErr(r.error));return}
+    await loadSpaces();setSel({space:r.data.id,channel:null});setPane('chat');
+  };
+  const onCreated=async sp=>{await loadSpaces();if(sp&&sp.id){setSel({space:sp.id,channel:null});setPane('side')}};
+  const dmName=s=>{const p=peers[s.id];return p?cmName(p):'...'};
+  const roleOf=activeSpace?activeSpace.role:'member';
+  const inVoiceView=!!(voice&&activeCh&&activeCh.id===voice.id);
+  const Pill=({n})=>n>0?<b className="min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center">{n>99?'99+':n}</b>:null;
+  const row='w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm text-left ';
+  const chatMembers=isDm?[{user_id:uid,username:profile&&profile.username,avatar_url:profile&&profile.avatar_url},...(peer?[{user_id:peer.user_id,username:peer.username,avatar_url:peer.avatar_url}]:[])]:members;
+  const memberPanel=activeSpace&&!isDm&&<CmMembers members={members} presence={presence} uid={uid} myRole={roleOf} spaceId={activeSpace.id} openDm={other=>{setMembersSheet(false);openDm(other)}} reload={()=>loadMembers(activeSpace.id)} toast={toast}/>;
+
+  return <div className="page glass rounded-2xl overflow-hidden flex" style={{height:'calc(100dvh - 150px)',minHeight:480}}>
+    <div className={(pane==='chat'?'hidden md:flex ':'flex w-full md:w-auto ')+'shrink-0 min-w-0'}>
+      <CmRail spaces={spaces} sel={sel} onHome={goHome} onSpace={openSpace} onNew={()=>setModal({code:''})} unreadBy={unreadBy} homeBadge={homeBadge+pendingIn}/>
+      <div className="flex-1 md:w-56 min-w-0 flex flex-col border-r border-white/10" style={{background:'rgba(8,12,40,.55)'}}>
+        {isHome?<>
+          <div className="px-3 py-3 border-b border-white/10"><p className="hd text-white font-bold">{tr('Home')}</p></div>
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 space-y-0.5">
+            <button onClick={()=>{setSel({space:'home',channel:null});setPane('chat')}} className={row+(sel.space==='home'?'bg-white/10 text-white':'text-slate-300 hover:bg-white/5')}><Ic n="users" s={16}/><span className="flex-1">{tr('Friends')}</span><Pill n={pendingIn}/></button>
+            <p className="text-[11px] font-semibold text-slate-400 px-2.5 pt-3 pb-1">{tr('Direct messages')}</p>
+            {dmSpaces.length===0&&<p className="text-xs text-slate-500 px-2.5 py-2">{tr('Open a friend or a member and tap Message.')}</p>}
+            {dmSpaces.map(s=>{const p=peers[s.id];const c=(channels[s.id]||[])[0];return <button key={s.id} onClick={()=>{if(c)openCh(s,c);else setSel({space:s.id,channel:null});setPane('chat')}} className={row+(sel.space===s.id?'bg-white/10 text-white':'text-slate-300 hover:bg-white/5')}>
+              <span className="relative shrink-0"><Avatar name={p?p.username:'?'} url={p&&p.avatar_url} size={28}/><span className="absolute -bottom-0.5 -right-0.5"><CmDot s={p?cmStatus(presence,p.user_id):'offline'} size={10}/></span></span>
+              <span className="flex-1 truncate">{dmName(s)}</span><Pill n={c?unread[c.id]||0:0}/></button>})}
+          </div></>
+        :activeSpace?<>
+          <div className="flex items-center gap-1 px-3 py-3 border-b border-white/10"><p className="hd text-white font-bold flex-1 truncate">{activeSpace.icon?activeSpace.icon+' ':''}{activeSpace.name}</p>
+            <button onClick={()=>setMembersSheet(true)} aria-label={tr('Members')} className="md:hidden p-2 text-slate-300"><Ic n="users" s={16}/></button>
+            <button onClick={()=>setModal('settings')} aria-label={tr('Settings')} className="p-2 text-slate-300 hover:text-white"><Ic n="gear" s={16}/></button></div>
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 space-y-0.5">
+            <p className="text-[11px] font-semibold text-slate-400 px-2.5 pt-1 pb-1">{tr('Text channels')}</p>
+            {chList.filter(c=>c.type==='text').map(c=><button key={c.id} onClick={()=>openCh(activeSpace,c)} className={row+(sel.channel===c.id?'bg-white/10 text-white':'text-slate-300 hover:bg-white/5')}><Ic n="hash" s={15}/><span className="flex-1 truncate">{c.name}</span><Pill n={unread[c.id]||0}/></button>)}
+            <p className="text-[11px] font-semibold text-slate-400 px-2.5 pt-3 pb-1">{tr('Voice channels')}</p>
+            {chList.filter(c=>c.type==='voice').map(c=><button key={c.id} onClick={()=>openCh(activeSpace,c)} className={row+(sel.channel===c.id?'bg-white/10 text-white':'text-slate-300 hover:bg-white/5')}><Ic n="volume" s={15}/><span className="flex-1 truncate">{c.name}</span>{voice&&voice.id===c.id&&voiceJoined&&<span className="text-[10px] text-green-300">{tr('live')}</span>}</button>)}
+          </div></>
+        :<div className="flex-1 p-4 text-sm text-slate-400">{loaded?tr('Pick a server.'):tr('Loading more scripts...')}</div>}
+        <div className="flex items-center gap-2 p-2.5 border-t border-white/10" style={{background:'rgba(5,7,26,.6)'}}>
+          <span className="relative shrink-0"><Avatar name={profile&&profile.username} role={profile&&profile.role} url={profile&&profile.avatar_url} size={32}/><span className="absolute -bottom-0.5 -right-0.5"><CmDot s={myStatus==='invisible'?'offline':'online'} size={10}/></span></span>
+          <span className="min-w-0 flex-1"><span className="block text-xs text-white font-semibold truncate">{cmName(profile)}</span><span className="block text-[10px] text-slate-400">{myStatus==='invisible'?tr('Invisible'):tr('Online')}</span></span>
+          <button onClick={()=>setMyStatus(myStatus==='invisible'?'online':'invisible')} aria-label={tr('Online status')} className="px-2 py-1.5 rounded-md glass text-[10px] text-slate-300">{myStatus==='invisible'?tr('Go online'):tr('Go invisible')}</button></div>
+      </div>
+    </div>
+    <div className={(pane==='chat'?'flex ':'hidden md:flex ')+'flex-1 min-w-0 flex-col'}>
+      {voice&&voiceJoined&&!inVoiceView&&<div className="flex items-center gap-2 px-3 py-2 text-xs bg-green-500/15 border-b border-green-400/30"><span className="w-2 h-2 rounded-full bg-green-400 a-blink"/><span className="flex-1 truncate text-green-200">{tr('In voice')}: {voice.name}</span>
+        <button onClick={()=>{const sp=spaces.find(s=>(channels[s.id]||[]).some(c=>c.id===voice.id));if(sp)setSel({space:sp.id,channel:voice.id})}} className="px-3 py-1.5 rounded-md glass">{tr('Open')}</button></div>}
+      {voice&&<VcRoom key={voice.id} user={user} profile={profile} channel={voice.channel} spaceName={voice.spaceName} visible={inVoiceView} onClose={()=>{setVoice(null);setVoiceJoined(false)}} onJoined={setVoiceJoined} toast={toast}/>}
+      {!inVoiceView&&(isHome&&!activeCh
+        ?<div className="flex flex-col min-h-0 flex-1"><button onClick={()=>setPane('side')} className="md:hidden flex items-center gap-1 px-3 py-2 text-slate-300 text-sm"><Ic n="back" s={18}/>{tr('Back')}</button><CmFriends friends={friends} presence={presence} reload={loadFriends} openDm={openDm} toast={toast}/></div>
+        :activeCh&&activeCh.type==='text'&&activeSpace
+          ?<div className="flex flex-1 min-h-0 min-w-0"><CmChat key={activeCh.id} user={user} profile={profile} channel={activeCh} title={isDm?dmName(activeSpace):'# '+activeCh.name} subtitle={isDm?(peer?'@'+peer.username+' - '+(cmStatus(presence,peer.user_id)==='offline'?tr('Offline'):tr('Online')):''):activeSpace.name} members={chatMembers} canMod={!isDm&&(roleOf==='owner'||roleOf==='admin')} isDm={isDm} toast={toast} markRead={markRead} onBack={()=>setPane('side')} onMembers={!isDm?()=>setShowMembers(v=>!v):null}/>
+            {showMembers&&!isDm&&<div className="hidden lg:flex">{memberPanel}</div>}</div>
+          :<div className="flex-1 flex items-center justify-center text-slate-500 text-sm p-6 text-center">{loaded?tr('Pick a channel to start.'):tr('Loading more scripts...')}</div>)}
+    </div>
+    {membersSheet&&activeSpace&&<div className="fixed inset-0 z-[57] bg-black/70 flex items-end md:hidden" onClick={()=>setMembersSheet(false)}><div className="w-full max-h-[70vh] overflow-y-auto rounded-t-2xl p-2" style={{background:'rgba(10,15,44,.98)'}} onClick={e=>e.stopPropagation()}>{memberPanel}</div></div>}
+    {modal&&modal!=='settings'&&<CmNewModal initialCode={modal.code||''} onClose={()=>setModal(null)} onDone={onCreated} toast={toast}/>}
+    {modal==='settings'&&activeSpace&&<CmSettings space={activeSpace} channels={chList} onClose={()=>setModal(null)} reload={()=>{loadSpaces();loadMembers(activeSpace.id)}} onLeft={()=>{setSel({space:'home',channel:null});loadSpaces()}} toast={toast}/>}
+  </div>;
+}
+
+const NAV=[['home','Home','home'],['feed','Feed','play'],['videos','Shorts','video'],['rewards','Rewards','trophy'],['quiz','Quiz','bolt'],['ai','AI Assistant','bot'],['wallet','Wallet','wallet'],['review','Review','shield'],['trending','Trending','flame'],['newest','Newest','spark'],['views','Most Viewed','eye'],['rated','Top Rated','star'],['verified','Verified','badge'],['keyless','Keyless','unlock'],['fav','Favorites','heart'],['community','Community','users'],['cscripts','Community Scripts','file'],['chat','Global Chat','chat'],['games','Games','gamepad'],['upload','Upload','upload'],['guide','Guide & FAQ','book'],['legal','Terms & Privacy','file'],['settings','Settings','gear'],['about','About','info'],['donate','Donate','coffee'],['admin','Admin','shield']];
 const SORTS=[['trending','Trending'],['newest','Newest'],['views','Most Viewed'],['rated','Top Rated'],['updated','Recently Updated']];
 const FILTERS=[['all','All'],['verified','Verified'],['keyless','Keyless'],['universal','Universal'],['nokey','No Key'],['hub','Hub'],['unpatched','Unpatched']];
 
 function App(){
   const VIEWS=()=>NAV.concat([['settings'],['auth'],['updated']]);
-  const [view,setView]=useState(()=>{const v=parseLoc().view;return VIEWS().some(n=>n[0]===v)?v:'home'});
+  const [view,setView]=useState(()=>{try{const jp=URL_PARAMS&&URL_PARAMS.get('join'),op=URL_PARAMS&&URL_PARAMS.get('open');if(jp&&/^[a-z0-9]{6,20}$/i.test(jp)){store.set('nx_pending_join',jp);return 'community'}if(op&&/^[0-9a-f-]{36}$/i.test(op)){store.set('nx_pending_open',op);return 'community'}}catch(e){}const v=parseLoc().view;return VIEWS().some(n=>n[0]===v)?v:'home'});
   const [detail,setDetail]=useState(()=>parseLoc().detail);
   const [open,setOpen]=useState(false);const [user,setUser]=useState(null);
   const [cfg,setCfgState]=useState(()=>({...DEFAULT_CFG,...store.get('nx_cfg',{})}));
@@ -1928,6 +2678,11 @@ function App(){
   NO_ADS=!!(acct&&acct.tier==='premium');
   const [authTab,setAuthTab]=useState('login');const [showAvatar,setShowAvatar]=useState(false);
   const [musicKick,setMusicKick]=useState(0);const [online,setOnline]=useState(1);
+  const [presence,setPresence]=useState({});const [idle,setIdle]=useState(false);const [unread,setUnread]=useState({});
+  const [myStatus,setMyStatusState]=useState(()=>store.get('nx_status','online')==='invisible'?'invisible':'online');
+  const setMyStatus=v=>{setMyStatusState(v);store.set('nx_status',v)};
+  const presRef=useRef(null);const presReady=useRef(false);const activeChRef=useRef(null);
+  const setActiveCh=useCallback(id=>{activeChRef.current=id},[]);
   const [recent,setRecent]=useState(()=>store.get('recent',[]));
   const [q,setQ]=useState(URL_Q);const [dq,setDq]=useState(URL_Q);const [filter,setFilter]=useState('all');const [favs,setFavs]=useState(()=>store.get('favs',[]));const [toasts,setToasts]=useState([]);
   const [votes,setVotes]=useState(()=>{
@@ -1987,13 +2742,86 @@ function App(){
     return()=>{dead=true};
   },[user&&user.id]);
   useEffect(()=>{if(!detail)return;bumpXp(0,'view');setRecent(r=>{const n=[slim(detail),...r.filter(x=>x.slug!==detail.slug)].slice(0,8);store.set('recent',n);return n})},[detail&&detail.slug]);
+  // who is online: one shared presence channel (guests count in the total, logged-in people also show their status)
   useEffect(()=>{
     if(!sb)return;
     const key=(user&&user.id)||('g'+Math.random().toString(36).slice(2,9));
-    const ch=sb.channel('online-users',{config:{presence:{key}}});
-    ch.on('presence',{event:'sync'},()=>setOnline(Math.max(1,Object.keys(ch.presenceState()).length))).subscribe(st=>{if(st==='SUBSCRIBED')ch.track({t:Date.now()})});
-    return()=>{sb.removeChannel(ch)};
+    const ch=sb.channel('nx-presence',{config:{presence:{key}}});
+    presRef.current=ch;presReady.current=false;
+    ch.on('presence',{event:'sync'},()=>{
+      const st=ch.presenceState();const m={};let n=0;
+      Object.keys(st).forEach(k=>{n++;const meta=st[k]&&st[k][st[k].length-1];if(meta&&meta.uid)m[k]={u:meta.u,s:meta.s||'online'}});
+      setPresence(m);setOnline(Math.max(1,n));
+    }).subscribe(st=>{if(st==='SUBSCRIBED'){presReady.current=true;setPresTick(t=>t+1)}});
+    return()=>{presReady.current=false;presRef.current=null;sb.removeChannel(ch)};
   },[user&&user.id]);
+  const [presTick,setPresTick]=useState(0);
+  useEffect(()=>{
+    const ch=presRef.current;if(!ch||!presReady.current)return;
+    if(!user||myStatus==='invisible'){try{ch.untrack()}catch(e){}return}
+    try{ch.track({uid:user.id,u:profile&&profile.username,s:idle?'idle':'online'})}catch(e){}
+  },[user&&user.id,profile&&profile.username,myStatus,idle,presTick]);
+  useEffect(()=>{
+    let t=null;
+    const onVis=()=>{clearTimeout(t);if(document.hidden){t=setTimeout(()=>setIdle(true),300000)}else setIdle(false)};
+    document.addEventListener('visibilitychange',onVis);
+    return()=>{clearTimeout(t);document.removeEventListener('visibilitychange',onVis)};
+  },[]);
+  useEffect(()=>{   // "last seen" for people who are offline
+    if(!sb||!user)return;
+    const f=()=>{if(!document.hidden)sb.rpc('touch_seen').then(()=>{},()=>{})};
+    f();const iv=setInterval(f,180000);return()=>clearInterval(iv);
+  },[user&&user.id]);
+  // unread counters + live Community events (one database listener for the whole app)
+  const refreshUnread=useCallback(async()=>{
+    if(!sb||!userRef.current)return;
+    const r=await sb.rpc('unread_counts');if(r.error)return;
+    const m={};(r.data||[]).forEach(x=>{m[x.channel_id]=x.n});setUnread(m);
+  },[]);
+  const markRead=useCallback((cid,last)=>{
+    setUnread(u=>{if(!u[cid])return u;const n={...u};delete n[cid];return n});
+    if(sb&&last)sb.rpc('mark_read',{p_channel:cid,p_last:last}).then(()=>{},()=>{});
+  },[]);
+  useEffect(()=>{
+    if(!sb||!user){setUnread({});return}
+    refreshUnread();
+    const fire=(n,d)=>{try{window.dispatchEvent(new CustomEvent(n,{detail:d}))}catch(e){}};
+    const ch=sb.channel('community-live-'+user.id)
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_posts'},p=>{
+        const r=p.new;if(!r)return;fire('nx-post',r);
+        if(r.user_id===user.id)return;
+        const viewing=activeChRef.current===r.channel_id&&!document.hidden;
+        if(viewing)return;
+        setUnread(u=>({...u,[r.channel_id]:Math.min(99,(u[r.channel_id]||0)+1)}));
+        if(!document.hidden)toast((r.display_name||r.author||'?')+': '+(r.kind==='image'?'[photo]':String(r.body||'').slice(0,90)),'info');
+      })
+      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'chat_posts'},p=>fire('nx-post-upd',p.new))
+      .on('postgres_changes',{event:'DELETE',schema:'public',table:'chat_posts'},p=>fire('nx-post-del',{id:p.old&&p.old.id}))
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_reactions'},p=>fire('nx-react',{type:'INSERT',row:p.new}))
+      .on('postgres_changes',{event:'DELETE',schema:'public',table:'chat_reactions'},p=>fire('nx-react',{type:'DELETE',row:p.old}))
+      .on('postgres_changes',{event:'*',schema:'public',table:'chat_members'},()=>{fire('nx-members');refreshUnread()})
+      .on('postgres_changes',{event:'*',schema:'public',table:'chat_channels'},()=>fire('nx-channels'))
+      .on('postgres_changes',{event:'*',schema:'public',table:'friendships'},p=>{
+        fire('nx-friends');
+        if(p.eventType==='INSERT'&&p.new&&p.new.addressee===user.id&&!document.hidden)toast(tr('New friend request'),'info');
+      })
+      .subscribe();
+    const vis=()=>{if(!document.hidden)refreshUnread()};
+    document.addEventListener('visibilitychange',vis);
+    return()=>{document.removeEventListener('visibilitychange',vis);sb.removeChannel(ch)};
+  },[user&&user.id]);
+  // service worker (push notifications) and links that open a channel
+  const openFromUrl=useCallback(u=>{
+    try{const cid=new URL(u,location.origin).searchParams.get('open');if(cid){store.set('nx_pending_open',cid);window.dispatchEvent(new Event('nx-open'))}}catch(e){}
+    setView('community');setDetail(null);
+  },[]);
+  useEffect(()=>{
+    if(!('serviceWorker' in navigator))return;
+    navigator.serviceWorker.register('/sw.js').catch(e=>log('sw error',e));
+    const h=e=>{const m=e.data||{};if(m.type==='push'&&m.data)toast((m.data.title||'')+(m.data.body?': '+m.data.body:''),'info');if(m.type==='open'&&m.url)openFromUrl(m.url)};
+    navigator.serviceWorker.addEventListener('message',h);
+    return()=>navigator.serviceWorker.removeEventListener('message',h);
+  },[]);
   useEffect(()=>{if(profileState==='ready'&&profile&&!profile.avatar_url&&!store.get('nx_avatar_asked',false))setShowAvatar(true)},[profileState]);
   const changeLang=l=>{LANG=l;try{localStorage.setItem('lang',l)}catch(e){}setLang(l)};
   useEffect(()=>{
@@ -2094,13 +2922,14 @@ function App(){
   };
   const go=v=>{document.body.style.overflow='';setView(v);setDetail(null);setOpen(false);window.scrollTo(0,0)};
   const introDone=c=>{try{sessionStorage.setItem('nx_intro','1')}catch(e){}setIntroSeen(true);setMusicKick(k=>k+1);if(c==='login'||c==='signup'){setAuthTab(c);go('auth')}};
+  const totalUnread=Object.keys(unread).reduce((n,k)=>n+(unread[k]||0),0);
   const grid=['home','trending','newest','views','rated','updated','verified','keyless','fav'].includes(view);
   const mode=view;
   return <div className="flex min-h-screen">
     {open&&<div className="fixed inset-0 bg-black/60 z-40 md:hidden" onClick={()=>setOpen(false)}/>}
     <aside className={'fixed top-0 left-0 h-[100dvh] w-60 z-50 flex flex-col p-4 gap-1 overflow-y-auto overscroll-contain transition-transform duration-200 '+(open?'translate-x-0':'-translate-x-full md:translate-x-0')} style={{background:'rgba(8,12,40,.92)',borderRight:'1px solid rgba(255,255,255,.08)'}} aria-label="Sidebar">
       <div className="hd text-xl font-bold text-white flex items-center gap-2 mb-3"><LogoMark/>NexScript</div>
-      {NAV.filter(n=>n[0]!=='review'||(profile&&(profile.role==='owner'||profile.role==='developer'))).map(([id,l,ic])=><button key={id} onClick={()=>go(id)} aria-label={tr(l)} className={'flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-left border-l-[3px] '+(view===id?'border-blue-400 text-white bg-gradient-to-r from-blue-500/30 to-transparent':'border-transparent text-slate-400 hover:text-white hover:bg-white/5')}><Ic n={ic} s={16}/>{tr(l)}{id==='fav'&&favs.length>0&&<span className="ml-auto text-xs">{favs.length}</span>}</button>)}
+      {NAV.filter(n=>n[0]!=='review'||(profile&&(profile.role==='owner'||profile.role==='developer'))).map(([id,l,ic])=><button key={id} onClick={()=>go(id)} aria-label={tr(l)} className={'flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-left border-l-[3px] '+(view===id?'border-blue-400 text-white bg-gradient-to-r from-blue-500/30 to-transparent':'border-transparent text-slate-400 hover:text-white hover:bg-white/5')}><Ic n={ic} s={16}/>{tr(l)}{id==='fav'&&favs.length>0&&<span className="ml-auto text-xs">{favs.length}</span>}{id==='community'&&totalUnread>0&&<span className="ml-auto min-w-[20px] h-5 px-1.5 rounded-full bg-red-500 text-white text-[11px] flex items-center justify-center">{totalUnread>99?'99+':totalUnread}</span>}</button>)}
       <div className="mt-auto pt-3 space-y-2"><p className="text-[11px] text-slate-400 flex items-center gap-1.5"><i className="w-2 h-2 rounded-full bg-green-400 a-blink"/>{online} {tr('online')}</p><StatsCard/></div>
       <div className="mt-3 pt-3 border-t border-white/10">
         {user?<div className="text-xs text-slate-300"><div className="flex items-center gap-2 mb-2 min-w-0">{profile&&<button onClick={()=>setShowAvatar(true)} aria-label="Change profile picture" className="shrink-0 rounded-full"><FramedAvatar><Avatar name={profile.username} role={profile.role} url={profile.avatar_url} size={34}/></FramedAvatar></button>}<div className="min-w-0"><p className={'truncate font-semibold '+(profile&&profile.role==='owner'?'owner-name':'text-white')} title={user.email}>{profile?(profile.display_name||profile.username):user.email}</p><RoleBadge role={profile&&profile.role}/><TierBadge tier={acct.tier}/><TitleLine/></div></div><button onClick={()=>go('wallet')} className="w-full mb-2 px-3 py-2 rounded-lg glass hover:border-blue-400 text-left text-sm flex items-center justify-between"><span>{tr('Wallet')}</span><b className="text-amber-300">{MX} {acct.balance||0}</b></button><button onClick={()=>sb.auth.signOut()} aria-label={tr("Log out")} className="w-full px-3 py-2 rounded-lg glass hover:border-blue-400 text-sm">{tr("Log out")}</button></div>
@@ -2122,7 +2951,7 @@ function App(){
       <div className="flex justify-center gap-6 px-3 md:px-5"><div className="w-full max-w-3xl min-w-0 py-3 md:py-5">
         {!detail&&BANNERS[view]&&<Banner title={BANNERS[view][0]} sub={BANNERS[view][1]} hue={BANNERS[view][2]}/>}
         {detail?<Detail key={detail.slug} s={detail} favs={favs} onFav={onFav} toast={toast} votes={votes} onVote={onVote} user={user} back={x=>x&&x.slug?openScript(x):closeDetail()}/>
-        :view==='bypass'?<BypassPage user={user} go={go} toast={toast}/>:view==='ai'?<AiPage user={user} go={go} toast={toast}/>:view==='quiz'?<QuizPage toast={toast}/>:view==='wallet'?<WalletPage user={user} profile={profile} acct={acct} refresh={refreshAcct} go={go} toast={toast}/>:view==='review'?((profile&&(profile.role==='owner'||profile.role==='developer'))?<ReviewPage toast={toast}/>:<Empty t="Not allowed" d="Only the owner and developers can open this page."/>):view==='rewards'?<RewardsPage toast={toast} profile={profile}/>:view==='settings'?<SettingsPage cfg={cfg} setCfg={setCfg} resetCfg={resetCfg} lang={lang} changeLang={changeLang} user={user} profile={profile} onProfile={setProfile} onAvatar={()=>setShowAvatar(true)} onLogout={()=>sb&&sb.auth.signOut()} favs={favs} onClearFavs={clearFavs} onClearRecent={clearRecent} onImport={importFavs} toast={toast}/>:view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage key={authTab} user={user} go={go} initialTab={authTab}/>:view==='videos'?<ShortsFeed toast={toast} go={go}/>:view==='feed'?<FeedPage favs={favs} onFav={onFav} onOpen={openScript} votes={votes} onVote={onVote} toast={toast}/>:view==='games'?<GamesPage onPick={n=>{setQ(n);go('home')}}/>:view==='guide'?<GuidePage/>:view==='legal'?<LegalPage/>:view==='chat'?<ChatPage user={user} profile={profile} go={go} toast={toast}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='community'?<Community favs={favs} onFav={onFav} onOpen={openScript} toast={toast}/>
+        :view==='ai'?<AiPage user={user} go={go} toast={toast}/>:view==='community'?<CommunityPage user={user} profile={profile} presence={presence} myStatus={myStatus} setMyStatus={setMyStatus} go={go} toast={toast} unread={unread} markRead={markRead} setActiveCh={setActiveCh}/>:view==='quiz'?<QuizPage toast={toast}/>:view==='wallet'?<WalletPage user={user} profile={profile} acct={acct} refresh={refreshAcct} go={go} toast={toast}/>:view==='review'?((profile&&(profile.role==='owner'||profile.role==='developer'))?<ReviewPage toast={toast}/>:<Empty t="Not allowed" d="Only the owner and developers can open this page."/>):view==='rewards'?<RewardsPage toast={toast} profile={profile}/>:view==='settings'?<SettingsPage cfg={cfg} setCfg={setCfg} resetCfg={resetCfg} lang={lang} changeLang={changeLang} user={user} profile={profile} onProfile={setProfile} myStatus={myStatus} setMyStatus={setMyStatus} onAvatar={()=>setShowAvatar(true)} onLogout={()=>sb&&sb.auth.signOut()} favs={favs} onClearFavs={clearFavs} onClearRecent={clearRecent} onImport={importFavs} toast={toast}/>:view==='about'?<About/>:view==='donate'?<Donate/>:view==='admin'?<Admin/>:view==='auth'?<AuthPage key={authTab} user={user} go={go} initialTab={authTab}/>:view==='videos'?<ShortsFeed toast={toast} go={go}/>:view==='feed'?<FeedPage favs={favs} onFav={onFav} onOpen={openScript} votes={votes} onVote={onVote} toast={toast}/>:view==='games'?<GamesPage onPick={n=>{setQ(n);go('home')}}/>:view==='guide'?<GuidePage/>:view==='legal'?<LegalPage/>:view==='chat'?<ChatPage user={user} profile={profile} go={go} toast={toast}/>:view==='upload'?<UploadPage user={user} go={go} toast={toast}/>:view==='cscripts'?<Community favs={favs} onFav={onFav} onOpen={openScript} toast={toast}/>
         :<div className="page">{view==='home'&&!dq&&<div className="sheen relative overflow-hidden rounded-2xl mb-6 glass p-8 md:p-10 min-h-[190px]"><HeroArt/><div className="absolute inset-0 bg-gradient-to-r from-[#0a0f2c]/85 via-[#0a0f2c]/40 to-transparent"/><div className="relative"><h1 className="hd text-3xl md:text-4xl font-bold text-white">{tr("Discover")} <span className="gradtext">{tr("Roblox scripts")}</span> {tr("instantly")}</h1><p className="text-slate-300 mt-2">{tr("Browse thousands of free scripts. Fast, clean, ad-supported.")}</p></div></div>}
           {view==='home'&&!dq&&<DailyPick cfg={cfg} onOpen={openScript}/>}
           {view==='home'&&!dq&&recent.length>0&&<RecentStrip items={recent} onOpen={openScript}/>}
@@ -2144,7 +2973,7 @@ function App(){
     {authReady&&!user&&!introSeen&&<Intro lang={lang} onLang={changeLang} onChoice={introDone}/>}
     {user&&profile&&showAvatar&&<AvatarModal user={user} profile={profile} onSaved={q=>setProfile(q)} onClose={()=>setShowAvatar(false)}/>}
     {user&&profileState==='missing'&&<UsernameModal user={user} onSaved={p=>{setProfile(p);setProfileState('ready')}}/>}
-    <div className="fixed top-4 right-4 z-[70] space-y-2 pointer-events-none" aria-live="polite">{toasts.map(t=><div key={t.id} className={'toast glass rounded-lg px-4 py-3 text-sm pointer-events-auto '+(t.k==='ok'?'bg-green-500/20 border-green-400/40':'bg-red-500/20 border-red-400/40')}>{t.m}</div>)}</div>
+    <div className="fixed top-4 right-4 z-[70] space-y-2 pointer-events-none" aria-live="polite">{toasts.map(t=><div key={t.id} className={'toast glass rounded-lg px-4 py-3 text-sm pointer-events-auto '+(t.k==='ok'?'bg-green-500/20 border-green-400/40':t.k==='info'?'bg-blue-500/25 border-blue-400/40':'bg-red-500/20 border-red-400/40')}>{t.m}</div>)}</div>
   </div>;
 }
 class ErrorBoundary extends React.Component{
