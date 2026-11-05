@@ -1,7 +1,10 @@
 {
   "functions": {
     "api/script/[slug].js": { "includeFiles": "index.html" },
-    "api/game.js": { "includeFiles": "index.html" }
+    "api/game.js": { "includeFiles": "index.html" },
+    "api/ai-chat.js": { "maxDuration": 30 },
+    "api/push.js": { "maxDuration": 20 },
+    "api/ice.js": { "maxDuration": 10 }
   },
   "rewrites": [
     { "source": "/s/:game/script/:slug", "destination": "/api/script/:slug?game=:game" },
@@ -17,6 +20,13 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), geolocation=(), microphone=(self)" }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
       ]
     }
   ],
