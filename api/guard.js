@@ -5,7 +5,7 @@ const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
 function cors(req, res) {
   const allowed = process.env.ALLOWED_ORIGIN;
   res.setHeader('Access-Control-Allow-Origin', allowed || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Vary', 'Origin');
   if (allowed && req.headers.origin && req.headers.origin !== allowed) return false; // only our own website may call
