@@ -7,6 +7,10 @@
     "api/ice.js": { "maxDuration": 10 }
   },
   "rewrites": [
+    {
+      "source": "/((?!maintenance\\.html|favicon\\.ico|manifest\\.json|sw\\.js|.*\\.(?:png|jpg|jpeg|svg|webp|gif|css|js|json|woff|woff2|ttf|eot)$).*)",
+      "destination": "/maintenance.html"
+    },
     { "source": "/s/:game/script/:slug", "destination": "/api/script/:slug?game=:game" },
     { "source": "/script/:slug", "destination": "/api/script/:slug" },
     { "source": "/s/:game", "destination": "/api/game?game=:game" },
