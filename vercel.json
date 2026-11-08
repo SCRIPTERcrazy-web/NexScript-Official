@@ -33,11 +33,5 @@
         { "key": "Service-Worker-Allowed", "value": "/" }
       ]
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/guard",
-      "schedule": "0 */6 * * *"
-    }
   ]
 }
