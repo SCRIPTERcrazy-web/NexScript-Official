@@ -11,8 +11,12 @@
     { "source": "/s/:game/script/:slug", "destination": "/api/script/:slug?game=:game" },
     { "source": "/script/:slug", "destination": "/api/script/:slug" },
     { "source": "/s/:game", "destination": "/api/game?game=:game" },
+    
+    { "source": "/api/all-scripts", "destination": "/api/all-scripts" },
+    { "source": "/api/script-detail", "destination": "/api/script-detail" },
+    
     {
-      "source": "/((?!api|maintenance\\.html|favicon\\.ico|manifest\\.json|sw\\.js|.*\\.(?:png|jpg|jpeg|svg|webp|gif|css|js|json|woff|woff2|ttf|eot)$).*)",
+      "source": "/((?!api|google42c8f0419ec3cfec\\.html|favicon\\.ico|manifest\\.json|sw\\.js|.*\\.(?:png|jpg|jpeg|svg|webp|gif|css|js|json|woff|woff2|ttf|eot)$).*)",
       "destination": "/index.html"
     }
   ],
