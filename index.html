@@ -744,7 +744,7 @@ function Grid({mode,query,filter,favs,onFav,onOpen,toast,cfg}){
     const f={verified:'&verified=1',keyless:'&keyless=1',universal:'&universal=1',nokey:'&key=0',unpatched:'&patched=0',all:'',hub:''}[filter]||'';
     const pat=(C.hidePatched&&filter!=='unpatched')?'&patched=0':'';
     const max='&max='+C.perPage;
-    if(query)return `/api/search?q=${encodeURIComponent(query)}&page=${p}${f}${pat}${max}`;
+    if(query)return `/api/all-scripts?q=${encodeURIComponent(query)}&page=${p}`;
     if(filter==='hub'){const hs={newest:'newest',rated:'rated',updated:'newest'}[mode]||'views';return p===1?`/api/filter?filter=hub&sort=${hs}&pages=3`:null}
     if(mode==='trending'&&p===1)return '/api/trending?mode='+C.mode+max;
     const m={trending:'&sortBy=views&order=desc',newest:'&sortBy=createdAt&order=desc',updated:'&sortBy=updatedAt&order=desc',views:'&sortBy=views&order=desc',rated:'&sortBy=likeCount&order=desc',verified:'&verified=1',keyless:'&keyless=1',home:''}[mode]||'';
@@ -839,6 +839,29 @@ function Rating({slug,user,toast}){
 
 function Detail({s,back,favs,onFav,toast,votes,onVote,user}){
   const [full,setFull]=useState(s);const [copied,setCopied]=useState(false);const [rel,setRel]=useState([]);const [shared,setShared]=useState(false);
+  const [luaCode, setLuaCode] = useState('-- Loading script...');
+
+useEffect(() => {
+  fetch(`/api/script-detail?slug=${s.slug}&source=${s.source || 'ScriptBlox'}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.script) {
+        setFull(prev => ({...prev, ...data.script}));
+        
+        if (data.script.source === 'RScripts' && data.script.rawScriptUrl) {
+          fetch(data.script.rawScriptUrl)
+            .then(res => res.text())
+            .then(code => setLuaCode(code))
+            .catch(() => setLuaCode('-- Failed to load code from RScripts.'));
+        } else if (data.script.script) {
+          setLuaCode(data.script.script);
+        } else {
+          setLuaCode('-- Code not available.');
+        }
+      }
+    })
+    .catch(() => setLuaCode('-- Failed to load script data.'));
+}, [s.slug]);
   useEffect(()=>{
     if(s.isUser){
       if(!sb)return;
@@ -851,7 +874,7 @@ function Detail({s,back,favs,onFav,toast,votes,onVote,user}){
       .catch(()=>api('/api/fetch?slug='+encodeURIComponent(s.slug),ac.signal,{immediate:true}).then(d=>{const x=one(d);if(x)setFull(p=>({...p,...x}))}).catch(()=>{}));
     api('/api/search?q='+encodeURIComponent((s.game&&s.game.name)||s.title)+'&page=1',ac.signal).then(d=>setRel(pick(d).list.filter(x=>x.slug!==s.slug).slice(0,4))).catch(()=>{});
     return()=>ac.abort()},[s.slug]);
-  const code=typeof full.script==='string'?full.script:'-- Loading script...';
+  const code = luaCode;
   const copy=async()=>{try{await navigator.clipboard.writeText(code);bumpXp(2,'copy');setCopied(true);setTimeout(()=>setCopied(false),2000)}catch{toast(tr("Copy failed"))}};
   const vote=(votes&&votes[s.slug])||0;const v=n=>onVote(s.slug,n);
   const share=async()=>{const link=location.origin+scriptPath(s);try{if(navigator.share){await navigator.share({title:full.title||'NexScript',url:link})}else{await navigator.clipboard.writeText(link);setShared(true);setTimeout(()=>setShared(false),2000)}}catch(e){}};
