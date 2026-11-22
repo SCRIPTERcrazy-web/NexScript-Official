@@ -600,7 +600,7 @@ async function api(path,signal,opt){
     let delay=backoff(t);
     try{
       log('GET',path,'attempt',t+1);
-      const r=await fetch(API+path,{signal:ac.signal});
+      const r=await fetch((path.indexOf('/api/all-scripts')===0?ADMIN_API:API)+path,{signal:ac.signal});
       if(r.status===429){
         kind='429'; const ra=Number(r.headers.get('Retry-After'));
         delay=ra>0?Math.min(ra*1000,15000):Math.min(2000*Math.pow(2,t),10000);
