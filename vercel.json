@@ -2,6 +2,7 @@
   "functions": {
     "api/script/[slug].js": { "includeFiles": "index.html" },
     "api/game.js": { "includeFiles": "index.html" },
+    "api/page.js": { "includeFiles": "{dist/index.html,index.html}", "maxDuration": 10 },
     "api/ai-chat.js": { "maxDuration": 30 },
     "api/push.js": { "maxDuration": 20 },
     "api/ice.js": { "maxDuration": 10 }
@@ -11,11 +12,13 @@
     { "source": "/s/:game/script/:slug", "destination": "/api/script/:slug?game=:game" },
     { "source": "/script/:slug", "destination": "/api/script/:slug" },
     { "source": "/s/:game", "destination": "/api/game?game=:game" },
-    
+
+    { "source": "/:view(feed|videos|rewards|quiz|ai|wallet|review|trending|newest|views|rated|verified|keyless|fav|community|cscripts|chat|games|upload|guide|legal|account|settings|about|donate|admin)", "destination": "/api/page?view=:view" },
+
     { "source": "/api/all-scripts", "destination": "/api/all-scripts" },
     { "source": "/api/script-detail", "destination": "/api/script-detail" },
-    
-    { 
+
+    {
       "source": "/((?!api|google42c8f0419ec3cfec\\.html|privacy\\.html|favicon\\.ico|manifest\\.json|sw\\.js|.*\\.(?:png|jpg|jpeg|svg|webp|gif|css|js|json|woff|woff2|ttf|eot)$).*)",
       "destination": "/index.html"
     }
