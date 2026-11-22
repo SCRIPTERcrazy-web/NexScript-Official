@@ -1,6 +1,7 @@
 // POST /api/ai-chat   body: { messages: [{ role: 'user' | 'assistant', content }], lang?: 'en'|'id', continue?: true }
 //                     ->  { reply, truncated, model }
 // GET  /api/ai-chat   -> quick self-test (open it in the browser): which models answer right now, and why not if they do not.
+//                        The test sends a realistic request (full persona + full answer size), so it shows the same limits real chats hit.
 // Needs GROQ_API_KEY in Vercel. Optional: GROQ_MODELS (comma list, tried in order), AI_MAX_TOKENS, AI_REQUIRE_LOGIN=0.
 const G = require('../lib/guard.js');
 
@@ -8,7 +9,10 @@ const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 // Tried in order. Each Groq model has its own rate limits, so when one is busy, too small for the request, or gone, the next one answers.
 const MODELS = (process.env.GROQ_MODELS || 'openai/gpt-oss-20b,llama-3.3-70b-versatile,openai/gpt-oss-120b,llama-3.1-8b-instant')
   .split(',').map(s => s.trim()).filter(Boolean);
-const MAX_OUT = Math.max(512, Number(process.env.AI_MAX_TOKENS) || 8192);
+// Groq's free tier counts the REQUESTED answer size against the tokens-per-minute limit (about 6000-12000 depending on the model).
+// 8192 was over that limit for most models, so every request failed first. 4096 fits; the Continue button covers longer scripts.
+const MAX_OUT = Math.max(512, Number(process.env.AI_MAX_TOKENS) || 4096);
+const MAX_IN_CHARS = 9000;   // chat history sent to the model (oldest messages are dropped first, never rejected)
 
 const PERSONA = `You are Nexa, an elite, highly experienced Roblox Luau engineer. You write executor scripts and tools for the NexScript community (a Roblox script hub), so ESP, aim assist, auto-farm, UI libraries and similar scripts are everyday requests here. You are a colleague and peer to the user, not a corporate AI.
 
@@ -34,16 +38,22 @@ HARD LIMITS (these override everything above): Never write or help with anything
 const CONTINUE_NOTE = 'Your last message was cut off because it hit the length limit. Continue EXACTLY where it stopped. Start with the very next characters (keep any leading space or newline), do not repeat anything that was already written, do not add an intro, do not add a [FILE: ...] tag, and do not open a new markdown code block. Output only the remaining text or code.';
 const langHint = lang => '\n\nSITE LANGUAGE: The website is currently set to ' + (lang === 'id' ? 'Indonesian' : 'English') + '. Use that language by default (casual daily Indonesian or casual gamer English) when the user message does not make the language clear. If the user writes in another language, follow the user.';
 
+// Keeps the chat small enough for the model instead of rejecting it.
+// - a long assistant message keeps its END (that is where "Continue" has to pick up), a long user message keeps its start
+// - when the history is too big, the oldest messages are dropped
 function cleanMessages(list, cont) {
   if (!Array.isArray(list)) return null;
   const out = [];
   for (const m of list.slice(-12)) {
     if (!m || (m.role !== 'user' && m.role !== 'assistant') || typeof m.content !== 'string') continue;
-    const content = m.content.slice(0, 4000);
+    let content = m.content;
+    if (content.length > 4000) content = m.role === 'assistant' ? content.slice(-4000) : content.slice(0, 4000);
     if (content.trim()) out.push({ role: m.role, content });
   }
   if (!out.length || out[out.length - 1].role !== (cont ? 'assistant' : 'user')) return null;
-  if (out.reduce((n, m) => n + m.content.length, 0) > 16000) return null;
+  let total = out.reduce((n, m) => n + m.content.length, 0);
+  while (out.length > 1 && total > MAX_IN_CHARS) total -= out.shift().content.length;
+  while (out.length > 1 && out[0].role !== 'user') out.shift();
   return out;
 }
 
@@ -71,6 +81,12 @@ async function callGroq(key, model, system, messages, maxOut, ms) {
   } finally { clearTimeout(timer); }
 }
 
+// Groq says "Limit 8000, Used 1200, Requested 9500" (Used is only there on 429). Returns how many tokens we are over.
+function overBy(msg) {
+  const m = /Limit (\d+),?\s*(?:Used (\d+),?\s*)?Requested (\d+)/i.exec(msg || '');
+  return m ? Number(m[3]) + Number(m[2] || 0) - Number(m[1]) : 0;
+}
+
 // walks the model list; shrinks the answer size when Groq says the request is over the per-minute token limit
 async function ask(key, system, messages, deadline, maxStart) {
   const tried = [];
@@ -83,9 +99,9 @@ async function ask(key, system, messages, deadline, maxStart) {
       if (r.ok) return { r, tried };
       tried.push({ model, status: r.status, msg: r.msg });
       if (r.status === 401 || r.status === 403) return { tried, fatal: true };            // wrong key: other models will not help
-      const m = /Limit (\d+),?\s*Requested (\d+)/i.exec(r.msg || '');
-      if ((r.status === 413 || r.status === 429) && m && attempt === 0) {
-        const next = maxOut - (Number(m[2]) - Number(m[1])) - 300;                       // ask for a shorter answer so it fits
+      const over = overBy(r.msg);
+      if ((r.status === 413 || r.status === 429) && over > 0 && attempt === 0) {
+        const next = maxOut - over - 300;                                                // ask for a shorter answer so it fits
         if (next >= 600) { maxOut = next; continue; }
       }
       break;
@@ -104,12 +120,12 @@ module.exports = async function handler(req, res) {
   if (req.method === 'GET') {
     if (!key) return res.status(200).json({ configured: false, hint: 'GROQ_API_KEY is missing in Vercel. Add it, then Redeploy.' });
     if (!G.allow('ai-health:' + G.clientIp(req), 6, 60000)) return res.status(429).json({ error: 'Slow down.' });
-    const results = [];
-    for (const model of MODELS) {
-      const r = await callGroq(key, model, 'Reply with the single word: ok', [{ role: 'user', content: 'ping' }], 32, 9000);
-      results.push({ model, ok: r.ok, status: r.status, message: r.ok ? 'works' : r.msg });
-    }
-    return res.status(200).json({ configured: true, models: MODELS, working: results.filter(x => x.ok).map(x => x.model), results });
+    const sys = PERSONA + langHint('en') + HARD_LIMITS;
+    const results = await Promise.all(MODELS.map(async model => {
+      const r = await callGroq(key, model, sys, [{ role: 'user', content: 'Reply with the single word: ok' }], MAX_OUT, 15000);
+      return { model, ok: r.ok, status: r.status, message: r.ok ? 'works' : r.msg };
+    }));
+    return res.status(200).json({ configured: true, models: MODELS, maxOut: MAX_OUT, working: results.filter(x => x.ok).map(x => x.model), results });
   }
 
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
