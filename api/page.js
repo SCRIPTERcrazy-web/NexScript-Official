@@ -5,7 +5,7 @@
 // Crawler tidak menjalankan JavaScript, makanya meta harus ada di HTML dari server.
 //
 // Cara kerja: baca index.html dari disk, ganti meta-nya, kirim. Aplikasi React tetap
-// jalan normal di browser. Butuh "includeFiles": "index.html" di vercel.json untuk fungsi ini.
+// jalan normal di browser. Butuh "includeFiles": "{dist/index.html,index.html}" di vercel.json untuk fungsi ini.
 const fs = require('fs');
 const path = require('path');
 
@@ -58,11 +58,24 @@ function setMeta(html, attr, key, value) {
   return re.test(html) ? html.replace(re, () => tag) : html.replace('</head>', () => tag + '\n</head>');
 }
 
+// Cari index.html: hasil build (dist/) dulu, lalu public/ dan root. Dicoba dari cwd dan dari folder fungsi.
+const CANDIDATES = ['dist/index.html', 'public/index.html', 'index.html'];
 let cache = null;
 function readIndex() {
   if (cache) return cache;
-  cache = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf8');
-  return cache;
+  const bases = [process.cwd(), path.join(__dirname, '..'), '/var/task'];
+  const tried = [];
+  for (const base of bases) {
+    for (const rel of CANDIDATES) {
+      const f = path.join(base, rel);
+      if (tried.indexOf(f) >= 0) continue;
+      tried.push(f);
+      try { cache = fs.readFileSync(f, 'utf8'); return cache; } catch (e) { /* coba berikutnya */ }
+    }
+  }
+  const err = new Error('index.html not found. Tried: ' + tried.join(', '));
+  err.tried = tried;
+  throw err;
 }
 
 module.exports = async function handler(req, res) {
@@ -77,8 +90,12 @@ module.exports = async function handler(req, res) {
 
   let html;
   try { html = readIndex(); } catch (e) {
-    // index.html tidak ikut ke fungsi (includeFiles belum diatur): arahkan ke versi hash
-    res.statusCode = 302; res.setHeader('Location', '/#/' + view); return res.end();
+    // jangan diam-diam: tulis ke log Vercel dan tampilkan errornya
+    console.error('[page] ' + e.message);
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store');
+    return res.end('NexScript page error: ' + e.message + '\nCek "includeFiles" untuk api/page.js di vercel.json.');
   }
 
   html = html.replace(/<title>[\s\S]*?<\/title>/i, () => '<title>' + esc(title) + '</title>');
