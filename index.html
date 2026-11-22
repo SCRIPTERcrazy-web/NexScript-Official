@@ -547,12 +547,15 @@ const gameSlugOf=x=>slugify(x&&x.game&&x.game.name)||'universal';
 const scriptPath=x=>x._path||(x.isUser?'/script/'+encodeURIComponent(x.slug):'/s/'+gameSlugOf(x)+'/script/'+encodeURIComponent(x.slug));
 const safeDec=t=>{try{return decodeURIComponent(t)}catch(e){return String(t)}};
 const stubScript=(slug,path)=>({slug,_id:slug,title:slug.replace(/-/g,' '),game:{name:''},_path:path,isUser:/^u-\d+$/.test(slug),uid:/^u-\d+$/.test(slug)?Number(slug.slice(2)):undefined});
+const PATH_VIEWS=['feed','videos','rewards','quiz','ai','wallet','review','trending','newest','views','rated','verified','keyless','fav','community','cscripts','chat','games','upload','guide','legal','account','settings','about','donate','admin'];
 function parseLoc(){
   const p=location.pathname.replace(/\/+$/,'');
   let m=/^\/s\/[^/]+\/script\/([^/]+)$/.exec(p)||/^\/script\/([^/]+)$/.exec(p);
   if(m)return{detail:stubScript(safeDec(m[1]),location.pathname),q:'',view:'home'};
   m=/^\/s\/([^/]+)$/.exec(p);
   if(m)return{detail:null,q:safeDec(m[1]).replace(/-+/g,' ').replace(/\s+/g,' ').trim().slice(0,100),view:'home'};
+  m=/^\/([a-z]+)$/.exec(p);
+  if(m&&PATH_VIEWS.indexOf(m[1])>=0)return{detail:null,q:'',view:m[1]};
   m=/^#\/script\/(.+)$/.exec(location.hash||'');
   if(m){const sl=safeDec(m[1]);return{detail:stubScript(sl,'/script/'+encodeURIComponent(sl)),q:'',view:'home'}}
   m=/^#\/(\w+)$/.exec(location.hash||'');
@@ -3140,7 +3143,7 @@ function App(){
       let target;
       if(detail&&detail.slug)target=scriptPath(detail);
       else if(dq&&slugify(dq))target='/s/'+slugify(dq);
-      else target=view==='home'?'/':'/#/'+view;
+      else target=view==='home'?'/':(PATH_VIEWS.indexOf(view)>=0?'/'+view:'/#/'+view);
       if(location.pathname+location.hash===target||(target==='/'&&location.pathname==='/'&&!location.hash))return;
       if(detail&&detail.slug&&pushRef.current)history.pushState({nx:1},'',target);else history.replaceState({nx:1},'',target);
       pushRef.current=false;
@@ -3269,12 +3272,13 @@ function App(){
       let desc='NexScript is a free Roblox script discovery tool. Search, browse and copy scripts for your favorite games.';
       let canon=location.origin+'/';
       if(detail&&detail.title){desc=detail.title+' - free Roblox script. Copy it and run it with NexScript.';canon=location.origin+scriptPath(detail)}
+      else if(!dq&&PATH_VIEWS.indexOf(view)>=0){canon=location.origin+'/'+view}
       else if(dq){desc='Free Roblox scripts for '+dq+'. Search, browse and copy scripts on NexScript.';if(slug(dq))canon=location.origin+'/s/'+slug(dq)}
       const m=document.querySelector('meta[name="description"]');if(m)m.setAttribute('content',desc);
       const c=document.querySelector('link[rel="canonical"]');if(c)c.setAttribute('href',canon);
       const og=document.querySelector('meta[property="og:description"]');if(og)og.setAttribute('content',desc);
     }catch(e){}
-  },[dq,detail&&detail.slug]);
+  },[dq,detail&&detail.slug,view]);
   const toast=useCallback((m,k)=>{const id=Math.random();setToasts(t=>[...t,{id,m,k}]);setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),4000)},[]);
   useEffect(()=>{const h=()=>{const lv=levelOf(readStats().xp);if(lv>lvRef.current){lvRef.current=lv;setBurst(b=>b+1);toast(tr('Level up!')+' '+tr('Level')+' '+lv,'ok')}else lvRef.current=lv};window.addEventListener('nx-xp',h);return()=>window.removeEventListener('nx-xp',h)},[toast]);
   useEffect(()=>{
