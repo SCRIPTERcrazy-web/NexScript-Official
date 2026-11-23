@@ -3,7 +3,12 @@
 // GET  /api/ai-chat   -> quick self-test (open it in the browser): which models answer right now, and why not if they do not.
 //                        The test sends a realistic request (full persona + full answer size), so it shows the same limits real chats hit.
 // Needs GROQ_API_KEY in Vercel. Optional: GROQ_MODELS (comma list, tried in order), AI_MAX_TOKENS, AI_REQUIRE_LOGIN=0.
-const G = require('../lib/guard.js');
+// guard.js: in this repo it sits next to this file (api/guard.js); the old path (lib/guard.js) is kept as a fallback.
+let G = null;
+try { G = require('./guard.js'); } catch (e) { /* try the other location */ }
+if (!G || typeof G.cors !== 'function') {
+  try { G = require('../lib/guard.js'); } catch (e) { /* handled below */ }
+}
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 // Tried in order. Each Groq model has its own rate limits, so when one is busy, too small for the request, or gone, the next one answers.
@@ -111,6 +116,7 @@ async function ask(key, system, messages, deadline, maxStart) {
 }
 
 module.exports = async function handler(req, res) {
+  if (!G || typeof G.cors !== 'function') return res.status(500).json({ error: 'guard.js not found next to ai-chat.js', code: 'server_setup' });
   const originOk = G.cors(req, res);
   if (req.method === 'OPTIONS') return res.status(204).end();
 
