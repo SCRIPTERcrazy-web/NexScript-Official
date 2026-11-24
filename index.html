@@ -168,13 +168,41 @@ body[data-view="trending"] .page,body[data-view="newest"] .page,body[data-view="
 body[data-view="guide"] .page,body[data-view="legal"] .page{animation:pgSwing .5s cubic-bezier(.2,.8,.2,1)}
 html.anim-reduced .page{animation-duration:.2s!important}
 </style></head>
-<body><div id="boot" role="status" aria-label="Loading">
+<body><script>
+(function(){
+  var errs=[];
+  window.addEventListener('error',function(e){errs.push(String(e.message||e.type)+(e.filename?' @'+String(e.filename).split('/').pop():''))});
+  window.addEventListener('unhandledrejection',function(e){errs.push('promise: '+String(e.reason&&e.reason.message||e.reason))});
+  setTimeout(function(){
+    if(window.__nxMounted)return;
+    var miss=[];
+    if(!window.React)miss.push('React');
+    if(!window.ReactDOM)miss.push('ReactDOM');
+    if(!window.Babel)miss.push('Babel');
+    if(!window.tailwind)miss.push('Tailwind');
+    if(!window.supabase)miss.push('Supabase');
+    var d=document.createElement('div');
+    d.id='nx-watch';
+    d.setAttribute('style','position:fixed;left:12px;right:12px;bottom:16px;z-index:99999;padding:12px 14px;border-radius:12px;background:#111a44;border:1px solid #3b82f6;color:#e2e8f0;font:13px/1.4 sans-serif');
+    var t='Masih memuat... ';
+    if(miss.length)t+='Belum terunduh: '+miss.join(', ')+'. ';
+    if(errs.length)t+='Error: '+errs[0].slice(0,160)+'. ';
+    d.textContent=t;
+    var b=document.createElement('button');b.textContent='Muat ulang';
+    b.setAttribute('style','display:block;margin-top:8px;padding:8px 14px;border-radius:8px;border:0;background:#3b82f6;color:#fff;font-weight:600');
+    b.onclick=function(){location.reload()};
+    d.appendChild(b);document.body.appendChild(d);
+    var iv=setInterval(function(){if(window.__nxMounted){clearInterval(iv);if(d.parentNode)d.parentNode.removeChild(d)}},500);
+  },10000);
+})();
+</script><div id="boot" role="status" aria-label="Loading">
 <i class="boot-star" style="left:11%;top:7%;animation-delay:0.0s"></i><i class="boot-star" style="left:48%;top:60%;animation-delay:0.4s"></i><i class="boot-star" style="left:85%;top:13%;animation-delay:0.8s"></i><i class="boot-star" style="left:22%;top:66%;animation-delay:1.2s"></i><i class="boot-star" style="left:59%;top:19%;animation-delay:1.6s"></i><i class="boot-star" style="left:96%;top:72%;animation-delay:2.0s"></i><i class="boot-star" style="left:33%;top:25%;animation-delay:2.4s"></i><i class="boot-star" style="left:70%;top:78%;animation-delay:0.0s"></i><i class="boot-star" style="left:7%;top:31%;animation-delay:0.4s"></i><i class="boot-star" style="left:44%;top:84%;animation-delay:0.8s"></i><i class="boot-star" style="left:81%;top:37%;animation-delay:1.2s"></i><i class="boot-star" style="left:18%;top:90%;animation-delay:1.6s"></i><i class="boot-star" style="left:55%;top:43%;animation-delay:2.0s"></i><i class="boot-star" style="left:92%;top:96%;animation-delay:2.4s"></i><i class="boot-star" style="left:29%;top:49%;animation-delay:0.0s"></i><i class="boot-star" style="left:66%;top:2%;animation-delay:0.4s"></i><i class="boot-star" style="left:3%;top:55%;animation-delay:0.8s"></i><i class="boot-star" style="left:40%;top:8%;animation-delay:1.2s"></i><i class="boot-star" style="left:77%;top:61%;animation-delay:1.6s"></i><i class="boot-star" style="left:14%;top:14%;animation-delay:2.0s"></i><i class="boot-star" style="left:51%;top:67%;animation-delay:2.4s"></i><i class="boot-star" style="left:88%;top:20%;animation-delay:0.0s"></i><i class="boot-star" style="left:25%;top:73%;animation-delay:0.4s"></i><i class="boot-star" style="left:62%;top:26%;animation-delay:0.8s"></i>
 <div class="boot-logo"><span class="boot-ring"></span><span class="boot-ring r2"></span>
 <svg class="boot-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#bg1)"/><circle cx="14" cy="14" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M19 19l6 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg></div>
 <div class="boot-title">NexScript</div><div class="boot-sub">Loading your script hub...</div><div class="boot-bar"><i></i></div>
 <p class="boot-slow">Taking longer than usual. Check your connection or <a href="javascript:location.reload()">reload</a>.</p></div>
 <script>window.__bootT=Date.now()</script>
+<script>(function(){var p=location.pathname.replace(/\/+$/,'')||'/';var h=location.hash;var home=(p==='/'||p==='/index.html')&&(!h||h==='#'||h==='#/'||h==='#/home');if(!home){var b=document.getElementById('boot');if(b&&b.parentNode)b.parentNode.removeChild(b)}})()</script>
 <div class="grid-bg"></div>
 <div class="orb" style="width:380px;height:380px;--c:#3b82f6;top:-80px;left:20%"></div>
 <div class="orb" style="width:320px;height:320px;--c:#8b5cf6;bottom:0;right:10%;animation-delay:-8s"></div>
@@ -511,6 +539,7 @@ resize();
 (function(){var cfg={};try{cfg=JSON.parse(localStorage.getItem('nx_cfg'))||{}}catch(e){}
 var m=cfg.anim==='off'||cfg.anim==='reduced'?cfg.anim:'full';
 var h=/^#\/(\w+)$/.exec(location.hash||'');var v=h?h[1]:'home';
+var pm=/^\/([a-z]+)$/.exec(location.pathname);if(pm)v=pm[1];
 if(/^\/(s\/[^/]+\/)?script\//.test(location.pathname))v='detail';
 if(window.NXScene){NXScene.setMode(m);NXScene.set(v)}
 var t=document.getElementById('tint');if(t){t.style.setProperty('--t1','rgba(59,130,246,.22)');t.style.setProperty('--t2','rgba(139,92,246,.18)');t.style.opacity='1'}})();
@@ -751,7 +780,7 @@ function Grid({mode,query,filter,favs,onFav,onOpen,toast,cfg}){
     if(filter==='hub'){const hs={newest:'newest',rated:'rated',updated:'newest'}[mode]||'views';return p===1?`/api/filter?filter=hub&sort=${hs}&pages=3`:null}
     if(mode==='trending'&&p===1)return '/api/trending?mode='+C.mode+max;
     const m={trending:'&sortBy=views&order=desc',newest:'&sortBy=createdAt&order=desc',updated:'&sortBy=updatedAt&order=desc',views:'&sortBy=views&order=desc',rated:'&sortBy=likeCount&order=desc',verified:'&verified=1',keyless:'&keyless=1',home:''}[mode]||'';
-    return `/api/fetch?page=${p}&mode=${C.mode}${m}${f}${pat}${max}`;
+    return `/api/all-scripts?browse=1&page=${p}&mode=${C.mode}${m}${f}${pat}${max}`;
   },[mode,query,filter,C.mode,C.perPage,C.hidePatched]);
   useEffect(()=>{
     keyRef.current=key;if(ac.current)ac.current.abort();
@@ -851,13 +880,13 @@ useEffect(() => {
       if (data.script) {
         setFull(prev => ({...prev, ...data.script}));
         
-        if (data.script.source === 'RScripts' && data.script.rawScriptUrl) {
+        if (data.script.script) {
+          setLuaCode(data.script.script);
+        } else if (data.script.source === 'RScripts' && data.script.rawScriptUrl) {
           fetch(data.script.rawScriptUrl)
             .then(res => res.text())
             .then(code => setLuaCode(code))
             .catch(() => setLuaCode('-- Failed to load code from RScripts.'));
-        } else if (data.script.script) {
-          setLuaCode(data.script.script);
         } else {
           setLuaCode('-- Code not available.');
         }
@@ -3265,6 +3294,7 @@ function App(){
     const t=setTimeout(()=>{b.classList.add('boot-out');setTimeout(()=>{if(b.parentNode)b.parentNode.removeChild(b)},700)},wait);
     return()=>clearTimeout(t);
   },[]);
+  useEffect(()=>{window.__nxMounted=true},[]);
   useEffect(()=>{document.documentElement.lang=lang},[lang]);
   useEffect(()=>{
     try{
