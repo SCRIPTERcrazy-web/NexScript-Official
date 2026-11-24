@@ -13,10 +13,10 @@
     { "source": "/script/:slug", "destination": "/api/script/:slug" },
     { "source": "/s/:game", "destination": "/api/game?game=:game" },
 
-    { "source": "/:view(feed|videos|rewards|quiz|ai|wallet|review|trending|newest|views|rated|verified|keyless|fav|community|cscripts|chat|games|upload|guide|legal|account|settings|about|donate|admin)", "destination": "/api/scripts?mode=page&view=:view" },
+    { "source": "/:view(feed|videos|rewards|quiz|ai|wallet|review|trending|newest|views|rated|verified|keyless|fav|community|cscripts|chat|games|upload|guide|legal|account|settings|about|donate|admin)", "destination": "/api/scripts?fn=page&view=:view" },
 
-    { "source": "/api/all-scripts", "destination": "/api/scripts?mode=list" },
-    { "source": "/api/script-detail", "destination": "/api/scripts?mode=detail" },
+    { "source": "/api/all-scripts", "destination": "/api/scripts?fn=list" },
+    { "source": "/api/script-detail", "destination": "/api/scripts?fn=detail" },
 
     {
       "source": "/((?!api|google42c8f0419ec3cfec\\.html|privacy\\.html|favicon\\.ico|manifest\\.json|sw\\.js|.*\\.(?:png|jpg|jpeg|svg|webp|gif|css|js|json|woff|woff2|ttf|eot)$).*)",
