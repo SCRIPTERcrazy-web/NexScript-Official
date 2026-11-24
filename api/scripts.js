@@ -1,8 +1,8 @@
 // api/scripts.js
 // Satu fungsi untuk tiga pekerjaan, karena paket Hobby Vercel dibatasi 12 fungsi per deploy:
-//   ?mode=list    daftar/pencarian script (ScriptBlox + RScripts)   <- /api/all-scripts
-//   ?mode=detail  detail satu script                               <- /api/script-detail
-//   ?mode=page    halaman menu dengan meta embed (/trending dst)    <- /:view
+//   ?fn=list      daftar/pencarian script (ScriptBlox + RScripts)   <- /api/all-scripts
+//   ?fn=detail    detail satu script                               <- /api/script-detail
+//   ?fn=page      halaman menu dengan meta embed (/trending dst)    <- /:view
 // Rewrite di vercel.json mengarahkan alamat lama ke sini, jadi index.html tidak perlu diubah.
 const fs = require('fs');
 const path = require('path');
@@ -11,12 +11,13 @@ const SB_CDN = process.env.SB_CDN || 'https://scriptblox.com';
 const absImage = (url) =>
   url ? (url.startsWith('http') ? url : `${SB_CDN}${url}`) : null;
 
-// ═══════════════════════ mode=list (dulu api/all-scripts.js) ═══════════════════════
+// ═══════════════════════ fn=list (dulu api/all-scripts.js) ═══════════════════════
 async function listHandler(req, res) {
   // ── Validasi input ────────────────────────────────────────────────
   const q = (req.query.q || '').trim().slice(0, 100);
   const page = Math.max(1, parseInt(req.query.page || '1', 10) || 1);
-  const limit = '20';
+  const browse = req.query.browse === '1';   // tanpa kata kunci: halaman Home/Trending/Newest/dst
+  const limit = String(Math.min(48, Math.max(1, parseInt(req.query.max || '20', 10) || 20)));
 
   // ── Helper: fetch + timeout ───────────────────────────────────────
   const fetchWithTimeout = async (url, opts = {}, ms = 8000) => {
@@ -30,39 +31,59 @@ async function listHandler(req, res) {
   };
 
   // ── Fetch dua sumber paralel ──────────────────────────────────────
+  // parameter browse yang diteruskan apa adanya ke proxy ScriptBlox (/api/fetch)
+  const SB_PASS = ['mode', 'sortBy', 'order', 'verified', 'keyless', 'universal', 'key', 'patched', 'max'];
+  const sbUrl = () => {
+    if (!browse) return `https://scriptblox-proxy-pzq8.vercel.app/api/search?q=${encodeURIComponent(q)}&page=${page}`;
+    const u = new URLSearchParams({ page: String(page) });
+    for (const k of SB_PASS) if (req.query[k] !== undefined && req.query[k] !== '') u.set(k, String(req.query[k]).slice(0, 20));
+    return `https://scriptblox-proxy-pzq8.vercel.app/api/fetch?${u.toString()}`;
+  };
+
   const fetchSB = async () => {
     try {
-      const r = await fetchWithTimeout(
-        `https://scriptblox-proxy-pzq8.vercel.app/api/search?q=${encodeURIComponent(q)}&page=${page}`,
-        {},
-        8000
-      );
+      const r = await fetchWithTimeout(sbUrl(), {}, 8000);
       if (!r.ok) return { ok: false, data: [], hasNext: false };
       const j = await r.json();
       const data = j.result?.scripts || j.scripts || j.data || [];
+      const list = Array.isArray(data) ? data : [];
       return {
         ok: true,
-        data: Array.isArray(data) ? data : [],
-        hasNext: Array.isArray(data) && data.length > 0,
+        data: list,
+        hasNext: browse && j.result && 'nextPage' in j.result ? !!j.result.nextPage : list.length > 0,
       };
     } catch {
       return { ok: false, data: [], hasNext: false };
     }
   };
 
+  // urutan ScriptBlox (sortBy) -> urutan RScripts (sort)
+  const RSC_SORT = { views: 'most-views', createdAt: 'newest', updatedAt: 'newest', likeCount: 'most-likes' };
+
   const fetchRSC = async () => {
     const key = process.env.RSCRIPTS_API_KEY;
     if (!key) return { ok: false, data: [], hasNext: false };
+    if (browse && req.query.mode === 'paid') return { ok: true, data: [], hasNext: false };   // RScripts tidak punya filter berbayar
     try {
+      let url;
+      if (browse) {
+        const u = new URLSearchParams({ page: String(page), limit, sort: RSC_SORT[req.query.sortBy] || 'recommended' });
+        if (req.query.verified === '1') u.set('verifiedOnly', 'true');
+        if (req.query.keyless === '1' || req.query.key === '0') u.set('noKeySystem', 'true');
+        if (req.query.mode === 'free') u.set('freeOnly', 'true');
+        url = `https://api.rscripts.net/v1/scripts?${u.toString()}`;
+      } else {
+        url = `https://api.rscripts.net/v1/search?q=${encodeURIComponent(q)}&limit=${limit}&page=${page}`;
+      }
       const r = await fetchWithTimeout(
-        `https://api.rscripts.net/v1/search?q=${encodeURIComponent(q)}&limit=${limit}&page=${page}`,
+        url,
         { headers: { Authorization: `Bearer ${key}`, Accept: 'application/json' } },
         6000
       );
       if (!r.ok) return { ok: false, data: [], hasNext: false };
       const j = await r.json();
-      const data = j.data?.scripts || [];
-      const hasNext = j.meta?.pagination?.scripts?.hasNextPage === true;
+      const data = browse ? j.data : j.data?.scripts;
+      const hasNext = browse ? j.meta?.hasNextPage === true : j.meta?.pagination?.scripts?.hasNextPage === true;
       return { ok: true, data: Array.isArray(data) ? data : [], hasNext };
     } catch {
       return { ok: false, data: [], hasNext: false };
@@ -117,20 +138,32 @@ async function listHandler(req, res) {
     likeCount: s.likes || 0,
     dislikeCount: s.dislikes || 0,
     executes: 0,
-    isPatched: false,
+    isPatched: !!s.isPatched,
     isUniversal: !s.game?.title,
     isHub: false,
-    createdAt: null, // RSC nggak punya timestamp
+    createdAt: isValidDate(s.createdAt) ? s.createdAt : null,
+    updatedAt: isValidDate(s.lastUpdatedAt) ? s.lastUpdatedAt : null,
     source: 'RScripts',
     rawScriptUrl: s.rawScript || null,
   });
 
-  // ── Interleave (adil) ─────────────────────────────────────────────
-  const mixed = [];
+  // browse: hasil proxy ScriptBlox dibiarkan apa adanya (id lama tetap sama untuk favorit), hanya RScripts yang dinormalisasi
+  if (browse && !sb.ok) return res.status(502).json({ error: 'ScriptBlox upstream error' });
+  const sbItem = browse ? (s) => s : normalizeSB;
+
+  // ── Gabung: diurutkan kalau ada sortBy, selain itu selang-seling (adil) ──
+  let mixed = [];
   const maxLen = Math.max(sbData.length, rscData.length);
   for (let i = 0; i < maxLen; i++) {
-    if (sbData[i]) mixed.push(normalizeSB(sbData[i]));
+    if (sbData[i]) mixed.push(sbItem(sbData[i]));
     if (rscData[i]) mixed.push(normalizeRSC(rscData[i]));
+  }
+  const sortBy = browse ? String(req.query.sortBy || '') : '';
+  if (RSC_SORT[sortBy]) {
+    const val = (x) => sortBy === 'createdAt' || sortBy === 'updatedAt'
+      ? (new Date(x[sortBy] || x.createdAt).getTime() || 0)
+      : Number(x[sortBy]) || 0;
+    mixed = mixed.map((x, i) => [x, i]).sort((a, b) => (val(b[0]) - val(a[0])) || (a[1] - b[1])).map((p) => p[0]);
   }
 
   const hasMore = sb.hasNext || rsc.hasNext;
@@ -156,7 +189,7 @@ async function listHandler(req, res) {
   });
 }
 
-// ═══════════════════════ mode=detail (dulu api/script-detail.js) ═══════════════════════
+// ═══════════════════════ fn=detail (dulu api/script-detail.js) ═══════════════════════
 async function detailHandler(req, res) {
   const slug = (req.query.slug || '').trim().slice(0, 200);
   const source = (req.query.source || '').trim();
@@ -226,17 +259,17 @@ async function detailHandler(req, res) {
     const key = process.env.RSCRIPTS_API_KEY;
     if (!key) return res.status(500).json({ error: 'RSCRIPTS_API_KEY missing' });
 
-    const searchRes = await fetchWithTimeout(
-      `https://api.rscripts.net/v1/search?q=${encodeURIComponent(slug)}&limit=5`,
+    const detailRes = await fetchWithTimeout(
+      `https://api.rscripts.net/v1/scripts/${encodeURIComponent(slug)}`,
       { headers: { Authorization: `Bearer ${key}`, Accept: 'application/json' } },
       6000
     );
-    if (!searchRes.ok) return res.status(502).json({ error: 'RScripts upstream error' });
+    if (detailRes.status === 404) return res.status(404).json({ error: 'Script not found' });
+    if (!detailRes.ok) return res.status(502).json({ error: 'RScripts upstream error' });
 
-    const searchJson = await searchRes.json();
-    const scripts = searchJson.data?.scripts || [];
-    const found = scripts.find((s) => s.slug === slug);
-    if (!found) return res.status(404).json({ error: 'Script not found' });
+    const detailJson = await detailRes.json();
+    const found = detailJson.data;
+    if (!found || !found.slug) return res.status(404).json({ error: 'Script not found' });
 
     res.setHeader('Cache-Control', 'public, max-age=120, s-maxage=600, stale-while-revalidate=1200');
     return res.status(200).json({
@@ -257,12 +290,12 @@ async function detailHandler(req, res) {
         likeCount: found.likes || 0,
         dislikeCount: found.dislikes || 0,
         executes: 0,
-        isPatched: false,
+        isPatched: !!found.isPatched,
         isUniversal: !found.game?.title,
         isHub: false,
-        createdAt: null,
+        createdAt: found.createdAt && !isNaN(new Date(found.createdAt)) ? found.createdAt : null,
         source: 'RScripts',
-        script: null,
+        script: found.script || null,
         rawScriptUrl: found.rawScript || null,
       },
     });
@@ -272,7 +305,7 @@ async function detailHandler(req, res) {
   }
 }
 
-// ═══════════════════════ mode=page (dulu api/page.js) ═══════════════════════
+// ═══════════════════════ fn=page (dulu api/page.js) ═══════════════════════
 
 const SITE = (process.env.SITE_ORIGIN || 'https://nexscript-official.vercel.app').replace(/\/+$/, '');
 const IMAGE = SITE + '/android-chrome-512x512.png';
@@ -388,14 +421,15 @@ async function pageHandler(req, res) {
 
 // ═══════════════════════ pintu masuk ═══════════════════════
 module.exports = async function handler(req, res) {
-  const mode = String((req.query && req.query.mode) || '');
+  // pakai "fn", bukan "mode": halaman daftar sudah memakai ?mode=free|paid
+  const fn = String((req.query && req.query.fn) || '');
   try {
-    if (mode === 'list') return await listHandler(req, res);
-    if (mode === 'detail') return await detailHandler(req, res);
-    if (mode === 'page') return await pageHandler(req, res);
-    return res.status(400).json({ error: 'mode must be list, detail or page' });
+    if (fn === 'list') return await listHandler(req, res);
+    if (fn === 'detail') return await detailHandler(req, res);
+    if (fn === 'page') return await pageHandler(req, res);
+    return res.status(400).json({ error: 'fn must be list, detail or page' });
   } catch (e) {
-    console.error('[scripts] ' + mode + ' failed:', e && e.message);
+    console.error('[scripts] ' + fn + ' failed:', e && e.message);
     if (!res.headersSent) return res.status(500).json({ error: 'Internal error' });
   }
 };
