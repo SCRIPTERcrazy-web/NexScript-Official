@@ -3,6 +3,7 @@
 //   ?fn=list      daftar/pencarian script (ScriptBlox + RScripts)   <- /api/all-scripts
 //   ?fn=detail    detail satu script                               <- /api/script-detail
 //   ?fn=page      halaman menu dengan meta embed (/trending dst)    <- /:view
+//   ?fn=discord   verifikasi Discord sebelum upload                 <- /api/discord-callback
 // Rewrite di vercel.json mengarahkan alamat lama ke sini, jadi index.html tidak perlu diubah.
 const fs = require('fs');
 const path = require('path');
@@ -337,6 +338,10 @@ const PAGES = {
   settings: ['Settings', 'NexScript settings.', 'Pengaturan', 'Pengaturan NexScript.', true],
   about: ['About NexScript', 'NexScript is a free Roblox script hub. Search, browse and copy scripts, with community, AI and rewards.', 'Tentang NexScript', 'NexScript adalah penemu script Roblox gratis. Cari, lihat, dan salin script, plus komunitas, AI, dan hadiah.'],
   donate: ['Support NexScript', 'Help keep NexScript free and fast. Every donation goes into running the site.', 'Dukung NexScript', 'Bantu NexScript tetap gratis dan cepat. Setiap donasi dipakai buat biaya operasional situs.'],
+  dashboard: ['Creator Dashboard', 'Track your uploaded scripts, views and level in one place.', 'Dasbor Kreator', 'Pantau script yang kamu unggah, views, dan levelmu di satu tempat.', true],
+  myscripts: ['My Scripts', 'Your uploaded Roblox scripts and their review status.', 'Script Saya', 'Script Roblox yang kamu unggah dan status tinjauannya.', true],
+  appearance: ['Appearance', 'Pick a NexScript theme: Halloween, Matrix, Cosmic, Christmas and more.', 'Tampilan', 'Pilih tema NexScript: Halloween, Matrix, Kosmik, Natal, dan lainnya.', true],
+  security: ['Account Settings', 'Account info, sign-in security and privacy.', 'Pengaturan Akun', 'Info akun, keamanan login, dan privasi.', true],
   admin: ['Admin', 'Admin area.', 'Admin', 'Area admin.', true],
 };
 
@@ -419,6 +424,136 @@ async function pageHandler(req, res) {
   res.end(html);
 }
 
+
+// ═══════════════════════ fn=discord (verifikasi Discord sebelum upload) ═══════════════════════
+// act=start     (login)  -> { url }  alamat otorisasi Discord
+// act=callback  (browser) -> alihkan balik ke /upload?dv=ok atau ?dv=err&r=<alasan>
+// act=status    (login)  -> { configured, linked, ok, steps:{linked,email,guild}, username }
+// Env: DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_GUILD_ID (wajib). Opsional: DISCORD_BOT_TOKEN
+// (cek anggota server tanpa login ulang), DISCORD_MIN_AGE_DAYS (umur akun minimum). Tabel: discord_links.
+const crypto = require('crypto');
+let G = null;
+try { G = require('./guard.js'); } catch (e) { /* coba lokasi lain */ }
+if (!G || typeof G.cors !== 'function') {
+  try { G = require('../lib/guard.js'); } catch (e) { /* ditangani di bawah */ }
+}
+const DC = () => ({
+  id: process.env.DISCORD_CLIENT_ID, secret: process.env.DISCORD_CLIENT_SECRET, guild: process.env.DISCORD_GUILD_ID,
+  bot: process.env.DISCORD_BOT_TOKEN, minAge: Math.max(0, Number(process.env.DISCORD_MIN_AGE_DAYS) || 0),
+});
+const dcOk = (c) => !!(c.id && c.secret && c.guild);
+const b64u = (b) => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const sign = (c, body) => b64u(crypto.createHmac('sha256', 'nx-discord:' + c.secret).update(body).digest());
+const makeState = (c, uid) => { const body = b64u(JSON.stringify({ u: uid, t: Date.now() })); return body + '.' + sign(c, body); };
+function readState(c, st) {
+  try {
+    const [body, mac] = String(st || '').split('.');
+    if (!body || !mac) return null;
+    const a = Buffer.from(sign(c, body)), b = Buffer.from(mac);
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+    const o = JSON.parse(Buffer.from(body.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8'));
+    return o && o.u && Date.now() - o.t < 15 * 60 * 1000 ? o : null;
+  } catch (e) { return null; }
+}
+const redirectUri = () => (process.env.SITE_ORIGIN || 'https://nexscript-official.vercel.app').replace(/\/+$/, '') + '/api/discord-callback';
+const siteUrl = () => (process.env.SITE_ORIGIN || 'https://nexscript-official.vercel.app').replace(/\/+$/, '');
+
+async function dcTimeout(url, opts, ms) {
+  const ac = new AbortController(); const t = setTimeout(() => ac.abort(), ms || 8000);
+  try { return await fetch(url, { ...opts, signal: ac.signal }); } finally { clearTimeout(t); }
+}
+async function dbReq(method, pathq, body, extra) {
+  const url = process.env.SUPABASE_URL, key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error('supabase env missing');
+  const r = await dcTimeout(url + '/rest/v1/' + pathq, {
+    method, headers: { apikey: key, Authorization: 'Bearer ' + key, 'Content-Type': 'application/json', ...(extra || {}) },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const text = await r.text(); let j = null; try { j = JSON.parse(text); } catch (e) { /* vazio */ }
+  return { ok: r.ok, status: r.status, data: j };
+}
+const snowflakeMs = (id) => { try { return Number((BigInt(id) >> 22n) + 1420070400000n); } catch (e) { return 0; } };
+
+async function inGuild(c, discordId, userToken) {
+  if (c.bot) {
+    const r = await dcTimeout(`https://discord.com/api/v10/guilds/${c.guild}/members/${discordId}`, { headers: { Authorization: 'Bot ' + c.bot } });
+    return r.status === 200;
+  }
+  if (!userToken) return null;                                   // tidak bisa dicek tanpa token pengguna
+  const r = await dcTimeout('https://discord.com/api/v10/users/@me/guilds', { headers: { Authorization: 'Bearer ' + userToken } });
+  if (!r.ok) return false;
+  const l = await r.json().catch(() => []);
+  return Array.isArray(l) && l.some((g) => String(g.id) === String(c.guild));
+}
+const rowOk = (c, row) => !!(row && row.email_verified && row.in_guild &&
+  (!c.minAge || (row.account_created && Date.now() - new Date(row.account_created).getTime() >= c.minAge * 864e5)));
+const stepsOf = (c, row) => ({ linked: !!row, email: !!(row && row.email_verified), guild: !!(row && row.in_guild) });
+
+async function discordHandler(req, res) {
+  const act = String((req.query && req.query.act) || '');
+  const c = DC();
+  if (!G || typeof G.cors !== 'function') return res.status(500).json({ error: 'guard.js not found' });
+
+  // ── callback: Discord mengalihkan browser ke sini ──
+  if (act === 'callback') {
+    const back = (q) => { res.statusCode = 302; res.setHeader('Location', siteUrl() + '/upload?' + q); res.setHeader('Cache-Control', 'no-store'); return res.end(); };
+    if (!dcOk(c)) return back('dv=err&r=cfg');
+    const st = readState(c, req.query.state);
+    if (!st || !req.query.code) return back('dv=err&r=state');
+    try {
+      const tr = await dcTimeout('https://discord.com/api/v10/oauth2/token', {
+        method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ client_id: c.id, client_secret: c.secret, grant_type: 'authorization_code', code: String(req.query.code), redirect_uri: redirectUri() }).toString(),
+      });
+      const tj = await tr.json().catch(() => ({}));
+      if (!tr.ok || !tj.access_token) return back('dv=err&r=fail');
+      const ur = await dcTimeout('https://discord.com/api/v10/users/@me', { headers: { Authorization: 'Bearer ' + tj.access_token } });
+      const u = await ur.json().catch(() => ({}));
+      if (!ur.ok || !u.id) return back('dv=err&r=fail');
+      // satu akun Discord hanya boleh terhubung ke satu akun NexScript (cegah akun alt)
+      const dup = await dbReq('GET', 'discord_links?select=user_id&discord_id=eq.' + encodeURIComponent(u.id) + '&user_id=neq.' + encodeURIComponent(st.u));
+      if (dup.ok && Array.isArray(dup.data) && dup.data.length) return back('dv=err&r=dup');
+      const guildOk = await inGuild(c, u.id, tj.access_token);
+      const created = snowflakeMs(u.id);
+      const row = {
+        user_id: st.u, discord_id: String(u.id), username: String(u.global_name || u.username || '').slice(0, 60),
+        email_verified: u.verified === true && !!u.email, in_guild: guildOk === true,
+        account_created: created ? new Date(created).toISOString() : null, checked_at: new Date().toISOString(),
+      };
+      const up = await dbReq('POST', 'discord_links?on_conflict=user_id', row, { Prefer: 'resolution=merge-duplicates,return=minimal' });
+      if (!up.ok) return back(up.status === 409 ? 'dv=err&r=dup' : 'dv=err&r=fail');
+      if (!row.email_verified) return back('dv=err&r=email');
+      if (!row.in_guild) return back('dv=err&r=guild');
+      if (!rowOk(c, row)) return back('dv=err&r=age');
+      return back('dv=ok');
+    } catch (e) { console.error('[discord] callback', e && e.message); return back('dv=err&r=fail'); }
+  }
+
+  // ── start / status: butuh login ──
+  const originOk = G.cors(req, res);
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (!originOk) return res.status(403).json({ error: 'Forbidden' });
+  res.setHeader('Cache-Control', 'no-store');
+  if (!dcOk(c)) return res.status(200).json({ configured: false });
+  const user = await G.getUser(req);
+  if (!user) return res.status(401).json({ error: 'Please log in.' });
+  if (!G.allow('dc:' + user.id, 20, 60000)) return res.status(429).json({ error: 'Slow down.' });
+
+  if (act === 'start') {
+    const q = new URLSearchParams({ client_id: c.id, redirect_uri: redirectUri(), response_type: 'code', scope: 'identify email guilds', state: makeState(c, user.id) });
+    return res.status(200).json({ configured: true, url: 'https://discord.com/oauth2/authorize?' + q.toString() });
+  }
+  if (act === 'status') {
+    const g = await dbReq('GET', 'discord_links?select=*&user_id=eq.' + encodeURIComponent(user.id));
+    let row = g.ok && Array.isArray(g.data) ? g.data[0] : null;
+    if (row && c.bot) {                                          // dengan bot, keanggotaan bisa dicek ulang kapan saja
+      try { const now = await inGuild(c, row.discord_id, null); if (now !== null && now !== row.in_guild) { row = { ...row, in_guild: now }; await dbReq('PATCH', 'discord_links?user_id=eq.' + encodeURIComponent(user.id), { in_guild: now, checked_at: new Date().toISOString() }, { Prefer: 'return=minimal' }); } } catch (e) { /* pakai data lama */ }
+    }
+    return res.status(200).json({ configured: true, linked: !!row, ok: rowOk(c, row), steps: stepsOf(c, row), username: row ? row.username : null, recheck: row && !c.bot ? 'relink' : null });
+  }
+  return res.status(400).json({ error: 'act must be start, callback or status' });
+}
+
 // ═══════════════════════ pintu masuk ═══════════════════════
 module.exports = async function handler(req, res) {
   // pakai "fn", bukan "mode": halaman daftar sudah memakai ?mode=free|paid
@@ -427,7 +562,8 @@ module.exports = async function handler(req, res) {
     if (fn === 'list') return await listHandler(req, res);
     if (fn === 'detail') return await detailHandler(req, res);
     if (fn === 'page') return await pageHandler(req, res);
-    return res.status(400).json({ error: 'fn must be list, detail or page' });
+    if (fn === 'discord') return await discordHandler(req, res);
+    return res.status(400).json({ error: 'fn must be list, detail, page or discord' });
   } catch (e) {
     console.error('[scripts] ' + fn + ' failed:', e && e.message);
     if (!res.headersSent) return res.status(500).json({ error: 'Internal error' });
