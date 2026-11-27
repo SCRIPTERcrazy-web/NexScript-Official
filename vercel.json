@@ -15,6 +15,7 @@
 
     { "source": "/:view(feed|videos|rewards|quiz|ai|wallet|review|trending|newest|views|rated|verified|keyless|fav|community|cscripts|chat|games|upload|guide|legal|account|settings|about|donate|admin|dashboard|myscripts|appearance|security)", "destination": "/api/scripts?fn=page&view=:view" },
 
+    { "source": "/u/:name([A-Za-z0-9_.-]{2,30})", "destination": "/api/scripts?fn=page&view=profile&name=:name" },
     { "source": "/api/discord-callback", "destination": "/api/scripts?fn=discord&act=callback" },
     { "source": "/api/all-scripts", "destination": "/api/scripts?fn=list" },
     { "source": "/api/script-detail", "destination": "/api/scripts?fn=detail" },
