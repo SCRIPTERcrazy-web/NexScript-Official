@@ -41,7 +41,27 @@ const HARD_LIMITS = `
 HARD LIMITS (these override everything above): Never write or help with anything that steals Roblox cookies (.ROBLOSECURITY), passwords, tokens or personal data; IP loggers; sending data to Discord webhooks or other servers without the user knowing; account takeover; malware; or anything meant to hurt other players or this website. If asked, decline in one short in-character line and offer a legit alternative.`;
 
 const CONTINUE_NOTE = 'Your last message was cut off because it hit the length limit. Continue EXACTLY where it stopped. Start with the very next characters (keep any leading space or newline), do not repeat anything that was already written, do not add an intro, do not add a [FILE: ...] tag, and do not open a new markdown code block. Output only the remaining text or code.';
-const langHint = lang => '\n\nSITE LANGUAGE: The website is currently set to ' + (lang === 'id' ? 'Indonesian' : 'English') + '. Use that language by default (casual daily Indonesian or casual gamer English) when the user message does not make the language clear. If the user writes in another language, follow the user.';
+// Language: guess it from what the user actually wrote (small models drift to English when the site language is English).
+const ID_WORDS = /\b(yang|dan|aku|saya|gue|gua|lu|lo|kamu|anda|gak|ga|nggak|enggak|tidak|bukan|tolong|dong|deh|sih|kok|nih|tuh|banget|bikin|bikinin|buat|buatin|bisa|mau|pengen|ingin|udah|sudah|belum|lagi|aja|saja|kenapa|gimana|bagaimana|apa|siapa|kapan|dimana|dari|untuk|dengan|ini|itu|ada|jangan|harus|biar|supaya|karena|tapi|atau|juga|masih|bantu|bantuin|jelasin|jelaskan|cara|kasih|kasi|coba|iya|oke|makasih|terima|halo|selamat|gitu|gini|kalo|kalau|klo|emang|memang|bang|bro|sama|lebih|lain|bagus|keren|mantap)\b/gi;
+const EN_WORDS = /\b(the|is|are|was|you|your|what|how|can|could|would|please|make|create|write|with|for|that|this|and|not|do|does|why|when|where|have|has|will|want|need|help|me|my|it|of|to|in|on|a|an)\b/gi;
+function guessLang(text) {
+  const t = String(text || '');
+  const id = (t.match(ID_WORDS) || []).length, en = (t.match(EN_WORDS) || []).length;
+  if (id === 0 && en === 0) return null;
+  if (id > en) return 'id';
+  if (en > id) return 'en';
+  return null;
+}
+// last user messages decide; falls back to the site language
+function pickLang(messages, siteLang) {
+  const users = messages.filter(m => m.role === 'user').slice(-3).reverse();
+  for (const m of users) { const g = guessLang(m.content); if (g) return { lang: g, sure: true }; }
+  return { lang: siteLang, sure: false };
+}
+const langHint = (lang, sure) => '\n\nLANGUAGE (mandatory, overrides everything above): reply in ' +
+  (lang === 'id' ? 'Indonesian, casual daily Indonesian (aku/kamu or gue/lo, like the user)' : 'English, casual gamer English') +
+  (sure ? ', because the user is writing in it. Never switch to another language unless the user does. Write code comments in the same language.' : ' by default. If the user writes in another language, follow the user.');
+const langRemind = lang => lang === 'id' ? '\n\nBalas SELALU dalam bahasa Indonesia santai. Jangan beralih ke bahasa Inggris.' : '\n\nAlways reply in the language the user is writing in.';
 
 // Keeps the chat small enough for the model instead of rejecting it.
 // - a long assistant message keeps its END (that is where "Continue" has to pick up), a long user message keeps its start
@@ -126,7 +146,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'GET') {
     if (!key) return res.status(200).json({ configured: false, hint: 'GROQ_API_KEY is missing in Vercel. Add it, then Redeploy.' });
     if (!G.allow('ai-health:' + G.clientIp(req), 6, 60000)) return res.status(429).json({ error: 'Slow down.' });
-    const sys = PERSONA + langHint('en') + HARD_LIMITS;
+    const sys = PERSONA + langHint('en', false) + HARD_LIMITS;
     const results = await Promise.all(MODELS.map(async model => {
       const r = await callGroq(key, model, sys, [{ role: 'user', content: 'Reply with the single word: ok' }], MAX_OUT, 15000);
       return { model, ok: r.ok, status: r.status, message: r.ok ? 'works' : r.msg };
@@ -152,7 +172,8 @@ module.exports = async function handler(req, res) {
   const lang = body.lang === 'id' ? 'id' : 'en';
   const messages = cleanMessages(body.messages, cont);
   if (!messages) return res.status(400).json({ error: 'Invalid message.', code: 'bad_request' });
-  const system = PERSONA + langHint(lang) + HARD_LIMITS;
+  const L = pickLang(messages, lang);
+  const system = PERSONA + langHint(L.lang, L.sure) + HARD_LIMITS + (L.sure ? langRemind(L.lang) : '');
   const sendMessages = messages.concat(cont ? [{ role: 'user', content: CONTINUE_NOTE }] : []);
 
   const out = await ask(key, system, sendMessages, Date.now() + 25000, MAX_OUT);
