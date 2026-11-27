@@ -342,6 +342,7 @@ const PAGES = {
   myscripts: ['My Scripts', 'Your uploaded Roblox scripts and their review status.', 'Script Saya', 'Script Roblox yang kamu unggah dan status tinjauannya.', true],
   appearance: ['Appearance', 'Pick a NexScript theme: Halloween, Matrix, Cosmic, Christmas and more.', 'Tampilan', 'Pilih tema NexScript: Halloween, Matrix, Kosmik, Natal, dan lainnya.', true],
   security: ['Account Settings', 'Account info, sign-in security and privacy.', 'Pengaturan Akun', 'Info akun, keamanan login, dan privasi.', true],
+  profile: ['Profile', 'A NexScript creator profile with published scripts.', 'Profil', 'Profil kreator NexScript beserta script yang diterbitkan.'],
   admin: ['Admin', 'Admin area.', 'Admin', 'Area admin.', true],
 };
 
@@ -387,9 +388,17 @@ async function pageHandler(req, res) {
   if (!p) { res.statusCode = 302; res.setHeader('Location', '/'); return res.end(); }
 
   const lang = pickLang(req);
-  const title = (lang === 'id' ? p[2] : p[0]) + ' - NexScript';
-  const desc = lang === 'id' ? p[3] : p[1];
-  const url = SITE + '/' + view;
+  let title = (lang === 'id' ? p[2] : p[0]) + ' - NexScript';
+  let desc = lang === 'id' ? p[3] : p[1];
+  let url = SITE + '/' + view;
+  if (view === 'profile') {                                      // /u/<nama>
+    const nm = String((req.query && req.query.name) || '').replace(/[^A-Za-z0-9_.-]/g, '').slice(0, 30);
+    if (nm.length >= 2) {
+      title = nm + ' - NexScript';
+      desc = lang === 'id' ? 'Profil ' + nm + ' di NexScript: script yang diterbitkan dan statistiknya.' : nm + ' on NexScript: published Roblox scripts and stats.';
+      url = SITE + '/u/' + nm;
+    }
+  }
 
   let html;
   try { html = readIndex(); } catch (e) {
