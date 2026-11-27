@@ -7,6 +7,8 @@
 //   SUPABASE_PUBLISHABLE_KEY    your publishable key (sb_publishable_...)
 //   SUPABASE_SERVICE_ROLE_KEY   SECRET. Only ever stored here, never in the website code or in chat.
 //   ALLOWED_ORIGIN              (optional) https://scriptercrazy-web.github.io
+//   DISCORD_CLIENT_ID           (optional) when set, uploads need a verified Discord (see api/scripts.js, fn=discord)
+//   DISCORD_MIN_AGE_DAYS        (optional) minimum Discord account age, same value as in api/scripts.js
 const MAX_PER_HOUR = 5;
 
 module.exports = async function handler(req, res) {
@@ -50,6 +52,21 @@ module.exports = async function handler(req, res) {
   if (script.length < 1 || script.length > 50000) return res.status(400).json({ error: 'Script must be 1-50000 characters.' });
 
   const sbHeaders = { apikey: SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`, 'Content-Type': 'application/json' };
+
+  // 3) Discord gate: only active when DISCORD_CLIENT_ID is set. The account must be linked, the Discord email
+  //    verified and the user must be in our server (checked when linking, see api/scripts.js fn=discord).
+  if (process.env.DISCORD_CLIENT_ID) {
+    let okDiscord = false;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/discord_links?user_id=eq.${user.id}&select=email_verified,in_guild,account_created`, { headers: sbHeaders });
+      if (!r.ok) return res.status(502).json({ error: 'Could not verify your Discord. Try again later.' });
+      const row = (await r.json())[0];
+      const minAge = Math.max(0, Number(process.env.DISCORD_MIN_AGE_DAYS) || 0);
+      okDiscord = !!(row && row.email_verified && row.in_guild &&
+        (!minAge || (row.account_created && Date.now() - new Date(row.account_created).getTime() >= minAge * 864e5)));
+    } catch { return res.status(502).json({ error: 'Could not verify your Discord. Try again later.' }); }
+    if (!okDiscord) return res.status(403).json({ error: 'Verify your Discord first: link your account and join our server.', code: 'discord' });
+  }
 
   // 4) rate limit per user
   try {
