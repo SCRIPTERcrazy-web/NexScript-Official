@@ -1,4 +1,8 @@
 {
+  "framework": null,
+  "installCommand": "npm install && cd tools && npm install --no-audit --no-fund && node build.js",
+  "buildCommand": "echo build-done",
+  "outputDirectory": "dist",
   "functions": {
     "api/script/[slug].js": { "includeFiles": "index.html" },
     "api/game.js": { "includeFiles": "index.html" },
