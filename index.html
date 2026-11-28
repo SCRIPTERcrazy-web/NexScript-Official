@@ -3571,7 +3571,7 @@ function UploadWizard({user,profile,go,toast}){
       setD(x=>({...x,tags:uniq(x.tags,o.tags,10),features:uniq(x.features,o.features,30)}));
     }catch(e){log('suggest',e);toast(tr("Could not get suggestions. Try again."))}finally{setAiBusy(false)}
   };
-    const saveIt=()=>{saveDraft(uid,d);setDrafts(loadDrafts(uid));toast(tr("Draft saved."),'ok')};
+  const saveIt=()=>{saveDraft(uid,d);setDrafts(loadDrafts(uid));toast(tr("Draft saved."),'ok')};
   const openDraft=x=>{setD(x.d);setStep(x.d.code?3:x.d.name||x.d.game||x.d.mode!=='specific'?2:1)};
   const rmDraft=id=>{dropDraft(uid,id);setDrafts(loadDrafts(uid))};
   const compose=()=>{
